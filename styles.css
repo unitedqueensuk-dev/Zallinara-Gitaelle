@@ -1,0 +1,30 @@
+/* Place your CSS styles in this file */
+
+h1 {
+    text-align: center;
+    font-weight: bold;
+    color : blueviolet ; 
+    Font-size: 50px;
+}
+
+ul{list-style-type: none;
+border: 6px solid grey;
+background-color: azure;
+text-align: center;
+}
+
+li{display : inline ;
+padding: 20px;
+padding: right : 2px;
+}
+
+ p { colour: black;
+     Font-size: 25px;
+     }
+ pre {colour: black; 
+ Font-size: 25px;
+ }    
+ body {background-color: lightblue;
+ }
+ marquee {font-size: 25px
+ }
