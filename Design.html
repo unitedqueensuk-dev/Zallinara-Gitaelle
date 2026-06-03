@@ -3,72 +3,144 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Design - Inside Out</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <title>Design - Inside Out Project</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
     <style>
-        body { font-family: 'Poppins', sans-serif; background: #050716; color: #fff; margin: 0; padding: 20px; text-align: center; }
-        
-        .design-container {
-            max-width: 900px;
-            margin: 40px auto;
-            background: rgba(11, 17, 44, 0.8);
-            padding: 30px;
-            border-radius: 20px;
-            border: 1px solid #ffd700;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-        }
+        /* --- RESET STYLE --- */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
 
-        h1 { font-family: 'Cinzel', serif; color: #ffd700; margin-bottom: 20px; }
-
-        /* Container Canva yang responsif */
-        .canva-wrapper {
+        body {
+            font-family: 'Poppins', sans-serif;
+            color: #ffffff;
+            min-height: 100vh;
+            background: #060919;
+            overflow-x: hidden;
             position: relative;
-            width: 100%;
-            height: 0;
-            padding-top: 56.25%; /* Rasio 16:9 */
-            overflow: hidden;
-            border-radius: 12px;
-            border: 2px solid #ffd700;
-            background: #000;
         }
 
-        .canva-wrapper iframe {
-            position: absolute;
+        /* --- VIDEO BACKGROUND --- */
+        .video-bg {
+            position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
+            object-fit: cover;
+            z-index: -2;
+            filter: blur(4px);
         }
 
-        .credit-text {
-            margin-top: 20px;
-            color: #b0b5c9;
-            font-size: 0.9rem;
+        .video-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(10, 15, 43, 0.5) 0%, rgba(5, 7, 22, 0.85) 100%);
+            z-index: -1;
         }
 
-        .credit-text a {
-            color: #ffd700;
-            text-decoration: none;
-            font-weight: 600;
+        /* --- NAVIGATION BAR --- */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            background: rgba(10, 15, 43, 0.8);
+            backdrop-filter: blur(12px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
         }
+
+        .logo { font-family: 'Cinzel', serif; font-size: 1.4rem; font-weight: 700; letter-spacing: 2px; color: #ffd700; }
+        .nav-links { display: flex; list-style: none; gap: 25px; }
+        .nav-links a { color: #a4abbf; text-decoration: none; font-weight: 500; transition: all 0.3s ease; }
+        .nav-links a:hover, .nav-links a.active { color: #ffffff; border-bottom: 2px solid #ffd700; }
+
+        /* --- MAIN CONTENT --- */
+        .main-content { max-width: 950px; margin: 50px auto; padding: 0 20px; text-align: center; }
+        .page-title { font-family: 'Cinzel', serif; font-size: 2.5rem; color: #ffd700; letter-spacing: 3px; margin-bottom: 40px; }
+
+        /* --- CANVA EMBED AREA --- */
+        .canva-container-box {
+            background: rgba(13, 20, 54, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 16px;
+            padding: 20px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+        }
+
+        .canva-responsive-wrapper {
+            position: relative;
+            width: 100%;
+            height: 0;
+            padding-top: 56.25%;
+            overflow: hidden;
+            border-radius: 10px;
+        }
+
+        .canva-responsive-wrapper iframe {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            border: none;
+        }
+
+        /* --- KREDIT --- */
+        .credit-box { margin-top: 25px; color: #b0b6cf; }
+        .canva-link { color: #ffd700; text-decoration: none; font-weight: 600; }
+        .canva-link:hover { text-decoration: underline; }
+
+        footer { background: #050716; padding: 25px; color: #5c627a; margin-top: 60px; text-align: center; }
     </style>
 </head>
+
 <body>
 
-    <div class="design-container">
-        <h1>PROJECT DESIGN</h1>
-        
-        <div class="canva-wrapper">
-            <iframe loading="lazy" src="https://www.canva.com/design/DAHJDnpXhmE/qfJUwasbPDex14GgZQZtFw/view?embed" 
-                allowfullscreen="allowfullscreen" allow="fullscreen">
-            </iframe>
+    <video autoplay muted loop playsinline class="video-bg">
+        <source src="https://videotourl.com/videos/1780485019352-0868a29f-d876-44ca-b1f7-322c6c4baa89.mp4" type="video/mp4">
+    </video>
+    <div class="video-overlay"></div>
+
+    <header>
+        <div class="logo">Inside Out</div>
+        <ul class="nav-links" id="nav-list">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="AboutUs.html">About Us</a></li>
+            <li><a href="Design.html" class="active">Design</a></li>
+            <li><a href="product.html">Product</a></li>
+        </ul>
+    </header>
+
+    <main class="main-content">
+        <h1 class="page-title">DESIGN PROJECT</h1>
+
+        <div class="canva-container-box">
+            <div class="canva-responsive-wrapper">
+                <iframe loading="lazy" src="https://www.canva.com/design/DAHJDnpXhmE/qfJUwasbPDex14GgZQZtFw/view?embed" allowfullscreen="allowfullscreen" allow="fullscreen"></iframe>
+            </div>
         </div>
 
-        <div class="credit-text">
-            <p>Zallinara Gitaelle X-E (Project) !</p>
-            <p>Design by <a href="#">Allisa, Gita, Nirina & Zahra</a></p>
+        <div class="credit-box">
+            <a class="canva-link" href="https://www.canva.com/design/DAHJDnpXhmE/qfJUwasbPDex14GgZQZtFw/view?utm_content=DAHJDnpXhmE&amp;utm_campaign=designshare&amp;utm_medium=embeds&amp;utm_source=link" target="_blank" rel="noopener">
+                Zallinara Gitaelle X-E (Project) !
+            </a>
+            <p>oleh Allisa, Gita, Nirina & Zahra</p>
         </div>
-    </div>
+    </main>
+
+    <footer>
+        <p>Design & Developed By Allisa, Gita, Nirina & Zahra ©️ 2026</p>
+    </footer>
 
 </body>
 </html>
