@@ -24,23 +24,28 @@
             overflow-x: hidden;
             text-align: center;
             position: relative;
-            
-            /* 1. KODE UNTUK BACKGROUND GAMBAR BARU */
-            background-image: url('whirlwind.png'); /* PENTING: Pastikan file gambar ada di folder yang sama dan namanya pas */
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-            background-repeat: no-repeat;
+            background: #050716; /* Warna dasar gelap jika video belum termuat */
         }
 
-        /* Efek overlay agar gambar latar belakang sedikit gelap dan teks di atasnya sangat jelas dibaca */
-        .image-overlay {
+        /* --- KODE KUNCI VIDEO BACKGROUND --- */
+        .video-bg {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(5, 7, 22, 0.65); /* Menggelapkan gambar sebesar 65% */
+            object-fit: cover; /* Memaksa video memenuhi layar laptop tanpa gepeng */
+            z-index: -2; /* Dikunci di lapisan paling belakang */
+        }
+
+        /* Efek overlay agar video agak gelap dan teks di atasnya sangat kontras & jelas dibaca */
+        .video-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(5, 7, 22, 0.55); /* Menggelapkan video sebesar 55% */
             z-index: -1;
         }
 
@@ -86,7 +91,7 @@
             padding-bottom: 4px;
         }
 
-        /* Tombol Titik Tiga */
+        /* Tombol Titik Tiga HP */
         .menu-toggle {
             display: none;
             font-size: 1.8rem;
@@ -98,10 +103,7 @@
 
         /* Responsive Menu HP */
         @media screen and (max-width: 768px) {
-            .menu-toggle {
-                display: block;
-            }
-
+            .menu-toggle { display: block; }
             .nav-links {
                 display: none;
                 flex-direction: column;
@@ -118,10 +120,7 @@
                 box-shadow: 0 4px 15px rgba(0,0,0,0.5);
                 z-index: 1000;
             }
-
-            .nav-links.active {
-                display: flex;
-            }
+            .nav-links.active { display: flex; }
         }
 
         /* --- HERO SECTION --- */
@@ -179,7 +178,7 @@
         }
 
         .emotion-sphere {
-            background: rgba(0, 0, 0, 0.65); /* Sedikit lebih gelap agar kontras dengan gambar */
+            background: rgba(0, 0, 0, 0.6); 
             border: 1px solid rgba(255, 255, 255, 0.15);
             border-radius: 15px;
             padding: 20px;
@@ -234,7 +233,11 @@
 
 <body>
 
-    <div class="image-overlay"></div>
+    <video autoplay muted loop playsinline class="video-bg">
+        <source src="background.mp4" type="https://videotourl.com/videos/1780485019352-0868a29f-d876-44ca-b1f7-322c6c4baa89.mp4">
+     
+    </video>
+    <div class="video-overlay"></div>
 
 
     <header>
@@ -316,7 +319,7 @@
             },
             envy: {
                 title: "Envy (Iri Hati)",
-                desc: "Emosi baru bertubuh mungil dengan mata besar penuh kekaguman yang muncul saat remaja. Sifat utamanya adalah mudah cemburu dan selalu Rooms menginginkan apa yang dimiliki orang lain. Meskipun terdengar negatif, Envy berfungsi membangun ambisi dan memotivasi Riley untuk menggapai hal baru yang keren.",
+                desc: "Emosi baru bertubuh mungil dengan mata besar penuh kekaguman yang muncul saat remaja. Sifat utamanya adalah mudah cemburu dan selalu menginginkan apa yang dimiliki orang lain. Meskipun terdengar negatif, Envy berfungsi membangun ambisi dan memotivasi Riley untuk menggapai hal baru yang keren.",
                 color: "#00ffcc",
                 orbBg: "radial-gradient(circle at 30% 30%, #fff 0%, #00ffcc 40%, #006644 80%)",
                 glow: "0 0 40px 15px rgba(0, 255, 204, 0.6)"
