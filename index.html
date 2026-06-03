@@ -5,123 +5,344 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inside Out - Mind Headquarters</title>
     
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: 'Poppins', sans-serif; color: #ffffff; min-height: 100vh; overflow-x: hidden; text-align: center; background: #050716; }
+        /* --- RESET & BASE STYLES --- */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
-        /* --- BACKGROUND VIDEO --- */
+        body {
+            font-family: 'Poppins', sans-serif;
+            color: #ffffff;
+            min-height: 100vh;
+            overflow-x: hidden;
+            text-align: center;
+            position: relative;
+            background: #050716; /* Warna dasar gelap jika video belum termuat */
+        }
+
+        /* --- KODE KUNCI VIDEO BACKGROUND --- */
         .video-bg {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            object-fit: cover;
-            z-index: -2;
+            object-fit: cover; /* Memaksa video memenuhi layar laptop tanpa gepeng */
+            z-index: -2; /* Dikunci di lapisan paling belakang */
         }
+
+        /* Efek overlay agar video agak gelap dan teks di atasnya sangat kontras & jelas dibaca */
         .video-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(5, 7, 22, 0.6);
+            background: rgba(5, 7, 22, 0.55); /* Menggelapkan video sebesar 55% */
             z-index: -1;
         }
 
-        /* --- HEADER --- */
-        header { display: flex; justify-content: space-between; align-items: center; padding: 20px 40px; background: rgba(11, 17, 44, 0.7); backdrop-filter: blur(10px); position: sticky; top: 0; z-index: 100; border-bottom: 1px solid rgba(255,255,255,0.1); }
-        .logo { font-family: 'Cinzel', serif; font-size: 1.5rem; font-weight: 700; color: #ffd700; letter-spacing: 2px; }
-        .nav-links { display: flex; list-style: none; gap: 25px; }
-        .nav-links a { color: #b0b5c9; text-decoration: none; transition: 0.3s; font-weight: 500; }
-        .nav-links a:hover, .nav-links a.active { color: #fff; border-bottom: 2px solid #ffd700; }
+        /* --- NAVIGATION BAR --- */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            background: rgba(11, 17, 44, 0.75);
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
 
-        /* --- HERO --- */
-        .hero { padding: 80px 20px; }
+        .logo {
+            font-family: 'Cinzel', serif;
+            font-size: 1.4rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            color: #ffd700;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 25px;
+        }
+
+        .nav-links a {
+            color: #b0b5c9;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            font-size: 0.95rem;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: #ffffff;
+            border-bottom: 2px solid #ffd700;
+            padding-bottom: 4px;
+        }
+
+        /* Tombol Titik Tiga HP */
+        .menu-toggle {
+            display: none;
+            font-size: 1.8rem;
+            cursor: pointer;
+            color: #ffd700;
+            user-select: none;
+            padding: 5px 10px;
+        }
+
+        /* Responsive Menu HP */
+        @media screen and (max-width: 768px) {
+            .menu-toggle { display: block; }
+            .nav-links {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 70px;
+                right: 20px;
+                background: rgba(11, 17, 44, 0.95);
+                border: 1px solid rgba(255, 255, 255, 0.2);
+                border-radius: 8px;
+                width: 150px;
+                padding: 15px;
+                gap: 15px;
+                text-align: right;
+                box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+                z-index: 1000;
+            }
+            .nav-links.active { display: flex; }
+        }
+
+        /* --- HERO SECTION --- */
+        .hero {
+            padding: 80px 20px;
+        }
+
+        .hero h1 {
+            font-family: 'Cinzel', serif;
+            font-size: 3rem;
+            letter-spacing: 4px;
+            line-height: 1.2;
+            margin-bottom: 30px;
+            text-shadow: 0 4px 15px rgba(0, 0, 0, 0.9);
+        }
+
         .core-orb {
-            width: 180px; height: 180px; border-radius: 50%; margin: 0 auto 30px;
-            background: radial-gradient(circle at 30% 30%, #fff, #ffd700);
-            box-shadow: 0 0 40px #ffd700;
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            margin: 0 auto 40px auto;
+            background: radial-gradient(circle at 30% 30%, #fff 0%, #ffd700 40%, #ff8c00 80%);
+            box-shadow: 0 0 40px 15px rgba(255, 215, 0, 0.6);
             animation: float 4s ease-in-out infinite;
-            transition: all 0.5s ease;
+            transition: background 0.5s ease, box-shadow 0.5s ease;
         }
-        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
 
-        /* --- EMOTION GRID --- */
-        .emotion-section { padding: 40px 20px; max-width: 900px; margin: 0 auto; }
-        .emotion-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 20px; margin-bottom: 40px; }
-        .sphere { 
-            background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.2); 
-            padding: 20px; border-radius: 15px; cursor: pointer; transition: 0.3s; backdrop-filter: blur(5px);
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-12px); }
         }
-        .sphere:hover, .sphere.active { transform: scale(1.1); border-color: #ffd700; }
-        
-        .display-panel { 
-            background: #f4e8c1; color: #2b2311; padding: 30px; border-radius: 15px; 
-            max-width: 600px; margin: 0 auto; border-left: 8px solid #ffd700; text-align: left;
+
+        .subtitle {
+            font-family: 'Cinzel', serif;
+            font-size: 1.2rem;
+            letter-spacing: 2px;
+            color: #cfd4ed;
+            max-width: 600px;
+            margin: 0 auto;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.9);
+        }
+
+        /* --- EMOTION SELECTOR SECTION --- */
+        .emotion-section {
+            padding: 40px 20px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .emotion-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+            gap: 30px;
+            margin: 40px 0;
+        }
+
+        .emotion-sphere {
+            background: rgba(0, 0, 0, 0.6); 
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 15px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+        }
+
+        .emotion-sphere:hover { transform: scale(1.08); }
+        .sphere-joy:hover, .sphere-joy.active { box-shadow: 0 0 25px #ffd700; border-color: #ffd700; background: rgba(255, 215, 0, 0.2); }
+        .sphere-sadness:hover, .sphere-sadness.active { box-shadow: 0 0 25px #0088ff; border-color: #0088ff; background: rgba(0, 136, 255, 0.2); }
+        .sphere-anger:hover, .sphere-anger.active { box-shadow: 0 0 25px #ff3333; border-color: #ff3333; background: rgba(255, 51, 51, 0.2); }
+        .sphere-envy:hover, .sphere-envy.active { box-shadow: 0 0 25px #00ffcc; border-color: #00ffcc; background: rgba(0, 255, 204, 0.2); }
+
+        .sphere-icon { font-size: 2.5rem; margin-bottom: 10px; display: block; }
+
+        /* --- DISPLAY PANEL SIFAT --- */
+        .display-panel {
+            background: linear-gradient(135deg, #fffbf0 0%, #f4e8c1 100%);
+            color: #2b2311;
+            padding: 35px;
+            border-radius: 12px;
+            max-width: 550px;
+            margin: 40px auto;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.7), inset 0 0 20px rgba(0,0,0,0.1);
+            border-left: 5px solid #ffd700;
+            text-align: left;
+            transition: border-color 0.5s ease;
+        }
+
+        .display-panel h2 {
+            font-family: 'Cinzel', serif;
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            color: #614d1a;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+            padding-bottom: 5px;
+        }
+
+        .display-panel p { font-size: 1rem; line-height: 1.6; }
+
+        footer {
+            background: #050716;
+            padding: 20px;
+            font-size: 0.85rem;
+            color: #5c627a;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            margin-top: 50px;
         }
     </style>
 </head>
 
 <body>
-
-    <!-- VIDEO BACKGROUND -->
-    <video autoplay muted loop playsinline class="video-bg">
+<video autoplay loop playsinline class="video-bg">
         <source src="https://videotourl.com/videos/1780485019352-0868a29f-d876-44ca-b1f7-322c6c4baa89.mp4" type="video/mp4">
+        Browser kamu tidak mendukung video background.
+    </video>
+    <div class="video-overlay"></div>
     </video>
     <div class="video-overlay"></div>
 
+
     <header>
         <div class="logo">Inside Out</div>
-        <ul class="nav-links">
+        <ul class="nav-links" id="nav-list">
             <li><a href="index.html" class="active">Home</a></li>
             <li><a href="AboutUs.html">About Us</a></li>
             <li><a href="Design.html">Design</a></li>
             <li><a href="product.html">Product</a></li>
         </ul>
+        <div class="menu-toggle" onclick="toggleMenu()">⋮</div>
     </header>
 
+
     <section class="hero">
-        <h1>INSIDE OUT HEADQUARTERS</h1>
+        <h1>WELCOME TO OUR<br>INSIDE OUT WEBSITE</h1>
         <div class="core-orb" id="main-orb"></div>
-        <p>Discover your dominant emotion</p>
+        <p class="subtitle">Discover your dominant emotion from the GOAT Disney Pixar Movie</p>
     </section>
+
 
     <section class="emotion-section">
         <div class="emotion-grid">
-            <div class="sphere active" id="joy" onclick="updateEmotion('joy')">💛<h3>JOY</h3></div>
-            <div class="sphere" id="sadness" onclick="updateEmotion('sadness')">💙<h3>SADNESS</h3></div>
-            <div class="sphere" id="anger" onclick="updateEmotion('anger')">❤️<h3>ANGER</h3></div>
-            <div class="sphere" id="envy" onclick="updateEmotion('envy')">💚<h3>ENVY</h3></div>
+            <div class="emotion-sphere sphere-joy active" onclick="changeEmotion('joy')">
+                <span class="sphere-icon">💛</span>
+                <h3>JOY</h3>
+            </div>
+            <div class="emotion-sphere sphere-sadness" onclick="changeEmotion('sadness')">
+                <span class="sphere-icon">💙</span>
+                <h3>SADNESS</h3>
+            </div>
+            <div class="emotion-sphere sphere-anger" onclick="changeEmotion('anger')">
+                <span class="sphere-icon">❤️</span>
+                <h3>ANGER</h3>
+            </div>
+            <div class="emotion-sphere sphere-envy" onclick="changeEmotion('envy')">
+                <span class="sphere-icon">💚</span>
+                <h3>ENVY</h3>
+            </div>
         </div>
 
-        <div class="display-panel" id="panel">
-            <h2 id="title">Joy (Kegembiraan)</h2>
-            <p id="desc">Manifestasi emosi utama berwujud penuh cahaya kuning cerah yang bertindak sebagai pemimpin pusat kendali.</p>
+        <div class="display-panel" id="emotion-card">
+            <h2 id="emotion-title">Joy (Kegembiraan)</h2>
+            <p id="emotion-desc">Manifestasi emosi utama berwujud penuh cahaya kuning cerah yang bertindak sebagai pemimpin pusat kendali. Sifat utamanya adalah optimisme yang meluap-luap, berenergi tinggi, dan berdedikasi penuh untuk memastikan memori inti Riley tetap bersinar indah demi menjaga kebahanya.</p>
         </div>
     </section>
-
+           
+    <footer>
+        <p>Design & Developed By Allisa, Gita, Nirina & Zahra © 2026</p>
+    </footer>
+        
     <script>
-        const data = {
-            joy: {t: "Joy (Kegembiraan)", d: "Optimisme yang meluap-luap, berenergi tinggi, dan memastikan memori inti tetap bersinar.", c: "#ffd700", b: "radial-gradient(circle at 30% 30%, #fff, #ffd700)"},
-            sadness: {t: "Sadness (Kesedihan)", d: "Emosi biru melankolis yang penting untuk memicu empati dan memberi tahu orang lain saat butuh pertolongan.", c: "#0088ff", b: "radial-gradient(circle at 30% 30%, #fff, #0088ff)"},
-            anger: {t: "Anger (Kemarahan)", d: "Sangat reaktif dan tegas. Melindungi hak agar segala hal berjalan dengan adil.", c: "#ff3333", b: "radial-gradient(circle at 30% 30%, #fff, #ff3333)"},
-            envy: {t: "Envy (Iri Hati)", d: "Mungil namun ambisius. Memotivasi untuk menggapai hal baru yang keren.", c: "#00ffcc", b: "radial-gradient(circle at 30% 30%, #fff, #00ffcc)"}
+        function toggleMenu() {
+            var navList = document.getElementById("nav-list");
+            navList.classList.toggle("active");
+        }
+
+        const emotionData = {
+            joy: {
+                title: "Joy (Kegembiraan)",
+                desc: "Manifestasi emosi utama berwujud penuh cahaya kuning cerah yang bertindak sebagai pemimpin pusat kendali. Sifat utamanya adalah optimisme yang meluap-luap, berenergi tinggi, dan berdedikasi penuh untuk memastikan memori inti Riley tetap bersinar indah demi menjaga kebahanya.",
+                color: "#ffd700",
+                orbBg: "radial-gradient(circle at 30% 30%, #fff 0%, #ffd700 40%, #ff8c00 80%)",
+                glow: "0 0 40px 15px rgba(255, 215, 0, 0.6)"
+            },
+            sadness: {
+                title: "Sadness (Kesedihan)",
+                desc: "Manifestasi emosi duka berwujud biru melankolis yang memakai kacamata besar. Sifat utamanya adalah pesimistis, pasif, dan selalu melihat sisi menyedihkan dari suatu hal. Meski awalnya dianggap pengganggu, ia sangat penting untuk memicu empati dan memberi tahu orang lain saat Riley butuh pertolongan.",
+                color: "#0088ff",
+                orbBg: "radial-gradient(circle at 30% 30%, #fff 0%, #0088ff 40%, #0022aa 80%)",
+                glow: "0 0 40px 15px rgba(0, 136, 255, 0.6)"
+            },
+            anger: {
+                title: "Anger (Kemarahan)",
+                desc: "Manifestasi emosi amarah berbentuk balok merah bata yang siap meledak kapan saja. Sifat utamanya adalah tidak sabaran, sangat reaktif, dan kepalanya akan menyemburkan api jika merasa ada ketidakadilan. Tugasnya adalah melindungi hak Riley dan memastikan segala hal berjalan dengan adil.",
+                color: "#ff3333",
+                orbBg: "radial-gradient(circle at 30% 30%, #fff 0%, #ff3333 40%, #880000 80%)",
+                glow: "0 0 40px 15px rgba(255, 51, 51, 0.6)"
+            },
+            envy: {
+                title: "Envy (Iri Hati)",
+                desc: "Emosi baru bertubuh mungil dengan mata besar penuh kekaguman yang muncul saat remaja. Sifat utamanya adalah mudah cemburu dan selalu menginginkan apa yang dimiliki orang lain. Meskipun terdengar negatif, Envy berfungsi membangun ambisi dan memotivasi Riley untuk menggapai hal baru yang keren.",
+                color: "#00ffcc",
+                orbBg: "radial-gradient(circle at 30% 30%, #fff 0%, #00ffcc 40%, #006644 80%)",
+                glow: "0 0 40px 15px rgba(0, 255, 204, 0.6)"
+            }
         };
 
-        function updateEmotion(key) {
-            document.getElementById('title').innerText = data[key].t;
-            document.getElementById('desc').innerText = data[key].d;
-            document.getElementById('panel').style.borderColor = data[key].c;
+        function changeEmotion(emotionKey) {
+            document.getElementById('emotion-title').innerText = emotionData[emotionKey].title;
+            document.getElementById('emotion-desc').innerText = emotionData[emotionKey].desc;
+            document.getElementById('emotion-card').style.borderColor = emotionData[emotionKey].color;
             
-            const orb = document.getElementById('main-orb');
-            orb.style.background = data[key].b;
-            orb.style.boxShadow = `0 0 50px ${data[key].c}`;
+            const mainOrb = document.getElementById('main-orb');
+            mainOrb.style.background = emotionData[emotionKey].orbBg;
+            mainOrb.style.boxShadow = emotionData[emotionKey].glow;
 
-            document.querySelectorAll('.sphere').forEach(s => s.classList.remove('active'));
-            document.getElementById(key).classList.add('active');
+            const spheres = document.querySelectorAll('.emotion-sphere');
+            spheres.forEach(sphere => sphere.classList.remove('active'));
+            
+            const targetSphere = document.querySelector('.sphere-' + emotionKey);
+            if (targetSphere) {
+                targetSphere.classList.add('active');
+            }
         }
     </script>
 </body>
