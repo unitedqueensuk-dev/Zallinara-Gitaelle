@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inside Out</title>
+    <title>Inside Out - Mind Headquarters</title>
     
     <!-- Google Fonts untuk tipografi magis mirip referensi gambar -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -93,6 +93,7 @@
             background: radial-gradient(circle at 30% 30%, #fff 0%, #ffd700 40%, #ff8c00 80%);
             box-shadow: 0 0 40px 15px rgba(255, 215, 0, 0.6);
             animation: float 4s ease-in-out infinite;
+            transition: background 0.5s ease, box-shadow 0.5s ease;
         }
 
         @keyframes float {
@@ -116,7 +117,7 @@
             margin: 0 auto;
         }
 
-        /* Grid Emosi mirip susunan crest rumah Hogwarts */
+        /* Grid Emosi */
         .emotion-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
@@ -133,15 +134,15 @@
             transition: all 0.3s ease;
         }
 
-        /* Efek Glow Orbs saat di-hover/aktif */
         .emotion-sphere:hover {
             transform: scale(1.08);
         }
 
-        .sphere-joy:hover { box-shadow: 0 0 25px #ffd700; border-color: #ffd700; }
-        .sphere-sadness:hover { box-shadow: 0 0 25px #0088ff; border-color: #0088ff; }
-        .sphere-anger:hover { box-shadow: 0 0 25px #ff3333; border-color: #ff3333; }
-        .sphere-envy:hover { box-shadow: 0 0 25px #00ffcc; border-color: #00ffcc; }
+        /* Efek Glow Orbs saat Aktif atau di-Hover */
+        .sphere-joy:hover, .sphere-joy.active { box-shadow: 0 0 25px #ffd700; border-color: #ffd700; background: rgba(255, 215, 0, 0.1); }
+        .sphere-sadness:hover, .sphere-sadness.active { box-shadow: 0 0 25px #0088ff; border-color: #0088ff; background: rgba(0, 136, 255, 0.1); }
+        .sphere-anger:hover, .sphere-anger.active { box-shadow: 0 0 25px #ff3333; border-color: #ff3333; background: rgba(255, 51, 51, 0.1); }
+        .sphere-envy:hover, .sphere-envy.active { box-shadow: 0 0 25px #00ffcc; border-color: #00ffcc; background: rgba(0, 255, 204, 0.1); }
 
         .sphere-icon {
             font-size: 2.5rem;
@@ -165,6 +166,7 @@
             box-shadow: 0 15px 35px rgba(0,0,0,0.5), inset 0 0 20px rgba(0,0,0,0.1);
             border-left: 5px solid #ffd700;
             text-align: left;
+            transition: border-color 0.5s ease;
         }
 
         .display-panel h2 {
@@ -219,7 +221,7 @@
             text-decoration: underline;
         }
 
-        /* --- FOOTER / MARQUEE REPLACEMENT --- */
+        /* --- FOOTER --- */
         footer {
             background: #050716;
             padding: 20px;
@@ -235,7 +237,7 @@
 
     <!-- Header & Navigasi -->
     <header>
-        <div class="logo">Inside Headquarters</div>
+        <div class="logo">Inside Out</div>
         <ul class="nav-links" id="nav-list">
             <li><a href="index.html" class="active">Home</a></li>
             <li><a href="Emotions.html">Emotions</a></li>
@@ -245,10 +247,10 @@
 
     <!-- Hero Section (Meniru Gaya image.png) -->
     <section class="hero">
-        <h1>WELCOME TO OUR<br>MIND WEBSITES</h1>
+        <h1>WELCOME TO OUR<br>INSIDE OUT WEBSITE</h1>
         
-        <!-- Pengganti tameng Hogwarts dengan Core Memory Orb yang menyala -->
-        <div class="core-orb"></div>
+        <!-- Core Memory Orb yang warnanya bisa berubah mengikuti emosi yang dipilih -->
+        <div class="core-orb" id="main-orb"></div>
         
         <p class="subtitle">Discover your dominant emotion from the GOAT Disney Pixar Movie</p>
     </section>
@@ -258,28 +260,28 @@
         
         <!-- Grid Pilihan Emosi -->
         <div class="emotion-grid">
-            <div class="emotion-sphere sphere-joy">
+            <div class="emotion-sphere sphere-joy active" onclick="changeEmotion('joy')">
                 <span class="sphere-icon">💛</span>
                 <h3>JOY</h3>
             </div>
-            <div class="emotion-sphere sphere-sadness">
+            <div class="emotion-sphere sphere-sadness" onclick="changeEmotion('sadness')">
                 <span class="sphere-icon">💙</span>
                 <h3>SADNESS</h3>
             </div>
-            <div class="emotion-sphere sphere-anger">
+            <div class="emotion-sphere sphere-anger" onclick="changeEmotion('anger')">
                 <span class="sphere-icon">❤️</span>
                 <h3>ANGER</h3>
             </div>
-            <div class="emotion-sphere sphere-envy">
+            <div class="emotion-sphere sphere-envy" onclick="changeEmotion('envy')">
                 <span class="sphere-icon">💚</span>
                 <h3>ENVY</h3>
             </div>
         </div>
 
         <!-- Tampilan Deskripsi Kartu (Meniru Gulungan Parchment Kertas Kuno Gryffindor) -->
-        <div class="display-panel">
-            <h2>Joy (Kegembiraan)</h2>
-            <p>Manifestasi emosi utama berwujud penuh cahaya kuning cerah yang bertindak sebagai pemimpin pusat kendali. Karakteristik utamanya adalah optimisme yang meluap-luap dan dedikasi penuh untuk memastikan memori inti Riley tetap bersinar indah, menjaga kebahagiaan sejati bertumbuh dewasa.</p>
+        <div class="display-panel" id="emotion-card">
+            <h2 id="emotion-title">Joy (Kegembiraan)</h2>
+            <p id="emotion-desc">Manifestasi emosi utama berwujud penuh cahaya kuning cerah yang bertindak sebagai pemimpin pusat kendali. Sifat utamanya adalah optimisme yang meluap-luap, berenergi tinggi, dan berdedikasi penuh untuk memastikan memori inti Riley tetap bersinar indah demi menjaga kebahagiaannya.</p>
         </div>
 
     </section>
@@ -294,11 +296,64 @@
         </a>
     </section>
            
-    <!-- Footer Pengganti Marquee yang lebih Modern -->
+    <!-- Footer -->
     <footer>
         <p>Design & Developed By Gita & Nirvana Antonia © 2026</p>
     </footer>
         
+    <!-- JavaScript Logika Interaktif Pengubah Konten Penjelasan Emosi -->
+    <script>
+        const emotionData = {
+            joy: {
+                title: "Joy (Kegembiraan)",
+                desc: "Manifestasi emosi utama berwujud penuh cahaya kuning cerah yang bertindak sebagai pemimpin pusat kendali. Sifat utamanya adalah optimisme yang meluap-luap, berenergi tinggi, dan berdedikasi penuh untuk memastikan memori inti Riley tetap bersinar indah demi menjaga kebahagiaannya.",
+                color: "#ffd700",
+                orbBg: "radial-gradient(circle at 30% 30%, #fff 0%, #ffd700 40%, #ff8c00 80%)",
+                glow: "0 0 40px 15px rgba(255, 215, 0, 0.6)"
+            },
+            sadness: {
+                title: "Sadness (Kesedihan)",
+                desc: "Manifestasi emosi duka berwujud biru melankolis yang memakai kacamata besar. Sifat utamanya adalah pesimistis, pasif, dan selalu melihat sisi menyedihkan dari suatu hal. Meski awalnya dianggap pengganggu, ia sangat penting untuk memicu empati dan memberi tahu orang lain saat Riley butuh pertolongan.",
+                color: "#0088ff",
+                orbBg: "radial-gradient(circle at 30% 30%, #fff 0%, #0088ff 40%, #0022aa 80%)",
+                glow: "0 0 40px 15px rgba(0, 136, 255, 0.6)"
+            },
+            anger: {
+                title: "Anger (Kemarahan)",
+                desc: "Manifestasi emosi amarah berbentuk balok merah bata yang siap meledak kapan saja. Sifat utamanya adalah tidak sabaran, sangat reaktif, dan kepalanya akan menyemburkan api jika merasa ada ketidakadilan. Tugasnya adalah melindungi hak Riley dan memastikan segala hal berjalan dengan adil.",
+                color: "#ff3333",
+                orbBg: "radial-gradient(circle at 30% 30%, #fff 0%, #ff3333 40%, #880000 80%)",
+                glow: "0 0 40px 15px rgba(255, 51, 51, 0.6)"
+            },
+            envy: {
+                title: "Envy (Iri Hati)",
+                desc: "Emosi baru bertubuh mungil dengan mata besar penuh kekaguman yang muncul saat remaja. Sifat utamanya adalah mudah cemburu dan selalu menginginkan apa yang dimiliki orang lain. Meskipun terdengar negatif, Envy berfungsi membangun ambisi dan memotivasi Riley untuk menggapai hal baru yang keren.",
+                color: "#00ffcc",
+                orbBg: "radial-gradient(circle at 30% 30%, #fff 0%, #00ffcc 40%, #006644 80%)",
+                glow: "0 0 40px 15px rgba(0, 255, 204, 0.6)"
+            }
+        };
+
+        function changeEmotion(emotionKey) {
+            // Update Teks Penjelasan Kartu
+            document.getElementById('emotion-title').innerText = emotionData[emotionKey].title;
+            document.getElementById('emotion-desc').innerText = emotionData[emotionKey].desc;
+            
+            // Update Warna Border Garis Kiri Kartu
+            document.getElementById('emotion-card').style.borderColor = emotionData[emotionKey].color;
+            
+            // Update Warna Efek Glowing Bola Memori di Atas (Hero Orb)
+            const mainOrb = document.getElementById('main-orb');
+            mainOrb.style.background = emotionData[emotionKey].orbBg;
+            mainOrb.style.boxShadow = emotionData[emotionKey].glow;
+
+            // Atur Class Active Pada Tombol Bola yang Diklik
+            const spheres = document.querySelectorAll('.emotion-sphere');
+            spheres.forEach(sphere => sphere.classList.remove('active'));
+            
+            event.currentTarget.classList.add('active');
+        }
+    </script>
     <script src="scripts.js"></script>
 </body>
 </html>
