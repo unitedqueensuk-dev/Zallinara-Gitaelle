@@ -1,0 +1,307 @@
+<!doctype html>
+
+<html>
+    <head>
+        <meta charset="utf-8">
+
+        <title>Blank template</title>
+
+        <!-- Load external CSS styles -->
+        <link rel="stylesheet" href="styles.css">
+
+    </head>
+
+    <body>
+
+    <h1>Ini product</h1>
+
+            
+        
+    <html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Send The Song</title>
+
+    <style>
+
+        body{
+            font-family: Arial;
+            background: #f5f5f5;
+            text-align: center;
+            padding: 30px;
+        }
+
+        .box{
+            background: white;
+            width: 450px;
+            margin: auto;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 0 10px gray;
+        }
+
+        h1{
+            color: hotpink;
+        }
+
+        input, select, textarea, button{
+            width: 90%;
+            padding: 12px;
+            margin-top: 15px;
+            border-radius: 8px;
+            border: 1px solid gray;
+        }
+
+        textarea{
+            resize: none;
+        }
+
+        button{
+            background: hotpink;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover{
+            background: deeppink;
+        }
+
+        #room{
+            margin-top: 25px;
+            background: #ffe6f0;
+            padding: 20px;
+            border-radius: 15px;
+        }
+
+        iframe{
+            margin-top: 15px;
+            border-radius: 12px;
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <div class="box">
+
+        <h1>🎵 Send The Song 🎵</h1>
+
+        <!-- NAMA -->
+        <input type="text"
+        id="name"
+        placeholder="Enter your name">
+
+        <!-- PILIH MOOD -->
+        <select id="mood" onchange="changeSongs()">
+
+            <option value="">-- Choose Mood --</option>
+
+            <option value="sad">Sad 😢</option>
+
+            <option value="happy">Happy 😄</option>
+
+            <option value="jealous">Jealous 😶</option>
+
+            <option value="angry">Angry 😡</option>
+
+        </select>
+
+        <!-- PILIH LAGU -->
+        <select id="song">
+
+            <option>Choose Song</option>
+
+        </select>
+
+        <!-- PESAN -->
+        <textarea id="message"
+        rows="4"
+        placeholder="Write your message"></textarea>
+
+        <button onclick="openRoom()">
+
+            Open Song Room 🎶
+
+        </button>
+
+        <!-- ROOM -->
+        <div id="room"></div>
+
+    </div>
+
+    <script>
+
+        // PILIHAN LAGU SESUAI MOOD
+        function changeSongs(){
+
+            let mood =
+            document.getElementById("mood").value;
+
+            let songSelect =
+            document.getElementById("song");
+
+            songSelect.innerHTML = "";
+
+            let songs = [];
+
+            // SAD
+            if(mood == "sad"){
+
+                songs = [
+
+                    {
+                        title:"Someone Like You - Adele",
+                        link:"https://open.spotify.com/embed/track/4kflIGfjdZJW4ot2ioixTB"
+                    },
+
+                    {
+                        title:"Traitor - Olivia Rodrigo",
+                        link:"https://open.spotify.com/embed/track/5CZ40GBx1sQ9agT82CLQCT"
+                    },
+
+                    {
+                        title:"Glimpse of Us - Joji",
+                        link:"https://open.spotify.com/embed/track/6xGruZOHLs39ZbVccQTuPZ"
+                    }
+
+                ];
+            }
+
+            // HAPPY
+            else if(mood == "happy"){
+
+                songs = [
+
+                    {
+                        title:"Happy - Pharrell Williams",
+                        link:"https://open.spotify.com/embed/track/60nZcImufyMA1MKQY3dcCH"
+                    },
+
+                    {
+                        title:"Dynamite - BTS",
+                        link:"https://open.spotify.com/embed/track/0t1kP63rueHleOhQkYSXFY"
+                    },
+
+                    {
+                        title:"Levitating - Dua Lipa",
+                        link:"https://open.spotify.com/embed/track/463CkQjx2Zk1yXoBuierM9"
+                    }
+
+                ];
+            }
+
+            // JEALOUS
+            else if(mood == "jealous"){
+
+                songs = [
+
+                    {
+                        title:"Jealous - Labrinth",
+                        link:"https://open.spotify.com/embed/track/4xKj5X8kkhvu9eoz8thLOi"
+                    },
+
+                    {
+                        title:"Heather - Conan Gray",
+                        link:"https://open.spotify.com/embed/track/4xqrdfXkTW4T0RauPLv3WA"
+                    },
+
+                    {
+                        title:"Drivers License - Olivia Rodrigo",
+                        link:"https://open.spotify.com/embed/track/5wANPM4fQCJwkGd4rN57mH"
+                    }
+
+                ];
+            }
+
+            // ANGRY
+            else if(mood == "angry"){
+
+                songs = [
+
+                    {
+                        title:"Numb - Linkin Park",
+                        link:"https://open.spotify.com/embed/track/2nLtzopw4rPReszdYBJU6h"
+                    },
+
+                    {
+                        title:"Believer - Imagine Dragons",
+                        link:"https://open.spotify.com/embed/track/0pqnGHJpmpxLKifKRmU6WP"
+                    },
+
+                    {
+                        title:"abcdefu - GAYLE",
+                        link:"https://open.spotify.com/embed/track/4fouWK6XVHhzl78KzQ1UjL"
+                    }
+
+                ];
+            }
+
+            // MASUKKAN KE SELECT
+            for(let i = 0; i < songs.length; i++){
+
+                let option =
+                document.createElement("option");
+
+                option.text = songs[i].title;
+
+                option.value = songs[i].link;
+
+                songSelect.appendChild(option);
+            }
+        }
+
+        // BUKA ROOM
+        function openRoom(){
+
+            let name =
+            document.getElementById("name").value;
+
+            let mood =
+            document.getElementById("mood").value;
+
+            let song =
+            document.getElementById("song");
+
+            let songTitle =
+            song.options[song.selectedIndex].text;
+
+            let songLink = song.value;
+
+            let message =
+            document.getElementById("message").value;
+
+            document.getElementById("room").innerHTML = `
+
+                <h2>💌 Message For ${name}</h2>
+
+                <p><b>Mood:</b> ${mood}</p>
+
+                <p><b>Song:</b> ${songTitle}</p>
+
+                <p><b>Message:</b> ${message}</p>
+
+                <iframe
+                src="${songLink}"
+                width="100%"
+                height="152"
+                frameBorder="0"
+                allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture">
+                </iframe>
+
+            `;
+        }
+
+    </script>
+
+</body>
+</html> 
+        <!-- Load external JavaScript -->
+        <script src="scripts.js"></script>
+        
+    </body>
+
+</html>
