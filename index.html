@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inside Out - Mind Headquarters</title>
     
+    <!-- Google Fonts untuk tipografi magis -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
@@ -19,11 +20,48 @@
 
         body {
             font-family: 'Poppins', sans-serif;
-            background: linear-gradient(180deg, #0b112c 0%, #050716 100%);
             color: #ffffff;
             min-height: 100vh;
             overflow-x: hidden;
             text-align: center;
+            position: relative;
+            background: transparent; /* Transparan agar video background terlihat */
+        }
+
+        /* --- BACKGROUND VIDEO YOUTUBE --- */
+        .video-background-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1; /* Mengunci video di paling belakang */
+            pointer-events: none; /* Supaya video tidak sengaja terklik */
+            overflow: hidden;
+            background-color: #050716;
+        }
+
+        .video-background-container iframe {
+            width: 100vw;
+            height: 56.25vw; /* Aspek rasio 16:9 */
+            min-height: 100vh;
+            min-width: 177.77vh;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border: none;
+        }
+
+        /* Efek overlay agak gelap agar teks di atas video tetap terbaca jelas */
+        .video-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(5, 7, 22, 0.55);
+            z-index: -1;
         }
 
         /* --- NAVIGATION BAR --- */
@@ -32,7 +70,7 @@
             justify-content: space-between;
             align-items: center;
             padding: 20px 40px;
-            background: rgba(11, 17, 44, 0.8);
+            background: rgba(11, 17, 44, 0.7);
             backdrop-filter: blur(10px);
             position: sticky;
             top: 0;
@@ -68,7 +106,7 @@
             padding-bottom: 4px;
         }
 
-        /* Tombol Titik Tiga / Menu Toggle */
+        /* Tombol Titik Tiga */
         .menu-toggle {
             display: none;
             font-size: 1.8rem;
@@ -78,20 +116,20 @@
             padding: 5px 10px;
         }
 
-        /* Responsive Menu untuk Layar HP / Kecil (Maksimal lebar 768px) */
+        /* Responsive Menu HP (Maksimal lebar layar 768px) */
         @media screen and (max-width: 768px) {
             .menu-toggle {
-                display: block; /* Muncul di HP */
+                display: block; /* Munculkan titik tiga di HP */
             }
 
             .nav-links {
-                display: none; /* Sembunyikan menu bawaan */
+                display: none; /* Sembunyikan deretan ke samping */
                 flex-direction: column;
                 position: absolute;
                 top: 70px;
                 right: 20px;
                 background: rgba(11, 17, 44, 0.95);
-                border: 1px solid rgba(255, 255, 255, 0.1);
+                border: 1px solid rgba(255, 255, 255, 0.2);
                 border-radius: 8px;
                 width: 150px;
                 padding: 15px;
@@ -101,16 +139,14 @@
                 z-index: 1000;
             }
 
-            /* Saat ditoggle/aktif menu dropdown akan muncul */
             .nav-links.active {
-                display: flex; 
+                display: flex; /* Muncul sebagai dropdown saat aktif */
             }
         }
 
         /* --- HERO SECTION --- */
         .hero {
             padding: 80px 20px;
-            background: radial-gradient(circle, rgba(30,41,89,0.4) 0%, rgba(5,7,22,0) 70%);
         }
 
         .hero h1 {
@@ -119,10 +155,10 @@
             letter-spacing: 4px;
             line-height: 1.2;
             margin-bottom: 30px;
-            text-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+            text-shadow: 0 4px 12px rgba(0, 0, 0, 0.8);
         }
 
-        /* Bola Memori Inti / Core Memory Orb */
+        /* Bola Memori Inti yang Berkedip & Melayang */
         .core-orb {
             width: 180px;
             height: 180px;
@@ -146,16 +182,16 @@
             color: #cfd4ed;
             max-width: 600px;
             margin: 0 auto;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
         }
 
         /* --- EMOTION SELECTOR SECTION --- */
         .emotion-section {
-            padding: 60px 20px;
+            padding: 40px 20px;
             max-width: 1000px;
             margin: 0 auto;
         }
 
-        /* Grid Emosi */
         .emotion-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
@@ -164,36 +200,24 @@
         }
 
         .emotion-sphere {
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(0, 0, 0, 0.5);
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 15px;
             padding: 20px;
             cursor: pointer;
             transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
         }
 
-        .emotion-sphere:hover {
-            transform: scale(1.08);
-        }
+        .emotion-sphere:hover { transform: scale(1.08); }
+        .sphere-joy:hover, .sphere-joy.active { box-shadow: 0 0 25px #ffd700; border-color: #ffd700; background: rgba(255, 215, 0, 0.15); }
+        .sphere-sadness:hover, .sphere-sadness.active { box-shadow: 0 0 25px #0088ff; border-color: #0088ff; background: rgba(0, 136, 255, 0.15); }
+        .sphere-anger:hover, .sphere-anger.active { box-shadow: 0 0 25px #ff3333; border-color: #ff3333; background: rgba(255, 51, 51, 0.15); }
+        .sphere-envy:hover, .sphere-envy.active { box-shadow: 0 0 25px #00ffcc; border-color: #00ffcc; background: rgba(0, 255, 204, 0.15); }
 
-        /* Efek Glow Orbs saat Aktif atau di-Hover */
-        .sphere-joy:hover, .sphere-joy.active { box-shadow: 0 0 25px #ffd700; border-color: #ffd700; background: rgba(255, 215, 0, 0.1); }
-        .sphere-sadness:hover, .sphere-sadness.active { box-shadow: 0 0 25px #0088ff; border-color: #0088ff; background: rgba(0, 136, 255, 0.1); }
-        .sphere-anger:hover, .sphere-anger.active { box-shadow: 0 0 25px #ff3333; border-color: #ff3333; background: rgba(255, 51, 51, 0.1); }
-        .sphere-envy:hover, .sphere-envy.active { box-shadow: 0 0 25px #00ffcc; border-color: #00ffcc; background: rgba(0, 255, 204, 0.1); }
+        .sphere-icon { font-size: 2.5rem; margin-bottom: 10px; display: block; }
 
-        .sphere-icon {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-            display: block;
-        }
-
-        .emotion-sphere h3 {
-            font-size: 1rem;
-            letter-spacing: 1px;
-        }
-
-        /* --- DISPLAY CARD PANEL (Efek Gulungan Kertas Emas) --- */
+        /* --- PANEL PENJELASAN SIFAT (KARTU EMOSI) --- */
         .display-panel {
             background: linear-gradient(135deg, #fffbf0 0%, #f4e8c1 100%);
             color: #2b2311;
@@ -201,7 +225,7 @@
             border-radius: 12px;
             max-width: 550px;
             margin: 40px auto;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.5), inset 0 0 20px rgba(0,0,0,0.1);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.6), inset 0 0 20px rgba(0,0,0,0.1);
             border-left: 5px solid #ffd700;
             text-align: left;
             transition: border-color 0.5s ease;
@@ -216,80 +240,31 @@
             padding-bottom: 5px;
         }
 
-        .display-panel p {
-            font-size: 1rem;
-            line-height: 1.6;
-        }
+        .display-panel p { font-size: 1rem; line-height: 1.6; }
 
-        /* --- MEDIA / EMBED SECTION (CANVA & SCREENAPP) --- */
-        .media-container {
-            max-width: 800px;
-            margin: 40px auto;
-            padding: 0 20px;
-        }
-
-        .video-box {
-            position: relative;
-            width: 100%;
-            height: 0;
-            padding-top: 56.25%; /* Aspek rasio standar 16:9 */
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            border-radius: 12px;
-            overflow: hidden;
-            background: rgba(0, 0, 0, 0.2);
-            margin-bottom: 10px;
-        }
-
-        /* Box khusus untuk iframe tinggi seperti ScreenApp */
-        .video-box.tall-box {
-            padding-top: 120%; /* Memberikan ruang tinggi vertikal agar muat tanpa berantakan */
-        }
-
-        .video-box iframe {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            border: none;
-        }
-
-        .credit-link {
-            display: inline-block;
-            margin-top: 5px;
-            margin-bottom: 25px;
-            color: #ffd700;
-            text-decoration: none;
-            font-size: 0.9rem;
-        }
-
-        .credit-link:hover {
-            text-decoration: underline;
-        }
-        
-        .section-title {
-            font-family: 'Cinzel', serif;
-            font-size: 1.8rem;
-            color: #ffd700;
-            margin-top: 40px;
-            margin-bottom: -10px;
-            letter-spacing: 2px;
-        }
-
-        /* --- FOOTER --- */
         footer {
             background: #050716;
             padding: 20px;
             font-size: 0.85rem;
             color: #5c627a;
             border-top: 1px solid rgba(255, 255, 255, 0.05);
-            letter-spacing: 1px;
+            margin-top: 50px;
         }
     </style>
 </head>
 
 <body>
 
+    <!-- 1. KODE BACKGROUND VIDEO YOUTUBE -->
+    <div class="video-background-container">
+        <iframe src="https://www.youtube.com/embed/FuEI9IDHDU0?autoplay=1&mute=1&loop=1&playlist=FuEI9IDHDU0&controls=0&showinfo=0&rel=0&modestbranding=1" 
+                allow="autoplay; encrypted-media">
+        </iframe>
+    </div>
+    <div class="video-overlay"></div>
+
+
+    <!-- 2. MENU NAVIGASI (HOME, ABOUT US, DESIGN, PRODUCT) -->
     <header>
         <div class="logo">Inside Out</div>
         <ul class="nav-links" id="nav-list">
@@ -298,19 +273,21 @@
             <li><a href="Design.html">Design</a></li>
             <li><a href="product.html">Product</a></li>
         </ul>
+        <!-- Ikon Titik Tiga di Samping Kanan -->
         <div class="menu-toggle" onclick="toggleMenu()">⋮</div>
     </header>
 
+
+    <!-- Hero Section -->
     <section class="hero">
         <h1>WELCOME TO OUR<br>INSIDE OUT WEBSITE</h1>
-        
         <div class="core-orb" id="main-orb"></div>
-        
         <p class="subtitle">Discover your dominant emotion from the GOAT Disney Pixar Movie</p>
     </section>
 
+
+    <!-- 3. TOMBOL EMOSI DAN PANEL PENJELASAN SIFAT-SIFATNYA -->
     <section class="emotion-section">
-        
         <div class="emotion-grid">
             <div class="emotion-sphere sphere-joy active" onclick="changeEmotion('joy')">
                 <span class="sphere-icon">💛</span>
@@ -330,47 +307,30 @@
             </div>
         </div>
 
+        <!-- Wadah Teks Sifat Emosi (Bisa Berubah saat Di-klik) -->
         <div class="display-panel" id="emotion-card">
             <h2 id="emotion-title">Joy (Kegembiraan)</h2>
-            <p id="emotion-desc">Manifestasi emosi utama berwujud penuh cahaya kuning cerah yang bertindak sebagai pemimpin pusat kendali. Sifat utamanya adalah optimisme yang meluap-luap, berenergi tinggi, dan berdedikasi penuh untuk memastikan memori inti Riley tetap bersinar indah demi menjaga kebahagiaannya.</p>
+            <p id="emotion-desc">Manifestasi emosi utama berwujud penuh cahaya kuning cerah yang bertindak sebagai pemimpin pusat kendali. Sifat utamanya adalah optimisme yang meluap-luap, berenergi tinggi, dan berdedikasi penuh untuk memastikan memori inti Riley tetap bersinar indah demi menjaga kebahanya.</p>
         </div>
-
-    </section>
-            
-    <h2 class="section-title">Interactive Panel</h2>
-    <section class="media-container">
-        <div class="video-box">
-            <iframe loading="lazy" src="https://www.canva.com/design/DAHGj2uN0nU/hLm4HjdN2fwJpxoIlY7a-A/view?embed" allowfullscreen="allowfullscreen" allow="fullscreen"></iframe>
-        </div>
-        <a class="credit-link" href="https://www.canva.com/design/DAHGj2uN0nU/hLm4HjdN2fwJpxoIlY7a-A/view?utm_content=DAHGj2uN0nU&amp;utm_campaign=designshare&amp;utm_medium=embeds&amp;utm_source=link" target="_blank" rel="noopener">
-            Inside Out Interactive Project Panel !
-        </a>
-    </section>
-
-    <h2 class="section-title">ScreenApp Presentation</h2>
-    <section class="media-container">
-        <div class="video-box tall-box">
-            <iframe src="https://embed.screenapp.io/app/v/ub2ZrvIt_t?embed=true" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
-        </div>
-        <p class="credit-link" style="text-decoration:none; cursor:default;">Inside Out Presentation Video Record Panel</p>
     </section>
            
     <footer>
         <p>Design & Developed By Gita & Nirvana Antonia © 2026</p>
     </footer>
         
+    <!-- JAVASCRIPT LOGIKA DIKLIK & TOMBOL TITIK TIGA -->
     <script>
-        // Fungsi Logika untuk Tombol Titik Tiga Navigasi HP
+        // Logika Responsif Titik Tiga Navigasi HP
         function toggleMenu() {
             var navList = document.getElementById("nav-list");
             navList.classList.toggle("active");
         }
 
-        // Data Penjelasan Emosi
+        // Database Teks Sifat-Sifat Emosi Inside Out
         const emotionData = {
             joy: {
                 title: "Joy (Kegembiraan)",
-                desc: "Manifestasi emosi utama berwujud penuh cahaya kuning cerah yang bertindak sebagai pemimpin pusat kendali. Sifat utamanya adalah optimisme yang meluap-luap, berenergi tinggi, dan berdedikasi penuh untuk memastikan memori inti Riley tetap bersinar indah demi menjaga kebahagiaannya.",
+                desc: "Manifestasi emosi utama berwujud penuh cahaya kuning cerah yang bertindak sebagai pemimpin pusat kendali. Sifat utamanya adalah optimisme yang meluap-luap, berenergi tinggi, dan berdedikasi penuh untuk memastikan memori inti Riley tetap bersinar indah demi menjaga kebahanya.",
                 color: "#ffd700",
                 orbBg: "radial-gradient(circle at 30% 30%, #fff 0%, #ffd700 40%, #ff8c00 80%)",
                 glow: "0 0 40px 15px rgba(255, 215, 0, 0.6)"
@@ -398,7 +358,7 @@
             }
         };
 
-        // Fungsi klik ganti konten kartu emosi
+        // Logika Klik Ganti Sifat Emosi (Sudah Diperbaiki Bebas Eror Browser)
         function changeEmotion(emotionKey) {
             document.getElementById('emotion-title').innerText = emotionData[emotionKey].title;
             document.getElementById('emotion-desc').innerText = emotionData[emotionKey].desc;
@@ -411,9 +371,11 @@
             const spheres = document.querySelectorAll('.emotion-sphere');
             spheres.forEach(sphere => sphere.classList.remove('active'));
             
-            event.currentTarget.classList.add('active');
+            const targetSphere = document.querySelector('.sphere-' + emotionKey);
+            if (targetSphere) {
+                targetSphere.classList.add('active');
+            }
         }
     </script>
-    <script src="scripts.js"></script>
 </body>
 </html>
