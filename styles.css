@@ -1,30 +1,38 @@
-/* Place your CSS styles in this file */
-
-h1 {
-    text-align: center;
-    font-weight: bold;
-    color : blueviolet ; 
-    Font-size: 50px;
+/* Aturan dasar tombol titik tiga (sembunyi di laptop) */
+.menu-toggle {
+    display: none;
+    font-size: 1.8rem;
+    cursor: pointer;
+    color: #ffd700;
+    user-select: none;
+    padding: 5px 10px;
 }
 
-ul{list-style-type: none;
-border: 6px solid grey;
-background-color: azure;
-text-align: center;
-}
+/* Tampilan khusus saat layar HP / Layar Kecil (Maksimal lebar 768px) */
+@media screen and (max-width: 768px) {
+    .menu-toggle {
+        display: block; /* Memunculkan tombol titik tiga */
+    }
 
-li{display : inline ;
-padding: 20px;
-padding: right : 2px;
-}
+    .nav-links {
+        display: none; /* Sembunyikan menu deret ke samping */
+        flex-direction: column;
+        position: absolute;
+        top: 70px;
+        right: 20px;
+        background: rgba(11, 17, 44, 0.95);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 8px;
+        width: 150px;
+        padding: 15px;
+        gap: 15px;
+        text-align: right;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        z-index: 1000;
+    }
 
- p { colour: black;
-     Font-size: 25px;
-     }
- pre {colour: black; 
- Font-size: 25px;
- }    
- body {background-color: lightblue;
- }
- marquee {font-size: 25px
- }
+    /* Class ini akan aktif berkat JavaScript saat tombol titik tiga diklik */
+    .nav-links.active {
+        display: flex; 
+    }
+}
