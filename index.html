@@ -363,7 +363,12 @@
             
             event.currentTarget.classList.add('active');
         }
-    </script>
-    <script src="scripts.js"></script>
+   <script>
+    function toggleMenu() {
+        var navList = document.getElementById("nav-list");
+        navList.classList.toggle("active");
+    }
+</script>
+        
 </body>
 </html>
