@@ -1,53 +1,304 @@
 <!doctype html>
+<html lang="id">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Mind Headquarters - Inside Out</title>
+    
+    <!-- Google Fonts untuk tipografi magis mirip referensi gambar -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
-<html>
-    <head>
-        <meta charset="utf-8">
+    <style>
+        /* --- RESET & BASE STYLES --- */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
-        <title>Blank template</title>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(180deg, #0b112c 0%, #050716 100%);
+            color: #ffffff;
+            min-height: 100vh;
+            overflow-x: hidden;
+            text-align: center;
+        }
 
-        <!-- Load external CSS styles -->
-        <link rel="stylesheet" href="styles.css">
+        /* --- NAVIGATION BAR --- */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            background: rgba(11, 17, 44, 0.8);
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
 
-    </head>
+        .logo {
+            font-family: 'Cinzel', serif;
+            font-size: 1.4rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            color: #ffd700;
+        }
 
-    <body>
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 25px;
+        }
 
-        <h1>Zallinara-Gitaelle</h1>
+        .nav-links a {
+            color: #b0b5c9;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            font-size: 0.95rem;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: #ffffff;
+            border-bottom: 2px solid #ffd700;
+            padding-bottom: 4px;
+        }
+
+        /* --- HERO SECTION (Terinspirasi dari image.png) --- */
+        .hero {
+            padding: 80px 20px;
+            background: radial-gradient(circle, rgba(30,41,89,0.4) 0%, rgba(5,7,22,0) 70%);
+        }
+
+        .hero h1 {
+            font-family: 'Cinzel', serif;
+            font-size: 3rem;
+            letter-spacing: 4px;
+            line-height: 1.2;
+            margin-bottom: 30px;
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+        }
+
+        /* Bola Memori Inti / Core Memory Orb */
+        .core-orb {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            margin: 0 auto 40px auto;
+            background: radial-gradient(circle at 30% 30%, #fff 0%, #ffd700 40%, #ff8c00 80%);
+            box-shadow: 0 0 40px 15px rgba(255, 215, 0, 0.6);
+            animation: float 4s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-12px); }
+        }
+
+        .subtitle {
+            font-family: 'Cinzel', serif;
+            font-size: 1.2rem;
+            letter-spacing: 2px;
+            color: #cfd4ed;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* --- EMOTION SELECTOR SECTION (Terinspirasi dari image_2.png) --- */
+        .emotion-section {
+            padding: 60px 20px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        /* Grid Emosi mirip susunan crest rumah Hogwarts */
+        .emotion-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+            gap: 30px;
+            margin: 40px 0;
+        }
+
+        .emotion-sphere {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        /* Efek Glow Orbs saat di-hover/aktif */
+        .emotion-sphere:hover {
+            transform: scale(1.08);
+        }
+
+        .sphere-joy:hover { box-shadow: 0 0 25px #ffd700; border-color: #ffd700; }
+        .sphere-sadness:hover { box-shadow: 0 0 25px #0088ff; border-color: #0088ff; }
+        .sphere-anger:hover { box-shadow: 0 0 25px #ff3333; border-color: #ff3333; }
+        .sphere-envy:hover { box-shadow: 0 0 25px #00ffcc; border-color: #00ffcc; }
+
+        .sphere-icon {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .emotion-sphere h3 {
+            font-size: 1rem;
+            letter-spacing: 1px;
+        }
+
+        /* --- DISPLAY CARD PANEL (Efek Gulungan Kertas Emas) --- */
+        .display-panel {
+            background: linear-gradient(135deg, #fffbf0 0%, #f4e8c1 100%);
+            color: #2b2311;
+            padding: 35px;
+            border-radius: 12px;
+            max-width: 550px;
+            margin: 40px auto;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.5), inset 0 0 20px rgba(0,0,0,0.1);
+            border-left: 5px solid #ffd700;
+            text-align: left;
+        }
+
+        .display-panel h2 {
+            font-family: 'Cinzel', serif;
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            color: #614d1a;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+            padding-bottom: 5px;
+        }
+
+        .display-panel p {
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        /* --- MEDIA / CANVA EMBED SECTION --- */
+        .media-container {
+            max-width: 800px;
+            margin: 60px auto;
+            padding: 0 20px;
+        }
+
+        .video-box {
+            position: relative;
+            width: 100%;
+            height: 0;
+            padding-top: 56.25%;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .video-box iframe {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            border: none;
+        }
+
+        .credit-link {
+            display: inline-block;
+            margin-top: 15px;
+            color: #ffd700;
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+
+        .credit-link:hover {
+            text-decoration: underline;
+        }
+
+        /* --- FOOTER / MARQUEE REPLACEMENT --- */
+        footer {
+            background: #050716;
+            padding: 20px;
+            font-size: 0.85rem;
+            color: #5c627a;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            letter-spacing: 1px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Header & Navigasi -->
+    <header>
+        <div class="logo">Inside Headquarters</div>
         <ul class="nav-links" id="nav-list">
-            <!-- Pindah class="active" ke Home karena ini adalah file index.html -->
-            <li><a href="AboutUs.html" class="active">Home</a></li>
-            <li><a href="Design.html">Design</a></li>
-            <li><a href="product.html">Product</a></li>
+            <li><a href="index.html" class="active">Home</a></li>
+            <li><a href="Emotions.html">Emotions</a></li>
+            <li><a href="Memories.html">Memories</a></li>
         </ul>
+    </header>
 
-        <p> halo  </p>
-        <p class=p2">
-        <pre> 
-            Pelangi Pelangi
-            pelangi, pelangi, alangkah indahmu
-            merah, kuning, hijau di langit yang biru
-            pelukismu agung, siapa gerangan?
-            pelangi, pelangi ciptaan tuhan</pre>
-        </p>
-        <marquee>Design By Gita</marquee>
-            
-         <div style="position: relative; width: 100%; height: 0; padding-top: 56.2500%;
- padding-bottom: 0; box-shadow: 0 2px 8px 0 rgba(63,69,81,0.16); margin-top: 1.6em; margin-bottom: 0.9em; overflow: hidden;
- border-radius: 8px; will-change: transform;">
-  <iframe loading="lazy" style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; border: none; padding: 0;margin: 0;"
-    src="https://www.canva.com/design/DAHGj2uN0nU/hLm4HjdN2fwJpxoIlY7a-A/view?embed" allowfullscreen="allowfullscreen" allow="fullscreen">
-  </iframe>
-</div>
-<a href="https:&#x2F;&#x2F;www.canva.com&#x2F;design&#x2F;DAHGj2uN0nU&#x2F;hLm4HjdN2fwJpxoIlY7a-A&#x2F;view?utm_content=DAHGj2uN0nU&amp;utm_campaign=designshare&amp;utm_medium=embeds&amp;utm_source=link" target="_blank" rel="noopener">Zallinara Gitaelle X-E (Project) !</a> oleh NIRINA ANTONIA
-           
-   
-         
-           
-            
-        <!-- Load external JavaScript -->
-        <script src="scripts.js"></script>
+    <!-- Hero Section (Meniru Gaya image.png) -->
+    <section class="hero">
+        <h1>WELCOME TO OUR<br>MIND WEBSITES</h1>
         
-    </body>
+        <!-- Pengganti tameng Hogwarts dengan Core Memory Orb yang menyala -->
+        <div class="core-orb"></div>
+        
+        <p class="subtitle">Discover your dominant emotion from the GOAT Disney Pixar Movie</p>
+    </section>
 
+    <!-- Emotion Selector Section (Meniru Gaya image_2.png) -->
+    <section class="emotion-section">
+        
+        <!-- Grid Pilihan Emosi -->
+        <div class="emotion-grid">
+            <div class="emotion-sphere sphere-joy">
+                <span class="sphere-icon">💛</span>
+                <h3>JOY</h3>
+            </div>
+            <div class="emotion-sphere sphere-sadness">
+                <span class="sphere-icon">💙</span>
+                <h3>SADNESS</h3>
+            </div>
+            <div class="emotion-sphere sphere-anger">
+                <span class="sphere-icon">❤️</span>
+                <h3>ANGER</h3>
+            </div>
+            <div class="emotion-sphere sphere-envy">
+                <span class="sphere-icon">💚</span>
+                <h3>ENVY</h3>
+            </div>
+        </div>
+
+        <!-- Tampilan Deskripsi Kartu (Meniru Gulungan Parchment Kertas Kuno Gryffindor) -->
+        <div class="display-panel">
+            <h2>Joy (Kegembiraan)</h2>
+            <p>Manifestasi emosi utama berwujud penuh cahaya kuning cerah yang bertindak sebagai pemimpin pusat kendali. Karakteristik utamanya adalah optimisme yang meluap-luap dan dedikasi penuh untuk memastikan memori inti Riley tetap bersinar indah, menjaga kebahagiaan sejati bertumbuh dewasa.</p>
+        </div>
+
+    </section>
+            
+    <!-- Canva Project Embed -->
+    <section class="media-container">
+        <div class="video-box">
+            <iframe loading="lazy" src="https://www.canva.com/design/DAHGj2uN0nU/hLm4HjdN2fwJpxoIlY7a-A/view?embed" allowfullscreen="allowfullscreen" allow="fullscreen"></iframe>
+        </div>
+        <a class="credit-link" href="https://www.canva.com/design/DAHGj2uN0nU/hLm4HjdN2fwJpxoIlY7a-A/view?utm_content=DAHGj2uN0nU&amp;utm_campaign=designshare&amp;utm_medium=embeds&amp;utm_source=link" target="_blank" rel="noopener">
+            Inside Out Interactive Project Panel !
+        </a>
+    </section>
+           
+    <!-- Footer Pengganti Marquee yang lebih Modern -->
+    <footer>
+        <p>Design & Developed By Gita & Nirvana Antonia © 2026</p>
+    </footer>
+        
+    <script src="scripts.js"></script>
+</body>
 </html>
