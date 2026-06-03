@@ -1,52 +1,4 @@
-/* Place your CSS styles in this file */
-
-h1 {
-    text-align: center;
-    font-weight: bold;
-    color: blueviolet; 
-    font-size: 50px;
-}
-
-ul {
-    list-style-type: none;
-    border: 6px solid grey;
-    background-color: azure;
-    text-align: center;
-}
-
-li {
-    display: inline;
-    padding: 20px;
-}
-
-p { 
-    color: black; /* Diperbaiki dari 'colour' */
-    font-size: 25px;
-}
-
-pre {
-    color: black; /* Diperbaiki dari 'colour' */
-    font-size: 25px;
-}    
-
-body {
-    background-color: transparent; /* Diubah transparan agar video di belakangnya kelihatan */
-    font-family: 'Poppins', sans-serif;
-    color: #ffffff;
-    min-height: 100vh;
-    overflow-x: hidden;
-    position: relative;
-}
-
-marquee {
-    font-size: 25px;
-}
-
-/* =================================================================== */
-/* ATURAN BARU: Tombol titik tiga (responsif) untuk Home, About Us, dll */
-/* =================================================================== */
-
-/* Aturan dasar tombol titik tiga (sembunyi di laptop) */
+/* Aturan dasar tombol titik tiga (sembunyi di layar laptop/komputer) */
 .menu-toggle {
     display: none;
     font-size: 1.8rem;
@@ -59,11 +11,11 @@ marquee {
 /* Tampilan khusus saat layar HP / Layar Kecil (Maksimal lebar 768px) */
 @media screen and (max-width: 768px) {
     .menu-toggle {
-        display: block; /* Memunculkan tombol titik tiga */
+        display: block; /* Memunculkan tombol titik tiga di HP */
     }
 
     .nav-links {
-        display: none; /* Sembunyikan menu deret ke samping */
+        display: none; /* Sembunyikan menu barisan ke samping */
         flex-direction: column;
         position: absolute;
         top: 70px;
@@ -79,7 +31,7 @@ marquee {
         z-index: 1000;
     }
 
-    /* Class ini akan aktif berkat JavaScript saat tombol titik tiga diklik */
+    /* Gaya saat menu drop-down terbuka/aktif */
     .nav-links.active {
         display: flex; 
     }
