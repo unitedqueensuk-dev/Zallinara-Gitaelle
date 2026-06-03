@@ -112,31 +112,54 @@
 
         /* --- EMOTION SELECTOR SECTION (Terinspirasi dari image_2.png) --- */
         .emotion-section {
-            padding: 60px 20px;
-            max-width: 1000px;
-            margin: 0 auto;
-        }
+           <!-- Emotion Selector Section (Menampilkan Semua Penjelasan Sekaligus) -->
+    <section class="emotion-section">
+        
+        <!-- Grid Pilihan Emosi -->
+        <div class="emotion-grid">
+            <div class="emotion-sphere sphere-joy">
+                <span class="sphere-icon">💛</span>
+                <h3>JOY</h3>
+            </div>
+            <div class="emotion-sphere sphere-sadness">
+                <span class="sphere-icon">💙</span>
+                <h3>SADNESS</h3>
+            </div>
+            <div class="emotion-sphere sphere-anger">
+                <span class="sphere-icon">❤️</span>
+                <h3>ANGER</h3>
+            </div>
+            <div class="emotion-sphere sphere-envy">
+                <span class="sphere-icon">💚</span>
+                <h3>ENVY</h3>
+            </div>
+        </div>
 
-        /* Grid Emosi */
-        .emotion-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-            gap: 30px;
-            margin: 40px 0;
-        }
+        <!-- Kartu Joy -->
+        <div class="display-panel" style="border-color: #ffd700; margin-bottom: 20px;">
+            <h2>Joy (Kegembiraan)</h2>
+            <p>Manifestasi emosi utama berwujud penuh cahaya kuning cerah yang bertindak sebagai pemimpin pusat kendali. Sifat utamanya adalah optimisme yang meluap-luap, berenergi tinggi, dan berdedikasi penuh untuk memastikan memori inti Riley tetap bersinar indah demi menjaga kebahanya.</p>
+        </div>
 
-        .emotion-sphere {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 15px;
-            padding: 20px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
+        <!-- Kartu Sadness -->
+        <div class="display-panel" style="border-color: #0088ff; margin-bottom: 20px;">
+            <h2>Sadness (Kesedihan)</h2>
+            <p>Manifestasi emosi duka berwujud biru melankolis yang memakai kacamata besar. Sifat utamanya adalah pesimistis, pasif, dan selalu melihat sisi menyedihkan dari suatu hal. Meski awalnya dianggap pengganggu, ia sangat penting untuk memicu empati dan memberi tahu orang lain saat Riley butuh pertolongan.</p>
+        </div>
 
-        .emotion-sphere:hover {
-            transform: scale(1.08);
-        }
+        <!-- Kartu Anger -->
+        <div class="display-panel" style="border-color: #ff3333; margin-bottom: 20px;">
+            <h2>Anger (Kemarahan)</h2>
+            <p>Manifestasi emosi amarah berbentuk balok merah bata yang siap meledak kapan saja. Sifat utamanya adalah tidak sabaran, sangat reaktif, dan kepalanya akan menyemburkan api jika merasa ada ketidakadilan. Tugasnya adalah melindungi hak Riley dan memastikan segala hal berjalan dengan adil.</p>
+        </div>
+
+        <!-- Kartu Envy -->
+        <div class="display-panel" style="border-color: #00ffcc; margin-bottom: 20px;">
+            <h2>Envy (Iri Hati)</h2>
+            <p>Emosi baru bertubuh mungil dengan mata besar penuh kekaguman yang muncul saat remaja. Sifat utamanya adalah mudah cemburu dan selalu menginginkan apa yang dimiliki orang lain. Meskipun terdengar negatif, Envy berfungsi membangun ambisi dan memotivasi Riley untuk menggapai hal baru yang keren.</p>
+        </div>
+
+    </section>
 
         /* Efek Glow Orbs saat Aktif atau di-Hover */
         .sphere-joy:hover, .sphere-joy.active { box-shadow: 0 0 25px #ffd700; border-color: #ffd700; background: rgba(255, 215, 0, 0.1); }
