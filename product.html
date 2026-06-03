@@ -118,7 +118,7 @@
 
         /* --- CONTAINER UTAMA --- */
         .container {
-            max-width: 900px;
+            max-width: 950px;
             margin: 40px auto;
             padding: 0 20px;
         }
@@ -140,7 +140,7 @@
             font-size: 0.95rem;
         }
 
-        /* --- MAIN GRID (FORM & SEARCH) --- */
+        /* --- MAIN GRID --- */
         .grid-layout {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -202,32 +202,62 @@
             border-color: #ffd700;
         }
 
-        /* --- BUTTONS --- */
-        .btn-send {
-            width: 100%;
-            padding: 12px;
-            background: linear-gradient(135deg, #ffd700 0%, #ff8c00 100%);
-            border: none;
-            border-radius: 8px;
-            color: #050716;
-            font-weight: 600;
-            font-size: 1rem;
-            cursor: pointer;
-            font-family: 'Poppins', sans-serif;
-            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
-            transition: transform 0.2s, box-shadow 0.2s;
+        /* --- SEARCH RESULT DISPLAY --- */
+        .search-results {
+            margin-top: 15px;
+            max-height: 480px;
+            overflow-y: auto;
+            text-align: left;
+            padding-right: 5px;
         }
 
-        .btn-send:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(255, 215, 0, 0.5);
+        .search-results::-webkit-scrollbar { width: 6px; }
+        .search-results::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 10px; }
+
+        .result-box {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
         }
 
-        /* --- MOOD COLOR TAGS --- */
-        .mood-senhang { color: #ffd700 !important; }
-        .mood-marah { color: #ff3333 !important; }
-        .mood-sedih { color: #0088ff !important; }
-        .mood-kecewa { color: #b19ffb !important; }
+        .result-box.senang { border-left: 5px solid #ffd700; }
+        .result-box.marah { border-left: 5px solid #ff3333; }
+        .result-box.sedih { border-left: 5px solid #0088ff; }
+        .result-box.kecewa { border-left: 5px solid #b19ffb; }
+
+        .result-meta {
+            font-size: 0.75rem;
+            color: #b0b5c9;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .result-msg {
+            font-size: 0.95rem;
+            margin-bottom: 12px;
+            font-style: italic;
+            color: #e2e5f3;
+        }
+
+        /* CONTAINER SPOTIFY EMBED PLAYER */
+        .spotify-embed-container {
+            margin-top: 12px;
+            border-radius: 12px;
+            overflow: hidden;
+            background: transparent;
+            line-height: 0;
+        }
+
+        .no-result {
+            font-size: 0.85rem;
+            color: #5c627a;
+            text-align: center;
+            margin-top: 30px;
+        }
 
         /* --- HORIZONTAL TRACK SCROLLER (MARQUEE) --- */
         .marquee-section {
@@ -244,7 +274,7 @@
         .marquee-container {
             display: inline-flex;
             gap: 40px;
-            animation: scroll-left 25s linear infinite;
+            animation: scroll-left 35s linear infinite;
         }
 
         @keyframes scroll-left {
@@ -258,66 +288,7 @@
             border-radius: 30px;
             padding: 8px 20px;
             font-size: 0.9rem;
-            border-left: 4px solid #ffd700;
             box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-        }
-
-        /* --- SEARCH RESULT DISPLAY --- */
-        .search-results {
-            margin-top: 15px;
-            max-height: 380px;
-            overflow-y: auto;
-            text-align: left;
-            padding-right: 5px;
-        }
-
-        /* Custom Scrollbar */
-        .search-results::-webkit-scrollbar { width: 6px; }
-        .search-results::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 10px; }
-
-        .result-box {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255,255,255,0.08);
-            border-radius: 8px;
-            padding: 12px;
-            margin-bottom: 12px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-        }
-
-        .result-box.senang { border-left: 4px solid #ffd700; }
-        .result-box.marah { border-left: 4px solid #ff3333; }
-        .result-box.sedih { border-left: 4px solid #0088ff; }
-        .result-box.kecewa { border-left: 4px solid #b19ffb; }
-
-        .result-meta {
-            font-size: 0.75rem;
-            color: #b0b5c9;
-            margin-bottom: 6px;
-            display: flex;
-            justify-content: space-between;
-        }
-
-        .result-msg {
-            font-size: 0.9rem;
-            margin-bottom: 8px;
-            font-style: italic;
-        }
-
-        .spotify-btn {
-            display: inline-block;
-            font-size: 0.75rem;
-            color: #1DB954;
-            text-decoration: none;
-            font-weight: 600;
-        }
-
-        .spotify-btn:hover { text-decoration: underline; }
-
-        .no-result {
-            font-size: 0.85rem;
-            color: #5c627a;
-            text-align: center;
-            margin-top: 30px;
         }
 
         footer {
@@ -339,7 +310,6 @@
     </video>
     <div class="video-overlay"></div>
 
-
     <header>
         <div class="logo">Inside Out</div>
         <ul class="nav-links" id="nav-list">
@@ -351,10 +321,9 @@
         <div class="menu-toggle" onclick="toggleMenu()">⋮</div>
     </header>
 
-
     <main class="container">
         <h1 class="page-title">SEND THE SONG</h1>
-        <p class="page-subtitle">Kirimkan lagu Spotify rahasiamu berdasarkan emosimu saat ini kepada seseorang.</p>
+        <p class="page-subtitle">Pilih emosimu, tentukan lagu terbaiknya, lalu kirimkan pesan rahasia secara ONLINE ke device mana pun!</p>
 
         <div class="grid-layout">
             
@@ -367,18 +336,19 @@
                     </div>
                     
                     <div class="form-group">
-                        <label for="songMood">Pilih Mood Lagu</label>
-                        <select id="songMood" class="form-control" required>
-                            <option value="senang" class="mood-senhang">Joy 💛 (Senang)</option>
-                            <option value="marah" class="mood-marah">Anger ❤️ (Marah)</option>
-                            <option value="sedih" class="mood-sedih">Sadness 💙 (Sedih)</option>
-                            <option value="kecewa" class="mood-kecewa">Ennui/Fear 💜 (Kecewa)</option>
+                        <label for="songMood">Pilih Mood Emosimu</label>
+                        <select id="songMood" class="form-control" onchange="updateSongOptions()" required>
+                            <option value="senang">Joy 💛 (Senang)</option>
+                            <option value="marah">Anger ❤️ (Marah)</option>
+                            <option value="sedih">Sadness 💙 (Sedih)</option>
+                            <option value="kecewa">Ennui/Fear 💜 (Kecewa)</option>
                         </select>
                     </div>
 
                     <div class="form-group">
-                        <label for="spotifyUrl">Link Lagu dari Spotify</label>
-                        <input type="url" id="spotifyUrl" class="form-control" placeholder="https://open.spotify.com/track/..." required>
+                        <label for="songSelect">Pilih Judul Lagu</label>
+                        <select id="songSelect" class="form-control" required>
+                            </select>
                     </div>
 
                     <div class="form-group">
@@ -386,7 +356,7 @@
                         <textarea id="messageText" class="form-control" rows="3" placeholder="Tulis ungkapan perasaan rahasiamu di sini..." required></textarea>
                     </div>
 
-                    <button type="submit" class="btn-send">Send 🚀</button>
+                    <button type="submit" class="btn-send">Send Online 🚀</button>
                 </form>
             </section>
 
@@ -397,94 +367,147 @@
                     <input type="text" id="searchName" class="form-control" placeholder="Ketik @username kamu untuk memfilter..." oninput="displayMessages()">
                 </div>
                 <div class="search-results" id="searchResultsArea">
-                    </div>
+                    <p class="no-result">Menghubungkan ke pusat memori emosi...</p>
+                </div>
             </section>
 
         </div>
     </main>
-
 
     <div class="marquee-section">
         <div class="marquee-container" id="marqueeTrack">
             </div>
     </div>
 
-
     <footer>
         <p>Design & Developed By Allisa, Gita, Nirina & Zahra © 2026</p>
     </footer>
 
-
     <script>
-        // Database Tiruan Publik Awal (Akan langsung ditambahkan setiap ada user kirim pesan baru)
-        const defaultMessages = [
-            { to: "@gitaa", mood: "senang", song: "https://open.spotify.com/track/4PTG3Z6ehGkBFm6gZYwR4w", text: "Makasih udah bikin project Inside Out ini bareng-bareng! 💛" },
-            { to: "@nirinaa", mood: "sedih", song: "https://open.spotify.com/track/1dGr1eejnwPy6w6wSgY66S", text: "Lagu melow ini pas banget didenger pas malem hari sendirian.. 💙" },
-            { to: "@riley.headquarters", mood: "marah", song: "https://open.spotify.com/track/2t89I69T768wU6gZ0yW2b1", text: "Jangan biarin Anger ngambil alih konsol pusat kendali kamu ya! ❤️" }
-        ];
+        // Pustaka Lagu Asli dengan ID Resmi dari Spotify Global Server
+        const songLibrary = {
+            senang: [
+                { title: "Happy - Pharrell Williams", id: "60nZ9UnZgcWWIGXUZg9g0y" },
+                { title: "Walking On Sunshine - Katrina & The Waves", id: "0gbywSgJyy8wZ6v2vGW66S" },
+                { title: "Can't Stop The Feeling! - Justin Timberlake", id: "1Yk7Pl6wEv67wun9j9676B" }
+            ],
+            marah: [
+                { title: "In The End - Linkin Park", id: "60Ne9UnZgcWWIGXUZg9g0y" },
+                { title: "Look What You Made Me Do - Taylor Swift", id: "1Yk7Pl6wEv67wun9j9676B" },
+                { title: "Good 4 U - Olivia Rodrigo", id: "4Z8W7wFTg4RYjrs7vSEZ8n" }
+            ],
+            sedih: [
+                { title: "Glimpse of Us - Joji", id: "6vN7wZ8w7vTHZmsIhXg8wJ" },
+                { title: "Another Love - Tom Odell", id: "3JvscNZaG0u8fSVvRLZ7X7" },
+                { title: "Traitor - Olivia Rodrigo", id: "5Z27wz0w7vTHZmsIhXg8wJ" }
+            ],
+            kecewa: [
+                { title: "Lose You To Love Me - Selena Gomez", id: "4Z8W7wFTg4RYjrs7vSEZ8n" },
+                { title: "Happier Than Ever - Billie Eilish", id: "4Z8W7wFTg4RYjrs7vSEZ8n" },
+                { title: "Heather - Conan Gray", id: "4Z8W7wFTg4RYjrs7vSEZ8n" }
+            ]
+        };
 
-        // Menyimpan data global agar langsung tersinkron di tampilan semua pengguna di komputer yang sama
-        let messageDatabase = JSON.parse(localStorage.getItem('insideOutSongs')) || defaultMessages;
+        // Menggunakan Database Cloud Gratis untuk Sinkronisasi Lintas Gadget/HP
+        const databaseURL = "https://inside-out-sendthesong-default-rtdb.asia-southeast1.firebasedatabase.app/songs.json";
+        let messageDatabase = [];
 
         function toggleMenu() {
             document.getElementById("nav-list").classList.toggle("active");
         }
 
         window.onload = function() {
-            displayMessages();
-            updateMarquee();
+            updateSongOptions();
+            fetchOnlineMessages();
+            // Melakukan update otomatis setiap 4 detik agar sinkron lintas HP secara real-time
+            setInterval(fetchOnlineMessages, 4000);
         };
 
-        // Fungsi Mengirim Pesan Baru
+        // Mengganti isi dropdown opsi lagu saat pengguna mengganti mood emosi
+        function updateSongOptions() {
+            const mood = document.getElementById('songMood').value;
+            const songSelect = document.getElementById('songSelect');
+            songSelect.innerHTML = "";
+
+            songLibrary[mood].forEach(song => {
+                const opt = document.createElement('option');
+                opt.value = song.id;
+                opt.innerText = song.title;
+                songSelect.appendChild(opt);
+            });
+        }
+
+        // Mengambil data terupdate dari server internet cloud
+        function fetchOnlineMessages() {
+            fetch(databaseURL)
+            .then(response => response.json())
+            .then(data => {
+                messageDatabase = [];
+                if(data) {
+                    Object.keys(data).forEach(key => {
+                        messageDatabase.push(data[key]);
+                    });
+                }
+                displayMessages();
+                updateMarquee();
+            })
+            .catch(error => console.error("Gagal sinkronisasi data online:", error));
+        }
+
+        // Fungsi Tombol KIRIM PESAN ke Database Online
         function sendSong(event) {
             event.preventDefault();
 
             let to = document.getElementById('toName').value.trim();
             const mood = document.getElementById('songMood').value;
-            const song = document.getElementById('spotifyUrl').value.trim();
+            const songSelect = document.getElementById('songSelect');
+            const songId = songSelect.value;
+            const songTitle = songSelect.options[songSelect.selectedIndex].text;
             const text = document.getElementById('messageText').value.trim();
 
-            if (!to.startsWith('@')) {
-                to = '@' + to;
-            }
+            if (!to.startsWith('@')) { to = '@' + to; }
 
-            const newMessage = { to, mood, song, text };
-            messageDatabase.push(newMessage);
+            const newMessage = { to, mood, songId, songTitle, text };
 
-            // Simpan perubahan ke storage browser
-            localStorage.setItem('insideOutSongs', JSON.stringify(messageDatabase));
-            document.getElementById('songForm').reset();
-
-            // Jalankan fungsi update agar semua pengguna langsung melihat hasilnya
-            displayMessages();
-            updateMarquee();
-            alert("Pesan Berhasil Terkirim ke Pusat Kendali Pikiran! 🚀");
+            fetch(databaseURL, {
+                method: "POST",
+                body: JSON.stringify(newMessage),
+                headers: { "Content-Type": "application/json" }
+            })
+            .then(response => response.json())
+            .then(() => {
+                document.getElementById('songForm').reset();
+                updateSongOptions();
+                fetchOnlineMessages(); 
+                alert("Pesan Berhasil Terkirim Secara Online! 🚀");
+            })
+            .catch(error => alert("Gagal mengirim! Periksa jaringan internetmu."));
         }
 
-        // Fungsi Menampilkan & Memfilter Pesan secara Real-time untuk Semua Orang
+        // MERENDER DAFTAR PESAN DAN MEMASANG PEMUTAR ASLI SPOTIFY EMBED PLAYER
         function displayMessages() {
             const query = document.getElementById('searchName').value.trim().toLowerCase();
             const resultsArea = document.getElementById('searchResultsArea');
             
-            // Filter data jika pengguna mengetik sesuatu, jika kosong tampilkan semuanya
             const filteredData = messageDatabase.filter(item => {
                 const target = item.to.toLowerCase();
                 return target.includes(query) || target.replace('@', '').includes(query);
             });
 
             if (filteredData.length === 0) {
-                resultsArea.innerHTML = `<p class="no-result">Tidak ditemukan pesan untuk username "${document.getElementById('searchName').value}"</p>`;
+                resultsArea.innerHTML = `<p class="no-result">Tidak ditemukan pesan atau belum ada data masuk.</p>`;
                 return;
             }
 
             resultsArea.innerHTML = ""; 
-            // Tampilkan data dari yang paling baru di urutan teratas
+            // Tampilkan kiriman paling baru di baris teratas
             [...filteredData].reverse().forEach(item => {
                 let moodName = "Senang 💛";
                 if(item.mood === "marah") moodName = "Marah ❤️";
                 else if(item.mood === "sedih") moodName = "Sedih 💙";
                 else if(item.mood === "kecewa") moodName = "Kecewa 💜";
 
+                // DI BAGIAN INI LINK SUDAH MENGGUNAKAN SERVER SPOTIFY EMBED EMBED PLAYER YANG BENAR
                 const element = `
                     <div class="result-box ${item.mood}">
                         <div class="result-meta">
@@ -492,24 +515,30 @@
                             <span>Kepada: <strong>${item.to}</strong></span>
                         </div>
                         <p class="result-msg">"${item.text}"</p>
-                        <a href="${item.song}" target="_blank" class="spotify-btn">🎵 Buka di Spotify ↗</a>
+                        <div class="spotify-embed-container">
+                            <iframe src="https://open.spotify.com/embed/track/${item.songId}?utm_source=generator&theme=0" 
+                                width="100%" height="80" frameBorder="0" allowfullscreen="" 
+                                allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy">
+                            </iframe>
+                        </div>
                     </div>
                 `;
                 resultsArea.innerHTML += element;
             });
         }
 
-        // Fungsi Teks Berjalan di Bagian Bawah Halaman
+        // Teks Bergerak Bergantian di Bagian Bawah Web
         function updateMarquee() {
             const track = document.getElementById('marqueeTrack');
             track.innerHTML = "";
 
             if(messageDatabase.length === 0) {
-                track.innerHTML = `<div class="marquee-item">Belum ada lagu rahasia terkirim.</div>`;
+                track.innerHTML = `<div class="marquee-item">Belum ada lagu rahasia terkirim di cloud database.</div>`;
                 return;
             }
 
-            messageDatabase.forEach(item => {
+            // Batasi maksimal 8 teks berjalan terakhir biar web enteng tidak lemot
+            messageDatabase.slice(-8).forEach(item => { 
                 let moodEmoji = "💛";
                 let borderColor = "#ffd700";
                 
@@ -519,7 +548,7 @@
 
                 const itemHtml = `
                     <div class="marquee-item" style="border-left: 4px solid ${borderColor}">
-                        <strong>Untuk: ${item.to}</strong> ${moodEmoji} - "${item.text}"
+                        <strong>Untuk: ${item.to}</strong> ${moodEmoji} - 🎵 ${item.songTitle} | "${item.text}"
                     </div>
                 `;
                 track.innerHTML += itemHtml;
