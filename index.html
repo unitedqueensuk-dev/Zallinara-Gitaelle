@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inside Out - Mind Headquarters</title>
     
-    <!-- Google Fonts untuk tipografi magis mirip referensi gambar -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
@@ -69,7 +68,46 @@
             padding-bottom: 4px;
         }
 
-        /* --- HERO SECTION (Terinspirasi dari image.png) --- */
+        /* Tombol Titik Tiga / Menu Toggle */
+        .menu-toggle {
+            display: none;
+            font-size: 1.8rem;
+            cursor: pointer;
+            color: #ffd700;
+            user-select: none;
+            padding: 5px 10px;
+        }
+
+        /* Responsive Menu untuk Layar HP / Kecil (Maksimal lebar 768px) */
+        @media screen and (max-width: 768px) {
+            .menu-toggle {
+                display: block; /* Muncul di HP */
+            }
+
+            .nav-links {
+                display: none; /* Sembunyikan menu bawaan */
+                flex-direction: column;
+                position: absolute;
+                top: 70px;
+                right: 20px;
+                background: rgba(11, 17, 44, 0.95);
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                border-radius: 8px;
+                width: 150px;
+                padding: 15px;
+                gap: 15px;
+                text-align: right;
+                box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+                z-index: 1000;
+            }
+
+            /* Saat ditoggle/aktif menu dropdown akan muncul */
+            .nav-links.active {
+                display: flex; 
+            }
+        }
+
+        /* --- HERO SECTION --- */
         .hero {
             padding: 80px 20px;
             background: radial-gradient(circle, rgba(30,41,89,0.4) 0%, rgba(5,7,22,0) 70%);
@@ -110,7 +148,7 @@
             margin: 0 auto;
         }
 
-        /* --- EMOTION SELECTOR SECTION (Terinspirasi dari image_2.png) --- */
+        /* --- EMOTION SELECTOR SECTION --- */
         .emotion-section {
             padding: 60px 20px;
             max-width: 1000px;
@@ -183,10 +221,10 @@
             line-height: 1.6;
         }
 
-        /* --- MEDIA / CANVA EMBED SECTION --- */
+        /* --- MEDIA / EMBED SECTION (CANVA & SCREENAPP) --- */
         .media-container {
             max-width: 800px;
-            margin: 60px auto;
+            margin: 40px auto;
             padding: 0 20px;
         }
 
@@ -194,10 +232,17 @@
             position: relative;
             width: 100%;
             height: 0;
-            padding-top: 56.25%;
+            padding-top: 56.25%; /* Aspek rasio standar 16:9 */
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
             border-radius: 12px;
             overflow: hidden;
+            background: rgba(0, 0, 0, 0.2);
+            margin-bottom: 10px;
+        }
+
+        /* Box khusus untuk iframe tinggi seperti ScreenApp */
+        .video-box.tall-box {
+            padding-top: 120%; /* Memberikan ruang tinggi vertikal agar muat tanpa berantakan */
         }
 
         .video-box iframe {
@@ -211,7 +256,8 @@
 
         .credit-link {
             display: inline-block;
-            margin-top: 15px;
+            margin-top: 5px;
+            margin-bottom: 25px;
             color: #ffd700;
             text-decoration: none;
             font-size: 0.9rem;
@@ -219,6 +265,15 @@
 
         .credit-link:hover {
             text-decoration: underline;
+        }
+        
+        .section-title {
+            font-family: 'Cinzel', serif;
+            font-size: 1.8rem;
+            color: #ffd700;
+            margin-top: 40px;
+            margin-bottom: -10px;
+            letter-spacing: 2px;
         }
 
         /* --- FOOTER --- */
@@ -235,33 +290,27 @@
 
 <body>
 
-    <!-- Header & Navigasi -->
-   <header>
-    <div class="logo">Inside Out</div>
-    <ul class="nav-links" id="nav-list">
-        <li><a href="index.html" class="active">Home</a></li>
-        <li><a href="AboutUs.html">About Us</a></li>
-        <li><a href="Design.html">Design</a></li>
-        <li><a href="product.html">Product</a></li>
-    </ul>
-    <!-- Tombol titik tiga di samping kanan menu -->
-    <div class="menu-toggle" onclick="toggleMenu()">⋮</div>
-</header>
+    <header>
+        <div class="logo">Inside Out</div>
+        <ul class="nav-links" id="nav-list">
+            <li><a href="index.html" class="active">Home</a></li>
+            <li><a href="AboutUs.html">About Us</a></li>
+            <li><a href="Design.html">Design</a></li>
+            <li><a href="product.html">Product</a></li>
+        </ul>
+        <div class="menu-toggle" onclick="toggleMenu()">⋮</div>
+    </header>
 
-    <!-- Hero Section (Meniru Gaya image.png) -->
     <section class="hero">
         <h1>WELCOME TO OUR<br>INSIDE OUT WEBSITE</h1>
         
-        <!-- Core Memory Orb yang warnanya bisa berubah mengikuti emosi yang dipilih -->
         <div class="core-orb" id="main-orb"></div>
         
         <p class="subtitle">Discover your dominant emotion from the GOAT Disney Pixar Movie</p>
     </section>
 
-    <!-- Emotion Selector Section (Meniru Gaya image_2.png) -->
     <section class="emotion-section">
         
-        <!-- Grid Pilihan Emosi -->
         <div class="emotion-grid">
             <div class="emotion-sphere sphere-joy active" onclick="changeEmotion('joy')">
                 <span class="sphere-icon">💛</span>
@@ -281,22 +330,14 @@
             </div>
         </div>
 
-        <!-- Tampilan Deskripsi Kartu (Meniru Gulungan Parchment Kertas Kuno Gryffindor) -->
         <div class="display-panel" id="emotion-card">
             <h2 id="emotion-title">Joy (Kegembiraan)</h2>
             <p id="emotion-desc">Manifestasi emosi utama berwujud penuh cahaya kuning cerah yang bertindak sebagai pemimpin pusat kendali. Sifat utamanya adalah optimisme yang meluap-luap, berenergi tinggi, dan berdedikasi penuh untuk memastikan memori inti Riley tetap bersinar indah demi menjaga kebahagiaannya.</p>
         </div>
 
     </section>
-   <div style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; overflow: hidden;">
-    <iframe src="https://www.youtube.com/embed/FuEI9IDHDU0?autoplay=1&mute=1&loop=1&playlist=FuEI9IDHDU0&controls=0&showinfo=0&rel=0" 
-            style="width: 100vw; height: 56.25vw; min-height: 100vh; min-width: 177.77vh; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); border: none;" 
-            allow="autoplay; encrypted-media">
-    </iframe>
-</div>
-</div>
             
-    <!-- Canva Project Embed -->
+    <h2 class="section-title">Interactive Panel</h2>
     <section class="media-container">
         <div class="video-box">
             <iframe loading="lazy" src="https://www.canva.com/design/DAHGj2uN0nU/hLm4HjdN2fwJpxoIlY7a-A/view?embed" allowfullscreen="allowfullscreen" allow="fullscreen"></iframe>
@@ -305,14 +346,27 @@
             Inside Out Interactive Project Panel !
         </a>
     </section>
+
+    <h2 class="section-title">ScreenApp Presentation</h2>
+    <section class="media-container">
+        <div class="video-box tall-box">
+            <iframe src="https://embed.screenapp.io/app/v/ub2ZrvIt_t?embed=true" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+        </div>
+        <p class="credit-link" style="text-decoration:none; cursor:default;">Inside Out Presentation Video Record Panel</p>
+    </section>
            
-    <!-- Footer -->
     <footer>
         <p>Design & Developed By Gita & Nirvana Antonia © 2026</p>
     </footer>
         
-    <!-- JavaScript Logika Interaktif Pengubah Konten Penjelasan Emosi -->
     <script>
+        // Fungsi Logika untuk Tombol Titik Tiga Navigasi HP
+        function toggleMenu() {
+            var navList = document.getElementById("nav-list");
+            navList.classList.toggle("active");
+        }
+
+        // Data Penjelasan Emosi
         const emotionData = {
             joy: {
                 title: "Joy (Kegembiraan)",
@@ -344,31 +398,22 @@
             }
         };
 
+        // Fungsi klik ganti konten kartu emosi
         function changeEmotion(emotionKey) {
-            // Update Teks Penjelasan Kartu
             document.getElementById('emotion-title').innerText = emotionData[emotionKey].title;
             document.getElementById('emotion-desc').innerText = emotionData[emotionKey].desc;
-            
-            // Update Warna Border Garis Kiri Kartu
             document.getElementById('emotion-card').style.borderColor = emotionData[emotionKey].color;
             
-            // Update Warna Efek Glowing Bola Memori di Atas (Hero Orb)
             const mainOrb = document.getElementById('main-orb');
             mainOrb.style.background = emotionData[emotionKey].orbBg;
             mainOrb.style.boxShadow = emotionData[emotionKey].glow;
 
-            // Atur Class Active Pada Tombol Bola yang Diklik
             const spheres = document.querySelectorAll('.emotion-sphere');
             spheres.forEach(sphere => sphere.classList.remove('active'));
             
             event.currentTarget.classList.add('active');
         }
-   <script>
-    function toggleMenu() {
-        var navList = document.getElementById("nav-list");
-        navList.classList.toggle("active");
-    }
-</script>
-        
+    </script>
+    <script src="scripts.js"></script>
 </body>
 </html>
