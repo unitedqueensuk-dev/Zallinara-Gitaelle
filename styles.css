@@ -30,7 +30,12 @@ pre {
 }    
 
 body {
-    background-color: lightblue;
+    background-color: transparent; /* Diubah transparan agar video di belakangnya kelihatan */
+    font-family: 'Poppins', sans-serif;
+    color: #ffffff;
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
 }
 
 marquee {
