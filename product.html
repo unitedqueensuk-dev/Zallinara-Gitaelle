@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Send the Song - Inside Out</title>
     
-    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -203,10 +202,6 @@
             border-color: #ffd700;
         }
 
-        select.form-control {
-            cursor: pointer;
-        }
-
         /* --- BUTTONS --- */
         .btn-send {
             width: 100%;
@@ -218,7 +213,6 @@
             font-weight: 600;
             font-size: 1rem;
             cursor: pointer;
-            font-family: 'Poppins', sans-serif;
             box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
             transition: transform 0.2s, box-shadow 0.2s;
         }
@@ -228,13 +222,7 @@
             box-shadow: 0 6px 20px rgba(255, 215, 0, 0.5);
         }
 
-        /* --- MOOD COLOR TAGS --- */
-        .mood-senhang { color: #ffd700 !important; }
-        .mood-marah { color: #ff3333 !important; }
-        .mood-sedih { color: #0088ff !important; }
-        .mood-kecewa { color: #b19ffb !important; }
-
-        /* --- HORIZONTAL TRACK SCROLLER (MARQUEE) --- */
+        /* --- MARQUEE --- */
         .marquee-section {
             margin-top: 20px;
             background: rgba(0, 0, 0, 0.4);
@@ -243,7 +231,6 @@
             padding: 15px 0;
             overflow: hidden;
             white-space: nowrap;
-            position: relative;
         }
 
         .marquee-container {
@@ -266,12 +253,11 @@
             box-shadow: 0 4px 10px rgba(0,0,0,0.3);
         }
 
-        /* --- SEARCH RESULT DISPLAY --- */
+        /* --- SEARCH RESULTS --- */
         .search-results {
             margin-top: 15px;
             max-height: 280px;
             overflow-y: auto;
-            text-align: left;
         }
 
         .result-box {
@@ -280,8 +266,8 @@
             border-radius: 8px;
             padding: 12px;
             margin-bottom: 10px;
+            text-align: left;
         }
-
         .result-box.senang { border-left: 4px solid #ffd700; }
         .result-box.marah { border-left: 4px solid #ff3333; }
         .result-box.sedih { border-left: 4px solid #0088ff; }
@@ -302,27 +288,17 @@
         }
 
         .spotify-btn {
-            display: inline-block;
-            font-size: 0.75rem;
             color: #1DB954;
             text-decoration: none;
+            font-size: 0.75rem;
             font-weight: 600;
         }
 
-        .spotify-btn:hover { text-decoration: underline; }
-
-        .status-indicator {
+        .status-badge {
+            text-align: center;
             font-size: 0.8rem;
-            text-align: center;
             color: #ffd700;
-            margin-bottom: 10px;
-        }
-
-        .no-result {
-            font-size: 0.85rem;
-            color: #5c627a;
-            text-align: center;
-            margin-top: 30px;
+            margin-bottom: 15px;
         }
 
         footer {
@@ -338,14 +314,11 @@
 </head>
 
 <body>
-
-    <!-- VIDEO BACKGROUND -->
     <video autoplay muted loop playsinline class="video-bg">
         <source src="https://videotourl.com/videos/1780485019352-0868a29f-d876-44ca-b1f7-322c6c4baa89.mp4" type="video/mp4">
     </video>
     <div class="video-overlay"></div>
 
-    <!-- MENU NAVIGASI -->
     <header>
         <div class="logo">Inside Out</div>
         <ul class="nav-links" id="nav-list">
@@ -357,66 +330,56 @@
         <div class="menu-toggle" onclick="toggleMenu()">⋮</div>
     </header>
 
-    <!-- AREA KONTEN UTAMA -->
     <main class="container">
         <h1 class="page-title">SEND THE SONG</h1>
         <p class="page-subtitle">Kirimkan lagu Spotify rahasiamu berdasarkan emosimu saat ini kepada seseorang.</p>
-        <div id="statusDB" class="status-indicator">Menghubungkan ke pusat memori awan... 🌌</div>
+        <div class="status-badge" id="syncStatus">Menghubungkan ke Jaringan Memori Publik... 🧠</div>
 
         <div class="grid-layout">
-            
-            <!-- FORMULIR INPUT KIRIM LAGU -->
             <section class="card">
                 <h2>Kirim Lagu & Pesan</h2>
                 <form id="songForm" onsubmit="sendSong(event)">
                     <div class="form-group">
-                        <label for="toName">Nama yang Dituju</label>
-                        <input type="text" id="toName" class="form-control" placeholder="Contoh: Riley, Gita, Nirina..." required>
+                        <label>Nama yang Dituju</label>
+                        <input type="text" id="toName" class="form-control" placeholder="Contoh: Riley, Gita..." required>
                     </div>
-                    
                     <div class="form-group">
-                        <label for="songMood">Pilih Mood Lagu</label>
+                        <label>Pilih Mood Lagu</label>
                         <select id="songMood" class="form-control" required>
-                            <option value="senang" class="mood-senhang">Joy 💛 (Senang)</option>
-                            <option value="marah" class="mood-marah">Anger ❤️ (Marah)</option>
-                            <option value="sedih" class="mood-sedih">Sadness 💙 (Sedih)</option>
-                            <option value="kecewa" class="mood-kecewa">Ennui/Fear 💜 (Kecewa)</option>
+                            <option value="senang">Joy 💛 (Senang)</option>
+                            <option value="marah">Anger ❤️ (Marah)</option>
+                            <option value="sedih">Sadness 💙 (Sedih)</option>
+                            <option value="kecewa">Ennui/Fear 💜 (Kecewa)</option>
                         </select>
                     </div>
-
                     <div class="form-group">
-                        <label for="spotifyUrl">Link Lagu dari Spotify</label>
+                        <label>Link Lagu dari Spotify</label>
                         <input type="url" id="spotifyUrl" class="form-control" placeholder="https://open.spotify.com/track/..." required>
                     </div>
-
                     <div class="form-group">
-                        <label for="messageText">Pesan Buat Seseorang</label>
-                        <textarea id="messageText" class="form-control" rows="3" placeholder="Tulis ungkapan perasaan rahasiamu di sini..." required></textarea>
+                        <label>Pesan Buat Seseorang</label>
+                        <textarea id="messageText" class="form-control" rows="3" placeholder="Tulis ungkapan rahasiamu..." required></textarea>
                     </div>
-
-                    <button type="submit" class="btn-send">Send 🚀</button>
+                    <button type="submit" class="btn-send" id="btnText">Send 🚀</button>
                 </form>
             </section>
 
-            <!-- KOTAK FITUR SEARCH NAMA -->
             <section class="card">
                 <h2>Cari Pesanmu</h2>
                 <div class="form-group">
-                    <label for="searchName">Ketik Namamu di Sini</label>
+                    <label>Ketik Namamu di Sini</label>
                     <input type="text" id="searchName" class="form-control" placeholder="Cari pesan dikirim untukmu..." oninput="searchMessages()">
                 </div>
                 <div class="search-results" id="searchResultsArea">
                     <p class="no-result">Ketik nama pada kolom di atas untuk memeriksa kiriman lagu rahasiamu.</p>
                 </div>
             </section>
-
         </div>
     </main>
 
-    <!-- HORIZONTAL TRACK RUNNING TEXT (MARQUEE) -->
     <div class="marquee-section">
         <div class="marquee-container" id="marqueeTrack">
-            <div class="marquee-item">Sinkronisasi Data Memori... 🧠</div>
+            <div class="marquee-item">Memuat lintasan emosi... ⚡</div>
         </div>
     </div>
 
@@ -424,60 +387,41 @@
         <p>Design & Developed By Gita & Nirvana Antonia © 2026</p>
     </footer>
 
-    <!-- SISTEM UTAMA DATABASE SINKRON GLOBAL -->
     <script>
-        // Menggunakan Server JSONBlob Terenkripsi & Terbuka yang sangat stabil
-        const BLOB_URL = "https://jsonblob.com/api/jsonBlob/1346430349455335424";
+        // Menggunakan KVPair CDN Server Publik (Bebas Akun, Gratis, Multi-device)
+        // 'insideout_gita_nirina_2026' adalah nama unik database kalian di internet
+        const API_URL = "https://kvpair.com/api/v1/insideout_gita_nirina_2026";
         let messageDatabase = [];
 
         function toggleMenu() {
             document.getElementById("nav-list").classList.toggle("active");
         }
 
-        // 1. FUNGSI SYNC AMBIL DATA DARI CLOUD INTERNET
-        async function loadCloudData() {
+        // AMBIL DATA DARI INTERNET
+        async function fetchSongs() {
             try {
-                const response = await fetch(BLOB_URL, {
-                    method: 'GET',
-                    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }
-                });
-                
+                const response = await fetch(API_URL);
                 if (response.ok) {
-                    messageDatabase = await response.json();
-                    document.getElementById('statusDB').innerText = "Status: Cloud Terhubung & Sinkron 🟢";
-                    document.getElementById('statusDB').style.color = "#00ff88";
-                } else {
-                    throw new Error("Gagal mengambil data cloud");
+                    const resData = await response.json();
+                    // KVPair mengembalikan object, kita ambil valuenya jika ada
+                    messageDatabase = resData.value ? JSON.parse(resData.value) : [];
+                    document.getElementById('syncStatus').innerText = "Status: Terhubung Antar-Perangkat 🟢";
+                    document.getElementById('syncStatus').style.color = "#00ff88";
+                    updateMarquee();
+                    searchMessages();
                 }
-            } catch (error) {
-                console.log("Gagal koneksi cloud, beralih ke penyimpanan lokal sementara.");
-                document.getElementById('statusDB').innerText = "Status: Mode Lokal Aktif (Offline) 🟡";
-                document.getElementById('statusDB').style.color = "#ffaa00";
-                
-                // Backup Lokal jika Cloud terhambat jaringan sekolah
-                const localData = localStorage.getItem('insideOutBackup');
-                if (localData) {
-                    messageDatabase = JSON.parse(localData);
-                } else if (messageDatabase.length === 0) {
-                    // Data Default jika benar-benar kosong
-                    messageDatabase = [
-                        { to: "Gita", mood: "senang", song: "https://open.spotify.com/track/4PTG3Z6ehGkBFm6gZYwR4w", text: "Makasih udah bikin project Inside Out ini bareng-bareng! 💛" },
-                        { to: "Nirina", mood: "sedih", song: "https://open.spotify.com/track/1dGr1eejnwPy6w6wSgY66S", text: "Lagu melow ini pas banget didenger pas malem hari sendirian.. 💙" }
-                    ];
-                }
+            } catch (err) {
+                document.getElementById('syncStatus').innerText = "Status: Offline / Jaringan Lokal 🟡";
+                document.getElementById('syncStatus').style.color = "#ffaa00";
             }
-            updateMarquee();
-            searchMessages(); 
         }
 
-        // Sinkronisasi data saat pertama kali dimuat
         window.onload = function() {
-            loadCloudData();
-            // Sinkronisasi otomatis di latar belakang setiap 5 detik (tanpa refresh halaman)
-            setInterval(loadCloudData, 5000);
+            fetchSongs();
+            setInterval(fetchSongs, 3000); // Otomatis refresh data tiap 3 detik!
         };
 
-        // 2. FUNGSI MENGIRIM PESAN BARU DAN MELAKUKAN UPDATE KE CLOUD
+        // KIRIM PESAN BARU KE INTERNET
         async function sendSong(event) {
             event.preventDefault();
 
@@ -486,94 +430,76 @@
             const song = document.getElementById('spotifyUrl').value.trim();
             const text = document.getElementById('messageText').value.trim();
 
-            const newMessage = { to, mood, song, text };
-            
-            // Masukkan data baru ke list lokal terlebih dahulu
-            messageDatabase.push(newMessage);
-            localStorage.setItem('insideOutBackup', JSON.stringify(messageDatabase));
+            const btn = document.getElementById('btnText');
+            btn.innerText = "Mengirim... ⏳";
+            btn.disabled = true;
 
-            // Beri animasi loading pada tombol send
-            const submitBtn = document.querySelector('.btn-send');
-            const originalText = submitBtn.innerText;
-            submitBtn.innerText = "Mengirim ke Cloud... ⏳";
-            submitBtn.disabled = true;
+            // Masukkan data baru ke list
+            const newMessage = { to, mood, song, text };
+            messageDatabase.push(newMessage);
 
             try {
-                // Tembak pembaruan data array ke JSONBlob Cloud via PUT method
-                const response = await fetch(BLOB_URL, {
-                    method: 'PUT',
-                    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-                    body: JSON.stringify(messageDatabase)
+                // Tembak data ke KVPair internet agar tersimpan global
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ value: JSON.stringify(messageDatabase) })
                 });
 
                 if (response.ok) {
                     document.getElementById('songForm').reset();
-                    alert("Sukses! Lagu Berhasil Dikirim Ke Pusat Memori Pikiran Cloud! 🚀\nSilakan langsung cek di HP atau laptop temanmu tanpa perlu refresh.");
+                    alert("Sukses! Lagu terkirim ke internet. Cek di HP temanmu sekarang tanpa refresh! 🎉");
+                    fetchSongs();
                 } else {
-                    alert("Pesan tersimpan secara lokal karena jaringan cloud sibuk.");
+                    alert("Gagal menyimpan ke server publik.");
                 }
             } catch (error) {
-                alert("Pesan disimpan lokal (Jaringan Internet Offline/Terblokir).");
+                alert("Koneksi gagal. Pastikan HP terhubung internet.");
             } finally {
-                submitBtn.innerText = originalText;
-                submitBtn.disabled = false;
-                updateMarquee();
-                searchMessages();
+                btn.innerText = "Send 🚀";
+                btn.disabled = false;
             }
         }
 
-        // 3. FUNGSI UPDATE MATRIKS TEXT BERJALAN (MARQUEE)
+        // UPDATE RUNNING TEXT DI BAWAH
         function updateMarquee() {
             const track = document.getElementById('marqueeTrack');
-            if (!track) return;
             track.innerHTML = "";
-
-            if (messageDatabase.length === 0) {
+            if(messageDatabase.length === 0) {
                 track.innerHTML = `<div class="marquee-item">Belum ada lagu rahasia terkirim.</div>`;
                 return;
             }
-
             messageDatabase.forEach(item => {
-                let moodEmoji = "💛";
-                let borderColor = "#ffd700";
+                let emo = item.mood === "marah" ? "❤️" : item.mood === "sedih" ? "💙" : item.mood === "kecewa" ? "💜" : "💛";
+                let bColor = item.mood === "marah" ? "#ff3333" : item.mood === "sedih" ? "#0088ff" : item.mood === "kecewa" ? "#b19ffb" : "#ffd700";
                 
-                if(item.mood === "marah") { moodEmoji = "❤️"; borderColor = "#ff3333"; }
-                else if(item.mood === "sedih") { moodEmoji = "💙"; borderColor = "#0088ff"; }
-                else if(item.mood === "kecewa") { moodEmoji = "💜"; borderColor = "#b19ffb"; }
-
                 track.innerHTML += `
-                    <div class="marquee-item" style="border-left: 4px solid ${borderColor}">
-                        <strong>Untuk: ${item.to}</strong> ${moodEmoji} - "${item.text}"
-                    </div>
-                `;
+                    <div class="marquee-item" style="border-left: 4px solid ${bColor}">
+                        <strong>Untuk: ${item.to}</strong> ${emo} - "${item.text}"
+                    </div>`;
             });
         }
 
-        // 4. FUNGSI LIVE SEARCH LINTAS PERANGKAT
+        // CARI NAMA (LIVE SEARCH)
         function searchMessages() {
             const query = document.getElementById('searchName').value.trim().toLowerCase();
             const resultsArea = document.getElementById('searchResultsArea');
-            if (!resultsArea) return;
 
-            if (query === "") {
+            if(query === "") {
                 resultsArea.innerHTML = `<p class="no-result">Ketik nama pada kolom di atas untuk memeriksa kiriman lagu rahasiamu.</p>`;
                 return;
             }
 
             const filtered = messageDatabase.filter(item => item.to.toLowerCase().includes(query));
 
-            if (filtered.length === 0) {
-                resultsArea.innerHTML = `<p class="no-result">Ups, belum ada pesan atau lagu khusus untuk nama "${document.getElementById('searchName').value}".</p>`;
+            if(filtered.length === 0) {
+                resultsArea.innerHTML = `<p class="no-result">Belum ada lagu rahasia untuk nama ini.</p>`;
                 return;
             }
 
             resultsArea.innerHTML = ""; 
             filtered.forEach(item => {
-                let moodName = "Senang 💛";
-                if(item.mood === "marah") moodName = "Marah ❤️";
-                else if(item.mood === "sedih") moodName = "Sedih 💙";
-                else if(item.mood === "kecewa") moodName = "Kecewa 💜";
-
+                let moodName = item.mood === "marah" ? "Marah ❤️" : item.mood === "sedih" ? "Sedih 💙" : item.mood === "kecewa" ? "Kecewa 💜" : "Senang 💛";
                 resultsArea.innerHTML += `
                     <div class="result-box ${item.mood}">
                         <div class="result-meta">
@@ -582,8 +508,7 @@
                         </div>
                         <p class="result-msg">"${item.text}"</p>
                         <a href="${item.song}" target="_blank" class="spotify-btn">🎵 Buka di Spotify ↗</a>
-                    </div>
-                `;
+                    </div>`;
             });
         }
     </script>
