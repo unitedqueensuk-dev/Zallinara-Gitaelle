@@ -4,43 +4,533 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Send the Song - Inside Out</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
-    </head>
+
+    <style>
+        /* --- RESET & BASE STYLES --- */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            color: #ffffff;
+            min-height: 100vh;
+            background: #050716;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* --- VIDEO BACKGROUND --- */
+        .video-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -2;
+        }
+
+        .video-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(5, 7, 22, 0.65);
+            z-index: -1;
+        }
+
+        /* --- NAVIGATION BAR --- */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            background: rgba(11, 17, 44, 0.75);
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .logo {
+            font-family: 'Cinzel', serif;
+            font-size: 1.4rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            color: #ffd700;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 25px;
+        }
+
+        .nav-links a {
+            color: #b0b5c9;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: #ffffff;
+            border-bottom: 2px solid #ffd700;
+            padding-bottom: 4px;
+        }
+
+        .menu-toggle {
+            display: none;
+            font-size: 1.8rem;
+            cursor: pointer;
+            color: #ffd700;
+        }
+
+        @media screen and (max-width: 768px) {
+            .menu-toggle { display: block; }
+            .nav-links {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 70px;
+                right: 20px;
+                background: rgba(11, 17, 44, 0.95);
+                border: 1px solid rgba(255, 255, 255, 0.2);
+                border-radius: 8px;
+                width: 150px;
+                padding: 15px;
+                gap: 15px;
+                text-align: right;
+                box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            }
+            .nav-links.active { display: flex; }
+        }
+
+        /* --- CONTAINER UTAMA --- */
+        .container {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .page-title {
+            font-family: 'Cinzel', serif;
+            font-size: 2.5rem;
+            color: #ffd700;
+            letter-spacing: 3px;
+            margin-bottom: 10px;
+            text-shadow: 0 4px 15px rgba(0,0,0,0.8);
+            text-align: center;
+        }
+
+        .page-subtitle {
+            text-align: center;
+            color: #cfd4ed;
+            margin-bottom: 40px;
+            font-size: 0.95rem;
+        }
+
+        /* --- MAIN GRID (FORM & SEARCH) --- */
+        .grid-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        @media screen and (max-width: 768px) {
+            .grid-layout { grid-template-columns: 1fr; }
+        }
+
+        /* --- CARD STYLES --- */
+        .card {
+            background: rgba(11, 17, 44, 0.65);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 25px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .card h2 {
+            font-family: 'Cinzel', serif;
+            font-size: 1.4rem;
+            color: #ffd700;
+            margin-bottom: 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding-bottom: 8px;
+        }
+
+        /* --- FORM ELEMENT STYLES --- */
+        .form-group {
+            margin-bottom: 18px;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.85rem;
+            color: #b0b5c9;
+            margin-bottom: 6px;
+            font-weight: 500;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px;
+            background: rgba(5, 7, 22, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 8px;
+            color: #ffffff;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.9rem;
+            transition: border-color 0.3s;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #ffd700;
+        }
+
+        select.form-control {
+            cursor: pointer;
+        }
+
+        /* --- BUTTONS --- */
+        .btn-send {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #ffd700 0%, #ff8c00 100%);
+            border: none;
+            border-radius: 8px;
+            color: #050716;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .btn-send:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 215, 0, 0.5);
+        }
+
+        /* --- MOOD COLOR TAGS --- */
+        .mood-senhang { color: #ffd700 !important; }  /* Joy Yellow */
+        .mood-marah { color: #ff3333 !important; }    /* Anger Red */
+        .mood-sedih { color: #0088ff !important; }    /* Sadness Blue */
+        .mood-kecewa { color: #b19ffb !important; }   /* Ennui/Fear Purple Blend */
+
+        /* --- HORIZONTAL TRACK SCROLLER (MARQUEE) --- */
+        .marquee-section {
+            margin-top: 20px;
+            background: rgba(0, 0, 0, 0.4);
+            border-top: 1px solid rgba(255,255,255,0.05);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            padding: 15px 0;
+            overflow: hidden;
+            white-space: nowrap;
+            position: relative;
+        }
+
+        .marquee-container {
+            display: inline-flex;
+            gap: 40px;
+            animation: scroll-left 25s linear infinite;
+        }
+
+        @keyframes scroll-left {
+            0% { transform: translateX(100vw); }
+            100% { transform: translateX(-100%); }
+        }
+
+        .marquee-item {
+            display: inline-block;
+            background: rgba(11, 17, 44, 0.8);
+            border-radius: 30px;
+            padding: 8px 20px;
+            font-size: 0.9rem;
+            border-left: 4px solid #ffd700;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+
+        /* --- SEARCH RESULT DISPLAY --- */
+        .search-results {
+            margin-top: 15px;
+            max-height: 280px;
+            overflow-y: auto;
+            text-align: left;
+        }
+
+        .result-box {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 10px;
+        }
+
+        .result-box.senang { border-left: 4px solid #ffd700; }
+        .result-box.marah { border-left: 4px solid #ff3333; }
+        .result-box.sedih { border-left: 4px solid #0088ff; }
+        .result-box.kecewa { border-left: 4px solid #b19ffb; }
+
+        .result-meta {
+            font-size: 0.75rem;
+            color: #b0b5c9;
+            margin-bottom: 4px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .result-msg {
+            font-size: 0.9rem;
+            margin-bottom: 6px;
+            font-style: italic;
+        }
+
+        .spotify-btn {
+            display: inline-block;
+            font-size: 0.75rem;
+            color: #1DB954;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .spotify-btn:hover { text-decoration: underline; }
+
+        .no-result {
+            font-size: 0.85rem;
+            color: #5c627a;
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        footer {
+            background: #050716;
+            padding: 20px;
+            font-size: 0.85rem;
+            color: #5c627a;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            margin-top: 40px;
+            text-align: center;
+        }
+    </style>
+</head>
+
 <body>
+
+    <!-- VIDEO BACKGROUND -->
     <video autoplay muted loop playsinline class="video-bg">
         <source src="https://videotourl.com/videos/1780485019352-0868a29f-d876-44ca-b1f7-322c6c4baa89.mp4" type="video/mp4">
     </video>
     <div class="video-overlay"></div>
 
+    <!-- MENU NAVIGASI -->
+    <header>
+        <div class="logo">Inside Out</div>
+        <ul class="nav-links" id="nav-list">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="AboutUs.html">About Us</a></li>
+            <li><a href="Design.html">Design</a></li>
+            <li><a href="product.html" class="active">Product</a></li>
+        </ul>
+        <div class="menu-toggle" onclick="toggleMenu()">⋮</div>
+    </header>
+
+    <!-- AREA KONTEN UTAMA -->
     <main class="container">
         <h1 class="page-title">SEND THE SONG</h1>
+        <p class="page-subtitle">Kirimkan lagu Spotify rahasiamu berdasarkan emosimu saat ini kepada seseorang.</p>
+
         <div class="grid-layout">
+            
+            <!-- FORMULIR INPUT KIRIM LAGU -->
             <section class="card">
-                <h2>send your message</h2>
-                <form id="songForm">
-                    <input type="text" id="toName" class="form-control" placeholder="Nama Tujuan" required>
-                    <select id="songMood" class="form-control">
-                        <option value="senang">Joy 💛</option>
-                        <option value="marah">Anger ❤️</option>
-                        <option value="sedih">Sadness 💙</option>
-                        <option value="kecewa">Ennui/Fear 💜</option>
-                    </select>
-                    <input type="url" id="spotifyUrl" class="form-control" placeholder="Link Spotify" required>
-                    <textarea id="messageText" class="form-control" placeholder="Pesanmu..."></textarea>
-                    <button type="button" onclick="kirimPesan()" class="btn-send">Send 🚀</button>
+                <h2>Kirim Lagu & Pesan</h2>
+                <form id="songForm" onsubmit="sendSong(event)">
+                    <div class="form-group">
+                        <label for="toName">Nama yang Dituju</label>
+                        <input type="text" id="toName" class="form-control" placeholder="Contoh: Riley, Gita, Nirina..." required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="songMood">Pilih Mood Lagu</label>
+                        <select id="songMood" class="form-control" required>
+                            <option value="senang" class="mood-senhang">Joy 💛 (Senang)</option>
+                            <option value="marah" class="mood-marah">Anger ❤️ (Marah)</option>
+                            <option value="sedih" class="mood-sedih">Sadness 💙 (Sedih)</option>
+                            <option value="kecewa" class="mood-kecewa">Ennui/Fear 💜 (Kecewa)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="spotifyUrl">Link Lagu dari Spotify</label>
+                        <input type="url" id="spotifyUrl" class="form-control" placeholder="https://open.spotify.com/track/..." required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="messageText">Pesan Buat Seseorang</label>
+                        <textarea id="messageText" class="form-control" rows="3" placeholder="Tulis ungkapan perasaan rahasiamu di sini..." required></textarea>
+                    </div>
+
+                    <button type="submit" class="btn-send">Send 🚀</button>
                 </form>
             </section>
 
+            <!-- KOTAK FITUR SEARCH NAMA -->
             <section class="card">
-                <h2>Cari Pesan</h2>
-                <input type="text" id="searchName" class="form-control" oninput="searchMessages()" placeholder="Ketik namamu...">
-                <div id="searchResultsArea" class="search-results"></div>
+                <h2>Cari Pesanmu</h2>
+                <div class="form-group">
+                    <label for="searchName">Ketik Namamu di Sini</label>
+                    <input type="text" id="searchName" class="form-control" placeholder="Cari pesan dikirim untukmu..." oninput="searchMessages()">
+                </div>
+                <div class="search-results" id="searchResultsArea">
+                    <p class="no-result">Ketik nama pada kolom di atas untuk memeriksa kiriman lagu rahasiamu.</p>
+                </div>
             </section>
+
         </div>
     </main>
 
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
-    <script src="script.js"></script>
+    <!-- HORIZONTAL TRACK RUNNING TEXT (MARQUEE) -->
+    <div class="marquee-section">
+        <div class="marquee-container" id="marqueeTrack">
+            <!-- Data Pesan-Pesan Giliran Masuk di Sini via Javascript -->
+        </div>
+    </div>
+
+    <footer>
+        <p>Design & Developed By Gita & Nirvana Antonia © 2026</p>
+    </footer>
+
+    <!-- JAVASCRIPT SISTEM LOGIKA -->
+    <script>
+        // Data Dummy Awal Biar Web Tidak Kosong Saat Pertama Kali Dibuka
+        const defaultMessages = [
+            { to: "Gita", mood: "senang", song: "https://open.spotify.com/track/4PTG3Z6ehGkBFm6gZYwR4w", text: "Makasih udah bikin project Inside Out ini bareng-bareng! 💛" },
+            { to: "Nirina", mood: "sedih", song: "https://open.spotify.com/track/1dGr1eejnwPy6w6wSgY66S", text: "Lagu melow ini pas banget didenger pas malem hari sendirian.. 💙" },
+            { to: "Riley", mood: "marah", song: "https://open.spotify.com/track/2t89I69T768wU6gZ0yW2b1", text: "Jangan biarin Anger ngambil alih konsol pusat kendali kamu ya! ❤️" }
+        ];
+
+        // Ambil data lama di browser atau gunakan data default jika kosong
+        let messageDatabase = JSON.parse(localStorage.getItem('insideOutSongs')) || defaultMessages;
+
+        // Fungsi Menu Toggle HP
+        function toggleMenu() {
+            document.getElementById("nav-list").classList.toggle("active");
+        }
+
+        // Render Awal Saat Halaman Dibuka
+        window.onload = function() {
+            updateMarquee();
+        };
+
+        // Fungsi Mengirim Pesan Baru
+        function sendSong(event) {
+            event.preventDefault();
+
+            const to = document.getElementById('toName').value.trim();
+            const mood = document.getElementById('songMood').value;
+            const song = document.getElementById('spotifyUrl').value.trim();
+            const text = document.getElementById('messageText').value.trim();
+
+            const newMessage = { to, mood, song, text };
+            messageDatabase.push(newMessage);
+
+            // Simpan ke memori lokal browser agar tak hilang pas refresh
+            localStorage.setItem('insideOutSongs', JSON.stringify(messageDatabase));
+
+            // Reset Input Form
+            document.getElementById('songForm').reset();
+
+            // Refresh Tampilan Berjalan
+            updateMarquee();
+            alert("Pesan Berhasil Terkirim ke Pusat Memori Pikiran! 🚀");
+        }
+
+        // Fungsi Menampilkan Pesan Berjalan Secara Horizontal & Bergantian
+        function updateMarquee() {
+            const track = document.getElementById('marqueeTrack');
+            track.innerHTML = ""; // Bersihkan trek
+
+            // Jika database kosong
+            if(messageDatabase.length === 0) {
+                track.innerHTML = `<div class="marquee-item">Belum ada lagu rahasia terkirim.</div>`;
+                return;
+            }
+
+            // Loop untuk memasukkan seluruh pesan bergantian ke lintasan horizontal
+            messageDatabase.forEach(item => {
+                let moodEmoji = "💛";
+                let borderColor = "#ffd700";
+                
+                if(item.mood === "marah") { moodEmoji = "❤️"; borderColor = "#ff3333"; }
+                else if(item.mood === "sedih") { moodEmoji = "💙"; borderColor = "#0088ff"; }
+                else if(item.mood === "kecewa") { moodEmoji = "💜"; borderColor = "#b19ffb"; }
+
+                const itemHtml = `
+                    <div class="marquee-item" style="border-left: 4px solid ${borderColor}">
+                        <strong>Untuk: ${item.to}</strong> ${moodEmoji} - "${item.text}"
+                    </div>
+                `;
+                track.innerHTML += itemHtml;
+            });
+        }
+
+        // Fungsi Live Search Mencari Nama Penerima Pesan
+        function searchMessages() {
+            const query = document.getElementById('searchName').value.trim().toLowerCase();
+            const resultsArea = document.getElementById('searchResultsArea');
+
+            if(query === "") {
+                resultsArea.innerHTML = `<p class="no-result">Ketik nama pada kolom di atas untuk memeriksa kiriman lagu rahasiamu.</p>`;
+                return;
+            }
+
+            // Memfilter nama yang dituju
+            const filtered = messageDatabase.filter(item => item.to.toLowerCase().includes(query));
+
+            if(filtered.length === 0) {
+                resultsArea.innerHTML = `<p class="no-result">Ups, belum ada pesan atau lagu khusus untuk nama "${document.getElementById('searchName').value}".</p>`;
+                return;
+            }
+
+            resultsArea.innerHTML = ""; // Bersihkan hasil lama
+            filtered.forEach(item => {
+                let moodName = "Senang 💛";
+                if(item.mood === "marah") moodName = "Marah ❤️";
+                else if(item.mood === "sedih") moodName = "Sedih 💙";
+                else if(item.mood === "kecewa") moodName = "Kecewa 💜";
+
+                const element = `
+                    <div class="result-box ${item.mood}">
+                        <div class="result-meta">
+                            <span>Mood: <strong>${moodName}</strong></span>
+                            <span>Kepada: <strong>${item.to}</strong></span>
+                        </div>
+                        <p class="result-msg">"${item.text}"</p>
+                        <a href="${item.song}" target="_blank" class="spotify-btn">🎵 Buka di Spotify ↗</a>
+                    </div>
+                `;
+                resultsArea.innerHTML += element;
+            });
+        }
+    </script>
 </body>
 </html>
+
+ituu
