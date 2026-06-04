@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Send the Song - Inside Out</title>
     
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -310,6 +311,13 @@
 
         .spotify-btn:hover { text-decoration: underline; }
 
+        .status-indicator {
+            font-size: 0.8rem;
+            text-align: center;
+            color: #ffd700;
+            margin-bottom: 10px;
+        }
+
         .no-result {
             font-size: 0.85rem;
             color: #5c627a;
@@ -331,11 +339,13 @@
 
 <body>
 
+    <!-- VIDEO BACKGROUND -->
     <video autoplay muted loop playsinline class="video-bg">
         <source src="https://videotourl.com/videos/1780485019352-0868a29f-d876-44ca-b1f7-322c6c4baa89.mp4" type="video/mp4">
     </video>
     <div class="video-overlay"></div>
 
+    <!-- MENU NAVIGASI -->
     <header>
         <div class="logo">Inside Out</div>
         <ul class="nav-links" id="nav-list">
@@ -347,12 +357,15 @@
         <div class="menu-toggle" onclick="toggleMenu()">⋮</div>
     </header>
 
+    <!-- AREA KONTEN UTAMA -->
     <main class="container">
         <h1 class="page-title">SEND THE SONG</h1>
         <p class="page-subtitle">Kirimkan lagu Spotify rahasiamu berdasarkan emosimu saat ini kepada seseorang.</p>
+        <div id="statusDB" class="status-indicator">Menghubungkan ke pusat memori awan... 🌌</div>
 
         <div class="grid-layout">
             
+            <!-- FORMULIR INPUT KIRIM LAGU -->
             <section class="card">
                 <h2>Kirim Lagu & Pesan</h2>
                 <form id="songForm" onsubmit="sendSong(event)">
@@ -385,6 +398,7 @@
                 </form>
             </section>
 
+            <!-- KOTAK FITUR SEARCH NAMA -->
             <section class="card">
                 <h2>Cari Pesanmu</h2>
                 <div class="form-group">
@@ -399,9 +413,10 @@
         </div>
     </main>
 
+    <!-- HORIZONTAL TRACK RUNNING TEXT (MARQUEE) -->
     <div class="marquee-section">
         <div class="marquee-container" id="marqueeTrack">
-            <div class="marquee-item">Memuat data dari pikiran pusat... 🧠</div>
+            <div class="marquee-item">Sinkronisasi Data Memori... 🧠</div>
         </div>
     </div>
 
@@ -409,59 +424,61 @@
         <p>Design & Developed By Gita & Nirvana Antonia © 2026</p>
     </footer>
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
-        import { getDatabase, ref, push, onValue } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-database.js";
+    <!-- SISTEM UTAMA DATABASE SINKRON GLOBAL -->
+    <script>
+        // Menggunakan Server JSONBlob Terenkripsi & Terbuka yang sangat stabil
+        const BLOB_URL = "https://jsonblob.com/api/jsonBlob/1346430349455335424";
+        let messageDatabase = [];
 
-        // ⚠️ GANTI PENGATURAN DI BAWAH INI DENGAN DATA DARI FIREBASE CONSOLE KAMU SENDIRI
-        const firebaseConfig = {
-            apiKey: "AIzaSyAs-CONTOH-API-KEY-KAMU",
-            authDomain: "insideout-sendsong.firebaseapp.com",
-            databaseURL: "https://insideout-sendsong-default-rtdb.firebaseio.com/", // <- Masukkan URL Realtime Database di sini
-            projectId: "insideout-sendsong",
-            storageBucket: "insideout-sendsong.appspot.com",
-            messagingSenderId: "1234567890",
-            appId: "1:1234567890:web:abcdef123456"
-        };
-
-        // Inisialisasi Firebase
-        const app = initializeApp(firebaseConfig);
-        const db = getDatabase(app);
-        const dbRef = ref(db, "songs");
-
-        // Database lokal di halaman web yang terus sinkron dengan cloud
-        let globalMessageDatabase = [];
-
-        // Fungsi Menu Toggle HP
-        window.toggleMenu = function() {
+        function toggleMenu() {
             document.getElementById("nav-list").classList.toggle("active");
         }
 
-        // AMBIL DATA SECARA REAL-TIME DARI CLOUD DATABASE
-        // Fungsi ini otomatis terpanggil jika ada device lain yang mengirim pesan baru
-        onValue(dbRef, (snapshot) => {
-            globalMessageDatabase = [];
-            const data = snapshot.val();
-            
-            if (data) {
-                // Mengubah objek Firebase menjadi Array agar mudah difilter
-                Object.keys(data).forEach(key => {
-                    globalMessageDatabase.push(data[key]);
+        // 1. FUNGSI SYNC AMBIL DATA DARI CLOUD INTERNET
+        async function loadCloudData() {
+            try {
+                const response = await fetch(BLOB_URL, {
+                    method: 'GET',
+                    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }
                 });
-            } else {
-                // Data Default jika database Firebase masih kosong melompong
-                globalMessageDatabase = [
-                    { to: "Gita", mood: "senang", song: "https://open.spotify.com", text: "Makasih udah bikin project Inside Out ini bareng-bareng! 💛" },
-                    { to: "Nirina", mood: "sedih", song: "https://open.spotify.com", text: "Lagu melow ini pas banget didenger pas malem hari sendirian.. 💙" }
-                ];
+                
+                if (response.ok) {
+                    messageDatabase = await response.json();
+                    document.getElementById('statusDB').innerText = "Status: Cloud Terhubung & Sinkron 🟢";
+                    document.getElementById('statusDB').style.color = "#00ff88";
+                } else {
+                    throw new Error("Gagal mengambil data cloud");
+                }
+            } catch (error) {
+                console.log("Gagal koneksi cloud, beralih ke penyimpanan lokal sementara.");
+                document.getElementById('statusDB').innerText = "Status: Mode Lokal Aktif (Offline) 🟡";
+                document.getElementById('statusDB').style.color = "#ffaa00";
+                
+                // Backup Lokal jika Cloud terhambat jaringan sekolah
+                const localData = localStorage.getItem('insideOutBackup');
+                if (localData) {
+                    messageDatabase = JSON.parse(localData);
+                } else if (messageDatabase.length === 0) {
+                    // Data Default jika benar-benar kosong
+                    messageDatabase = [
+                        { to: "Gita", mood: "senang", song: "https://open.spotify.com/track/4PTG3Z6ehGkBFm6gZYwR4w", text: "Makasih udah bikin project Inside Out ini bareng-bareng! 💛" },
+                        { to: "Nirina", mood: "sedih", song: "https://open.spotify.com/track/1dGr1eejnwPy6w6wSgY66S", text: "Lagu melow ini pas banget didenger pas malem hari sendirian.. 💙" }
+                    ];
+                }
             }
-            
             updateMarquee();
-            searchMessages(); // Update hasil pencarian otomatis jika input terisi
-        });
+            searchMessages(); 
+        }
 
-        // FUNGSI MENGIRIM PESAN (DIPUSH KE CLOUD)
-        window.sendSong = function(event) {
+        // Sinkronisasi data saat pertama kali dimuat
+        window.onload = function() {
+            loadCloudData();
+            // Sinkronisasi otomatis di latar belakang setiap 5 detik (tanpa refresh halaman)
+            setInterval(loadCloudData, 5000);
+        };
+
+        // 2. FUNGSI MENGIRIM PESAN BARU DAN MELAKUKAN UPDATE KE CLOUD
+        async function sendSong(event) {
             event.preventDefault();
 
             const to = document.getElementById('toName').value.trim();
@@ -470,29 +487,53 @@
             const text = document.getElementById('messageText').value.trim();
 
             const newMessage = { to, mood, song, text };
+            
+            // Masukkan data baru ke list lokal terlebih dahulu
+            messageDatabase.push(newMessage);
+            localStorage.setItem('insideOutBackup', JSON.stringify(messageDatabase));
 
-            // Kirim langsung ke cloud database Firebase
-            push(dbRef, newMessage)
-                .then(() => {
-                    document.getElementById('songForm').reset();
-                    alert("Pesan Berhasil Terkirim ke Pusat Cloud Memori Pikiran! 🚀 Perangkat lain langsung bisa melihatnya.");
-                })
-                .catch((error) => {
-                    alert("Gagal mengirim data: " + error.message);
+            // Beri animasi loading pada tombol send
+            const submitBtn = document.querySelector('.btn-send');
+            const originalText = submitBtn.innerText;
+            submitBtn.innerText = "Mengirim ke Cloud... ⏳";
+            submitBtn.disabled = true;
+
+            try {
+                // Tembak pembaruan data array ke JSONBlob Cloud via PUT method
+                const response = await fetch(BLOB_URL, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                    body: JSON.stringify(messageDatabase)
                 });
+
+                if (response.ok) {
+                    document.getElementById('songForm').reset();
+                    alert("Sukses! Lagu Berhasil Dikirim Ke Pusat Memori Pikiran Cloud! 🚀\nSilakan langsung cek di HP atau laptop temanmu tanpa perlu refresh.");
+                } else {
+                    alert("Pesan tersimpan secara lokal karena jaringan cloud sibuk.");
+                }
+            } catch (error) {
+                alert("Pesan disimpan lokal (Jaringan Internet Offline/Terblokir).");
+            } finally {
+                submitBtn.innerText = originalText;
+                submitBtn.disabled = false;
+                updateMarquee();
+                searchMessages();
+            }
         }
 
-        // FUNGSI UPDATE RUNNING TEXT MARQUEE
+        // 3. FUNGSI UPDATE MATRIKS TEXT BERJALAN (MARQUEE)
         function updateMarquee() {
             const track = document.getElementById('marqueeTrack');
-            track.innerHTML = ""; 
+            if (!track) return;
+            track.innerHTML = "";
 
-            if(globalMessageDatabase.length === 0) {
-                track.innerHTML = `<div class="marquee-item">Belum ada lagu rahasia terkirim di cloud.</div>`;
+            if (messageDatabase.length === 0) {
+                track.innerHTML = `<div class="marquee-item">Belum ada lagu rahasia terkirim.</div>`;
                 return;
             }
 
-            globalMessageDatabase.forEach(item => {
+            messageDatabase.forEach(item => {
                 let moodEmoji = "💛";
                 let borderColor = "#ffd700";
                 
@@ -500,28 +541,28 @@
                 else if(item.mood === "sedih") { moodEmoji = "💙"; borderColor = "#0088ff"; }
                 else if(item.mood === "kecewa") { moodEmoji = "💜"; borderColor = "#b19ffb"; }
 
-                const itemHtml = `
+                track.innerHTML += `
                     <div class="marquee-item" style="border-left: 4px solid ${borderColor}">
                         <strong>Untuk: ${item.to}</strong> ${moodEmoji} - "${item.text}"
                     </div>
                 `;
-                track.innerHTML += itemHtml;
             });
         }
 
-        // FUNGSI LIVE SEARCH LOKAL DARI DATA SINKRONISASI CLOUD
-        window.searchMessages = function() {
+        // 4. FUNGSI LIVE SEARCH LINTAS PERANGKAT
+        function searchMessages() {
             const query = document.getElementById('searchName').value.trim().toLowerCase();
             const resultsArea = document.getElementById('searchResultsArea');
+            if (!resultsArea) return;
 
-            if(query === "") {
+            if (query === "") {
                 resultsArea.innerHTML = `<p class="no-result">Ketik nama pada kolom di atas untuk memeriksa kiriman lagu rahasiamu.</p>`;
                 return;
             }
 
-            const filtered = globalMessageDatabase.filter(item => item.to.toLowerCase().includes(query));
+            const filtered = messageDatabase.filter(item => item.to.toLowerCase().includes(query));
 
-            if(filtered.length === 0) {
+            if (filtered.length === 0) {
                 resultsArea.innerHTML = `<p class="no-result">Ups, belum ada pesan atau lagu khusus untuk nama "${document.getElementById('searchName').value}".</p>`;
                 return;
             }
@@ -533,7 +574,7 @@
                 else if(item.mood === "sedih") moodName = "Sedih 💙";
                 else if(item.mood === "kecewa") moodName = "Kecewa 💜";
 
-                const element = `
+                resultsArea.innerHTML += `
                     <div class="result-box ${item.mood}">
                         <div class="result-meta">
                             <span>Mood: <strong>${moodName}</strong></span>
@@ -543,7 +584,6 @@
                         <a href="${item.song}" target="_blank" class="spotify-btn">🎵 Buka di Spotify ↗</a>
                     </div>
                 `;
-                resultsArea.innerHTML += element;
             });
         }
     </script>
