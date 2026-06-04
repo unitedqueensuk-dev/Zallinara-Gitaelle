@@ -4,86 +4,104 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inside Out - Send the Song</title>
-    <!-- Firebase SDK -->
+    <!-- Firebase SDK v9 Compatibility -->
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
     <style>
         body { font-family: 'Poppins', sans-serif; background: #050716; color: white; padding: 20px; text-align: center; }
         .card { max-width: 500px; margin: 20px auto; background: rgba(255,255,255,0.05); padding: 20px; border-radius: 15px; border: 1px solid #ffd700; }
-        input, textarea { width: 100%; padding: 10px; margin: 5px 0; border-radius: 8px; border: none; background: #1a1e35; color: white; }
-        button { background: #ffd700; color: #050716; padding: 10px 20px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; }
-        .mood-box { display: flex; justify-content: space-around; margin: 10px 0; }
-        .mood-btn { cursor: pointer; padding: 5px; border: 2px solid transparent; border-radius: 5px; }
-        .mood-btn.active { border-color: white; }
-        .song-item { border-bottom: 1px solid #333; padding: 10px; text-align: left; }
+        input, textarea { width: 100%; padding: 12px; margin: 8px 0; border-radius: 8px; border: none; background: #1a1e35; color: white; box-sizing: border-box; }
+        button { background: #ffd700; color: #050716; padding: 12px 20px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; width: 100%; margin-top: 10px; }
+        button:disabled { opacity: 0.5; }
+        .mood-box { display: flex; justify-content: space-around; margin: 15px 0; }
+        .mood-btn { cursor: pointer; padding: 8px; border: 2px solid transparent; border-radius: 8px; transition: 0.3s; }
+        .mood-btn.active { border-color: #ffd700; background: rgba(255, 215, 0, 0.2); }
+        .song-item { border-bottom: 1px solid #333; padding: 15px; text-align: left; }
     </style>
 </head>
 <body>
 
     <h1>Send the Song</h1>
     
-    <!-- FORM INPUT -->
     <div class="card">
         <input type="text" id="username" placeholder="Username IG Tujuan">
         <div class="mood-box" id="moodSelector">
-            <div class="mood-btn" onclick="selectMood('Joy 💛')">Joy 💛</div>
-            <div class="mood-btn" onclick="selectMood('Sadness 💙')">Sadness 💙</div>
-            <div class="mood-btn" onclick="selectMood('Anger ❤️')">Anger ❤️</div>
-            <div class="mood-btn" onclick="selectMood('Envy 💚')">Envy 💚</div>
+            <div class="mood-btn" onclick="selectMood(this, 'Joy 💛')">Joy 💛</div>
+            <div class="mood-btn" onclick="selectMood(this, 'Sadness 💙')">Sadness 💙</div>
+            <div class="mood-btn" onclick="selectMood(this, 'Anger ❤️')">Anger ❤️</div>
+            <div class="mood-btn" onclick="selectMood(this, 'Envy 💚')">Envy 💚</div>
         </div>
         <input type="text" id="spotifyLink" placeholder="Link Spotify">
-        <textarea id="message" placeholder="Pesan..."></textarea>
-        <button onclick="saveData()">Kirim Lagu</button>
+        <textarea id="message" rows="3" placeholder="Pesan manis..."></textarea>
+        <button id="submitBtn" onclick="saveData()">Kirim Lagu</button>
     </div>
 
-    <!-- SEARCH & LIST -->
     <div class="card">
         <input type="text" id="search" placeholder="Cari nama tujuan..." onkeyup="filterSongs()">
-        <div id="songList"></div>
+        <div id="songList">Loading data...</div>
     </div>
 
     <script>
-        // 1. SETUP FIREBASE (Ganti dengan config punyamu)
-        const firebaseConfig = {
-            databaseURL: "https://YOUR_PROJECT_ID.firebasedatabase.app/"
-        };
+        const firebaseConfig = { databaseURL: "https://YOUR_PROJECT_ID.firebasedatabase.app/" };
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database().ref("songs");
 
         let selectedMood = '';
-        function selectMood(m) { selectedMood = m; alert("Mood: " + m); }
 
-        // 2. SIMPAN KE DATABASE
-        function saveData() {
-            const data = {
-                to: document.getElementById('username').value,
-                mood: selectedMood,
-                link: document.getElementById('spotifyLink').value,
-                msg: document.getElementById('message').value
-            };
-            db.push(data);
-            alert("Berhasil Terkirim!");
+        function selectMood(el, mood) {
+            selectedMood = mood;
+            document.querySelectorAll('.mood-btn').forEach(btn => btn.classList.remove('active'));
+            el.classList.add('active');
         }
 
-        // 3. TAMPILKAN DATA
+        function saveData() {
+            const btn = document.getElementById('submitBtn');
+            const data = {
+                to: document.getElementById('username').value.trim(),
+                mood: selectedMood,
+                link: document.getElementById('spotifyLink').value.trim(),
+                msg: document.getElementById('message').value.trim(),
+                timestamp: Date.now()
+            };
+
+            if (!data.to || !data.mood || !data.link) {
+                alert("Mohon isi username, mood, dan link lagu!");
+                return;
+            }
+
+            btn.disabled = true;
+            btn.innerText = "Mengirim...";
+
+            db.push(data).then(() => {
+                alert("Berhasil Terkirim!");
+                btn.disabled = false;
+                btn.innerText = "Kirim Lagu";
+                // Reset Form
+                document.getElementById('username').value = '';
+                document.getElementById('spotifyLink').value = '';
+                document.getElementById('message').value = '';
+            });
+        }
+
         db.on("value", (snapshot) => {
             const list = document.getElementById('songList');
             list.innerHTML = "";
             snapshot.forEach((child) => {
                 const s = child.val();
-                list.innerHTML += `<div class="song-item" data-name="${s.to}">
-                    <strong>${s.to}</strong> (${s.mood})<br>
-                    <small>${s.msg}</small><br>
-                    <a href="${s.link}" target="_blank">Dengarkan Lagu</a>
-                </div>`;
+                list.innerHTML = `
+                    <div class="song-item" data-name="${s.to.toLowerCase()}">
+                        <strong>${s.to}</strong> - <small>${s.mood}</small><br>
+                        <p style="margin:5px 0">${s.msg}</p>
+                        <a href="${s.link}" target="_blank" style="color:#ffd700">Dengarkan Lagu</a>
+                    </div>
+                ` + list.innerHTML;
             });
         });
 
-        // 4. SEARCH
         function filterSongs() {
             const query = document.getElementById('search').value.toLowerCase();
             document.querySelectorAll('.song-item').forEach(item => {
-                item.style.display = item.getAttribute('data-name').toLowerCase().includes(query) ? 'block' : 'none';
+                item.style.display = item.getAttribute('data-name').includes(query) ? 'block' : 'none';
             });
         }
     </script>
