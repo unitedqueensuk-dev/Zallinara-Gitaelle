@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Send the Song - Inside Out</title>
     
-    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -229,10 +228,10 @@
         }
 
         /* --- MOOD COLOR TAGS --- */
-        .mood-senhang { color: #ffd700 !important; }  /* Joy Yellow */
-        .mood-marah { color: #ff3333 !important; }    /* Anger Red */
-        .mood-sedih { color: #0088ff !important; }    /* Sadness Blue */
-        .mood-kecewa { color: #b19ffb !important; }   /* Ennui/Fear Purple Blend */
+        .mood-senhang { color: #ffd700 !important; }
+        .mood-marah { color: #ff3333 !important; }
+        .mood-sedih { color: #0088ff !important; }
+        .mood-kecewa { color: #b19ffb !important; }
 
         /* --- HORIZONTAL TRACK SCROLLER (MARQUEE) --- */
         .marquee-section {
@@ -263,7 +262,6 @@
             border-radius: 30px;
             padding: 8px 20px;
             font-size: 0.9rem;
-            border-left: 4px solid #ffd700;
             box-shadow: 0 4px 10px rgba(0,0,0,0.3);
         }
 
@@ -333,14 +331,11 @@
 
 <body>
 
-    <!-- VIDEO BACKGROUND -->
     <video autoplay muted loop playsinline class="video-bg">
         <source src="https://videotourl.com/videos/1780485019352-0868a29f-d876-44ca-b1f7-322c6c4baa89.mp4" type="video/mp4">
     </video>
     <div class="video-overlay"></div>
 
-
-    <!-- MENU NAVIGASI -->
     <header>
         <div class="logo">Inside Out</div>
         <ul class="nav-links" id="nav-list">
@@ -352,15 +347,12 @@
         <div class="menu-toggle" onclick="toggleMenu()">⋮</div>
     </header>
 
-
-    <!-- AREA KONTEN UTAMA -->
     <main class="container">
         <h1 class="page-title">SEND THE SONG</h1>
         <p class="page-subtitle">Kirimkan lagu Spotify rahasiamu berdasarkan emosimu saat ini kepada seseorang.</p>
 
         <div class="grid-layout">
             
-            <!-- FORMULIR INPUT KIRIM LAGU -->
             <section class="card">
                 <h2>Kirim Lagu & Pesan</h2>
                 <form id="songForm" onsubmit="sendSong(event)">
@@ -393,7 +385,6 @@
                 </form>
             </section>
 
-            <!-- KOTAK FITUR SEARCH NAMA -->
             <section class="card">
                 <h2>Cari Pesanmu</h2>
                 <div class="form-group">
@@ -408,44 +399,69 @@
         </div>
     </main>
 
-
-    <!-- HORIZONTAL TRACK RUNNING TEXT (MARQUEE) -->
     <div class="marquee-section">
         <div class="marquee-container" id="marqueeTrack">
-            <!-- Data Pesan-Pesan Giliran Masuk di Sini via Javascript -->
+            <div class="marquee-item">Memuat data dari pikiran pusat... 🧠</div>
         </div>
     </div>
-
 
     <footer>
         <p>Design & Developed By Gita & Nirvana Antonia © 2026</p>
     </footer>
 
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
+        import { getDatabase, ref, push, onValue } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-database.js";
 
-    <!-- JAVASCRIPT SISTEM LOGIKA -->
-    <script>
-        // Data Dummy Awal Biar Web Tidak Kosong Saat Pertama Kali Dibuka
-        const defaultMessages = [
-            { to: "Gita", mood: "senang", song: "https://open.spotify.com/track/4PTG3Z6ehGkBFm6gZYwR4w", text: "Makasih udah bikin project Inside Out ini bareng-bareng! 💛" },
-            { to: "Nirina", mood: "sedih", song: "https://open.spotify.com/track/1dGr1eejnwPy6w6wSgY66S", text: "Lagu melow ini pas banget didenger pas malem hari sendirian.. 💙" },
-            { to: "Riley", mood: "marah", song: "https://open.spotify.com/track/2t89I69T768wU6gZ0yW2b1", text: "Jangan biarin Anger ngambil alih konsol pusat kendali kamu ya! ❤️" }
-        ];
+        // ⚠️ GANTI PENGATURAN DI BAWAH INI DENGAN DATA DARI FIREBASE CONSOLE KAMU SENDIRI
+        const firebaseConfig = {
+            apiKey: "AIzaSyAs-CONTOH-API-KEY-KAMU",
+            authDomain: "insideout-sendsong.firebaseapp.com",
+            databaseURL: "https://insideout-sendsong-default-rtdb.firebaseio.com/", // <- Masukkan URL Realtime Database di sini
+            projectId: "insideout-sendsong",
+            storageBucket: "insideout-sendsong.appspot.com",
+            messagingSenderId: "1234567890",
+            appId: "1:1234567890:web:abcdef123456"
+        };
 
-        // Ambil data lama di browser atau gunakan data default jika kosong
-        let messageDatabase = JSON.parse(localStorage.getItem('insideOutSongs')) || defaultMessages;
+        // Inisialisasi Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+        const dbRef = ref(db, "songs");
+
+        // Database lokal di halaman web yang terus sinkron dengan cloud
+        let globalMessageDatabase = [];
 
         // Fungsi Menu Toggle HP
-        function toggleMenu() {
+        window.toggleMenu = function() {
             document.getElementById("nav-list").classList.toggle("active");
         }
 
-        // Render Awal Saat Halaman Dibuka
-        window.onload = function() {
+        // AMBIL DATA SECARA REAL-TIME DARI CLOUD DATABASE
+        // Fungsi ini otomatis terpanggil jika ada device lain yang mengirim pesan baru
+        onValue(dbRef, (snapshot) => {
+            globalMessageDatabase = [];
+            const data = snapshot.val();
+            
+            if (data) {
+                // Mengubah objek Firebase menjadi Array agar mudah difilter
+                Object.keys(data).forEach(key => {
+                    globalMessageDatabase.push(data[key]);
+                });
+            } else {
+                // Data Default jika database Firebase masih kosong melompong
+                globalMessageDatabase = [
+                    { to: "Gita", mood: "senang", song: "https://open.spotify.com", text: "Makasih udah bikin project Inside Out ini bareng-bareng! 💛" },
+                    { to: "Nirina", mood: "sedih", song: "https://open.spotify.com", text: "Lagu melow ini pas banget didenger pas malem hari sendirian.. 💙" }
+                ];
+            }
+            
             updateMarquee();
-        };
+            searchMessages(); // Update hasil pencarian otomatis jika input terisi
+        });
 
-        // Fungsi Mengirim Pesan Baru
-        function sendSong(event) {
+        // FUNGSI MENGIRIM PESAN (DIPUSH KE CLOUD)
+        window.sendSong = function(event) {
             event.preventDefault();
 
             const to = document.getElementById('toName').value.trim();
@@ -454,32 +470,29 @@
             const text = document.getElementById('messageText').value.trim();
 
             const newMessage = { to, mood, song, text };
-            messageDatabase.push(newMessage);
 
-            // Simpan ke memori lokal browser agar tak hilang pas refresh
-            localStorage.setItem('insideOutSongs', JSON.stringify(messageDatabase));
-
-            // Reset Input Form
-            document.getElementById('songForm').reset();
-
-            // Refresh Tampilan Berjalan
-            updateMarquee();
-            alert("Pesan Berhasil Terkirim ke Pusat Memori Pikiran! 🚀");
+            // Kirim langsung ke cloud database Firebase
+            push(dbRef, newMessage)
+                .then(() => {
+                    document.getElementById('songForm').reset();
+                    alert("Pesan Berhasil Terkirim ke Pusat Cloud Memori Pikiran! 🚀 Perangkat lain langsung bisa melihatnya.");
+                })
+                .catch((error) => {
+                    alert("Gagal mengirim data: " + error.message);
+                });
         }
 
-        // Fungsi Menampilkan Pesan Berjalan Secara Horizontal & Bergantian
+        // FUNGSI UPDATE RUNNING TEXT MARQUEE
         function updateMarquee() {
             const track = document.getElementById('marqueeTrack');
-            track.innerHTML = ""; // Bersihkan trek
+            track.innerHTML = ""; 
 
-            // Jika database kosong
-            if(messageDatabase.length === 0) {
-                track.innerHTML = `<div class="marquee-item">Belum ada lagu rahasia terkirim.</div>`;
+            if(globalMessageDatabase.length === 0) {
+                track.innerHTML = `<div class="marquee-item">Belum ada lagu rahasia terkirim di cloud.</div>`;
                 return;
             }
 
-            // Loop untuk memasukkan seluruh pesan bergantian ke lintasan horizontal
-            messageDatabase.forEach(item => {
+            globalMessageDatabase.forEach(item => {
                 let moodEmoji = "💛";
                 let borderColor = "#ffd700";
                 
@@ -496,8 +509,8 @@
             });
         }
 
-        // Fungsi Live Search Mencari Nama Penerima Pesan
-        function searchMessages() {
+        // FUNGSI LIVE SEARCH LOKAL DARI DATA SINKRONISASI CLOUD
+        window.searchMessages = function() {
             const query = document.getElementById('searchName').value.trim().toLowerCase();
             const resultsArea = document.getElementById('searchResultsArea');
 
@@ -506,15 +519,14 @@
                 return;
             }
 
-            // Memfilter nama yang dituju
-            const filtered = messageDatabase.filter(item => item.to.toLowerCase().includes(query));
+            const filtered = globalMessageDatabase.filter(item => item.to.toLowerCase().includes(query));
 
             if(filtered.length === 0) {
                 resultsArea.innerHTML = `<p class="no-result">Ups, belum ada pesan atau lagu khusus untuk nama "${document.getElementById('searchName').value}".</p>`;
                 return;
             }
 
-            resultsArea.innerHTML = ""; // Bersihkan hasil lama
+            resultsArea.innerHTML = ""; 
             filtered.forEach(item => {
                 let moodName = "Senang 💛";
                 if(item.mood === "marah") moodName = "Marah ❤️";
