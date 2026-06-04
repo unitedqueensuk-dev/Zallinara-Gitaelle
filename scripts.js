@@ -3,30 +3,45 @@
         var navList = document.getElementById("nav-list");
         navList.classList.toggle("active");
     }
-    // 1. Inisialisasi Firebase
-const firebaseConfig = {
-    // ... API Key kamu ...
-};
+   // Konfigurasi Firebase
+const firebaseConfig = { databaseURL: "https://PROJECT-ID-KAMU.firebaseio.com/" };
 firebase.initializeApp(firebaseConfig);
-const db = firebase.database().ref('songs'); // Pastikan path-nya sama
+const db = firebase.database().ref("songs");
 
-// 2. Fungsi untuk mengambil dan menampilkan data (Realtime)
+// Mengambil data dari Firebase
 db.on("value", (snapshot) => {
     const list = document.getElementById('songList');
-    list.innerHTML = "";
+    list.innerHTML = ""; // Bersihkan list
+    
     snapshot.forEach((child) => {
         const s = child.val();
-        list.innerHTML += `
-            <div class="song-item" data-name="${s.to.toLowerCase()}">
-                <strong>Tujuan: ${s.to}</strong><br>
-                <a href="${s.link}" target="_blank">Dengarkan Lagu</a>
-            </div>
+        // Buat kartu pesan
+        const card = document.createElement('div');
+        card.className = 'song-card';
+        card.setAttribute('data-name', s.to.toLowerCase()); // Untuk search
+        
+        card.innerHTML = `
+            <div class="header">To: <strong>${s.to}</strong></div>
+            <div class="message">${s.msg}</div>
+            <div class="footer">🎵 ${s.mood}</div>
         `;
+        list.appendChild(card);
     });
 });
 
-// 3. Fungsi untuk mengirim data (Contoh)
-function kirimData() {
-    // ... kode untuk .push() ke database ...
+// Fungsi Search
+function filterSongs() {
+    const input = document.getElementById('searchInput').value.toLowerCase();
+    const cards = document.getElementsByClassName('song-card');
+    
+    for (let card of cards) {
+        const name = card.getAttribute('data-name');
+        if (name.includes(input)) {
+            card.style.display = "block";
+        } else {
+            card.style.display = "none";
+        }
+    }
+}
 }
 </script>
