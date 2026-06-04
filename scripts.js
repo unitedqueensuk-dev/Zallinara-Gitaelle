@@ -4,49 +4,50 @@
         navList.classList.toggle("active");
 
 } 
-    <!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <title>Inside Out - Send the Song</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
+    const firebaseConfig = {
+    databaseURL: "https://PROJECT-KAMU-default-rtdb.firebaseio.com/"
+};
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database().ref("songs");
 
-    <div class="container">
-        <h1>Send the Song</h1>
+function kirimPesan() {
+    const data = {
+        nama: document.getElementById('targetName').value,
+        mood: document.getElementById('moodSelect').value,
+        link: document.getElementById('spotifyLink').value,
+        pesan: document.getElementById('message').value
+    };
 
-        <div class="input-card">
-            <input type="text" id="targetName" placeholder="Nama yang dituju...">
-            
-            <div class="mood-selector">
-                <p>Pilih Mood:</p>
-                <select id="moodSelect">
-                    <option value="Joy 💛">Joy 💛</option>
-                    <option value="Sadness 💙">Sadness 💙</option>
-                    <option value="Anger ❤️">Anger ❤️</option>
-                    <option value="Envy 💚">Envy 💚</option>
-                </select>
+    if(!data.nama || !data.link) return alert("Isi semua data ya!");
+
+    db.push(data).then(() => {
+        alert("Pesan Terkirim!");
+        document.getElementById('targetName').value = '';
+        document.getElementById('spotifyLink').value = '';
+        document.getElementById('message').value = '';
+    });
+}
+
+db.on("value", (snapshot) => {
+    const list = document.getElementById('pesanList');
+    list.innerHTML = "";
+    snapshot.forEach((child) => {
+        const s = child.val();
+        list.innerHTML += `
+            <div class="pesan-card" data-nama="${s.nama.toLowerCase()}">
+                <strong>Kepada: ${s.nama}</strong><br>
+                <span>Mood: ${s.mood}</span>
+                <p>${s.pesan}</p>
+                <a href="${s.link}" target="_blank" style="color: yellow;">Dengarkan Lagu</a>
             </div>
+        `;
+    });
+});
 
-            <input type="text" id="songLink" placeholder="Link Spotify (https://...)">
-            <textarea id="message" placeholder="Tulis pesanmu..."></textarea>
-            <button onclick="kirimData()">Kirim Lagu</button>
-        </div>
-
-        <hr>
-
-        <div class="search-box">
-            <input type="text" id="searchInput" placeholder="Cari pesan untuk seseorang..." onkeyup="filterSongs()">
-        </div>
-
-        <div id="songList" class="grid-container">
-            </div>
-    </div>
-
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
-    <script src="script.js"></script>
-</body>
-</html>
+function filterPesan() {
+    const query = document.getElementById('searchInput').value.toLowerCase();
+    document.querySelectorAll('.pesan-card').forEach(card => {
+        card.style.display = card.getAttribute('data-nama').includes(query) ? "block" : "none";
+    });
+}
 </script>
