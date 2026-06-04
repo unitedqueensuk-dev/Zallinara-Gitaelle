@@ -362,15 +362,15 @@
             
             <!-- FORMULIR INPUT KIRIM LAGU -->
             <section class="card">
-                <h2>Kirim Lagu & Pesan</h2>
+                <h2>send your message</h2>
                 <form id="songForm" onsubmit="sendSong(event)">
                     <div class="form-group">
-                        <label for="toName">Nama yang Dituju</label>
+                        <label for="toName">targetName</label>
                         <input type="text" id="toName" class="form-control" placeholder="Contoh: Riley, Gita, Nirina..." required>
                     </div>
                     
                     <div class="form-group">
-                        <label for="songMood">Pilih Mood Lagu</label>
+                        <label for="songMood">moodSelect</label>
                         <select id="songMood" class="form-control" required>
                             <option value="senang" class="mood-senhang">Joy 💛 (Senang)</option>
                             <option value="marah" class="mood-marah">Anger ❤️ (Marah)</option>
@@ -380,12 +380,12 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="spotifyUrl">Link Lagu dari Spotify</label>
+                        <label for="spotifyUrl">spotifyLink</label>
                         <input type="url" id="spotifyUrl" class="form-control" placeholder="https://open.spotify.com/track/..." required>
                     </div>
 
                     <div class="form-group">
-                        <label for="messageText">Pesan Buat Seseorang</label>
+                        <label for="messageText">message</label>
                         <textarea id="messageText" class="form-control" rows="3" placeholder="Tulis ungkapan perasaan rahasiamu di sini..." required></textarea>
                     </div>
 
@@ -418,7 +418,7 @@
 
 
     <footer>
-        <p>Design & Developed By Gita & Nirvana Antonia © 2026</p>
+        <p>Design & Developed By Allisa, Gita, Nirina & Zahra © 2026</p>
     </footer>
 
 
@@ -431,8 +431,7 @@
             { to: "Riley", mood: "marah", song: "https://open.spotify.com/track/2t89I69T768wU6gZ0yW2b1", text: "Jangan biarin Anger ngambil alih konsol pusat kendali kamu ya! ❤️" }
         ];
 
-        // Ambil data lama di browser atau gunakan data default jika kosong
-        let messageDatabase = JSON.parse(localStorage.getItem('insideOutSongs')) || defaultMessages;
+
 
         // Fungsi Menu Toggle HP
         function toggleMenu() {
