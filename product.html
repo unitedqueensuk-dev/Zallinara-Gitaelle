@@ -446,25 +446,44 @@
 
         // Fungsi Mengirim Pesan Baru
         function sendSong(event) {
-            event.preventDefault();
+            event.preventDefault()
 
-            const to = document.getElementById('toName').value.trim();
-            const mood = document.getElementById('songMood').value;
-            const song = document.getElementById('spotifyUrl').value.trim();
-            const text = document.getElementById('messageText').value.trim();
+```
+const from = document.getElementById('fromName').value.trim();
+const to = document.getElementById('toName').value.trim();
+const mood = document.getElementById('songMood').value;
+const song = document.getElementById('spotifyUrl').value.trim();
+const text = document.getElementById('messageText').value.trim();
 
-            const newMessage = { to, mood, song, text };
-            messageDatabase.push(newMessage);
+if(!from || !to || !song || !text){
+    alert("Lengkapi semua data terlebih dahulu!");
+    return;
+}
 
-            // Simpan ke memori lokal browser agar tak hilang pas refresh
-            localStorage.setItem('insideOutSongs', JSON.stringify(messageDatabase));
+const newMessage = {
+    from,
+    to,
+    mood,
+    song,
+    text
+};
 
-            // Reset Input Form
-            document.getElementById('songForm').reset();
+messageDatabase.push(newMessage);
 
-            // Refresh Tampilan Berjalan
-            updateMarquee();
-            alert("Pesan Berhasil Terkirim ke Pusat Memori Pikiran! 🚀");
+localStorage.setItem(
+    'insideOutSongs',
+    JSON.stringify(messageDatabase)
+);
+
+document.getElementById('songForm').reset();
+
+updateMarquee();
+
+alert("💛 Memory berhasil dikirim!");
+```
+
+}
+
         }
 
         // Fungsi Menampilkan Pesan Berjalan Secara Horizontal & Bergantian
@@ -489,7 +508,7 @@
 
                 const itemHtml = `
                     <div class="marquee-item" style="border-left: 4px solid ${borderColor}">
-                        <strong>Untuk: ${item.to}</strong> ${moodEmoji} - "${item.text}"
+                   <strong>${item.from}</strong> ➜ <strong>${item.to}</strong>
                     </div>
                 `;
                 track.innerHTML += itemHtml;
@@ -524,12 +543,24 @@
                 const element = `
                     <div class="result-box ${item.mood}">
                         <div class="result-meta">
+    <span>Dari: <strong>${item.from}</strong></span>
+</div>
+<span>Kepada: <strong>${item.to}</strong></span>
                             <span>Mood: <strong>${moodName}</strong></span>
                             <span>Kepada: <strong>${item.to}</strong></span>
                         </div>
                         <p class="result-msg">"${item.text}"</p>
                         <a href="${item.song}" target="_blank" class="spotify-btn">🎵 Buka di Spotify ↗</a>
                     </div>
+                    <div class="form-group">
+    <label for="fromName">Username IG Pengirim</label>
+    <input
+        type="text"
+        id="fromName"
+        class="form-control"
+        placeholder="@username_pengirim"
+        required>
+</div>
                 `;
                 resultsArea.innerHTML += element;
             });
