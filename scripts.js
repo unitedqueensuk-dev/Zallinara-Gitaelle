@@ -1,30 +1,62 @@
+// Ganti bagian ini dengan konfigurasi dari Firebase Console
+const firebaseConfig = {
+    databaseURL: "https://project-kamu.firebaseio.com/" 
+};
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database().ref("semua_pesan"); // 'semua_pesan' adalah nama papan pengumumanmu
+// Ganti bagian pengiriman pesan
+function kirimPesan() {
+    const data = {
+        nama: document.getElementById('targetName').value,
+        // ... ambil data lainnya ...
+    };
+
+    // Kirim ke server (Papan Pengumuman)
+    db.push(data).then(() => {
+        alert("Pesan sudah dipajang di papan pengumuman!");
+    });
+}
+// Database selalu memantau (listen)
+db.on("value", (snapshot) => {
+    const list = document.getElementById('pesanList');
+    list.innerHTML = ""; // Bersihkan list
+    
+    // Ambil semua data yang ada di server
+    snapshot.forEach((child) => {
+        const s = child.val();
+        list.innerHTML += `<div>Kepada: ${s.nama} - Pesan: ${s.pesan}</div>`;
+    });
+});
+
 <script>
+
     function toggleMenu() {
         var navList = document.getElementById("nav-list");
         navList.classList.toggle("active");
 
 } 
     const firebaseConfig = {
-    databaseURL: "https://PROJECT-KAMU-default-rtdb.firebaseio.com/"
+    databaseURL: "https://send-the-song-default-rtdb.firebaseio.com/"
 };
+// Jangan lupa pastikan kamu memanggil inisialisasi ini di bawahnya:
 firebase.initializeApp(firebaseConfig);
-const db = firebase.database().ref("songs");
+const db = firebase.database().ref("songs"); // "songs" adalah nama folder di database kamu
 
 function kirimPesan() {
     const data = {
-        nama: document.getElementById('targetName').value,
-        mood: document.getElementById('moodSelect').value,
-        link: document.getElementById('spotifyLink').value,
-        pesan: document.getElementById('message').value
+        nama: document.getElementById('Nama yang Dituju').value,
+        mood: document.getElementById('Pilih Mood Lagu').value,
+        link: document.getElementById('Link Lagu dari Spotify').value,
+        pesan: document.getElementById('Pesan Buat Seseorang').value
     };
 
     if(!data.nama || !data.link) return alert("Isi semua data ya!");
 
     db.push(data).then(() => {
         alert("Pesan Terkirim!");
-        document.getElementById('targetName').value = '';
-        document.getElementById('spotifyLink').value = '';
-        document.getElementById('message').value = '';
+        document.getElementById('Nama yang Dituju').value = '';
+        document.getElementById('Link Lagu dari Spotify').value = '';
+        document.getElementById('Pesan Buat Seseorang').value = '';
     });
 }
 
