@@ -3,117 +3,89 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Send the Song - Inside Out</title>
+    <title>Inside Out - Send the Song</title>
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
     <style>
-        body { font-family: 'Poppins', sans-serif; background: #050716; color: #fff; margin: 0; padding: 20px; }
-        .card { background: rgba(11, 17, 44, 0.8); border: 1px solid #ffd700; border-radius: 15px; padding: 20px; margin-bottom: 20px; }
-        .form-control { width: 100%; padding: 10px; margin: 10px 0; border-radius: 5px; border: none; }
-        .btn-send { width: 100%; padding: 12px; background: #ffd700; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; color: #000; }
-        .result-box { background: rgba(255,255,255,0.05); padding: 15px; border-radius: 10px; margin-bottom: 10px; border-left: 4px solid #ffd700; }
-        
-        /* Style Autocomplete */
-        .autocomplete-items { border: 1px solid #ffd700; border-top: none; cursor: pointer; background: #1a1d3a; max-height: 150px; overflow-y: auto; }
-        .autocomplete-items div { padding: 10px; border-bottom: 1px solid #000; }
-        .autocomplete-items div:hover { background: #ffd700; color: #000; }
-
-        .marquee-section { overflow: hidden; background: #000; padding: 15px; border-radius: 5px; color: #ffd700; font-weight: bold; }
+        body { font-family: 'Poppins', sans-serif; background: #050716; color: white; padding: 20px; text-align: center; }
+        .card { max-width: 500px; margin: 20px auto; background: rgba(255,255,255,0.05); padding: 20px; border-radius: 15px; border: 1px solid #ffd700; }
+        input, textarea { width: 100%; padding: 10px; margin: 5px 0; border-radius: 8px; border: none; background: #1a1e35; color: white; }
+        button { background: #ffd700; color: #050716; padding: 10px 20px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; }
+        .mood-box { display: flex; justify-content: space-around; margin: 10px 0; }
+        .mood-btn { cursor: pointer; padding: 5px; border: 2px solid transparent; border-radius: 5px; }
+        .mood-btn.active { border-color: white; }
+        .song-item { border-bottom: 1px solid #333; padding: 10px; text-align: left; }
     </style>
 </head>
 <body>
 
-    <h1 style="text-align: center; color: #ffd700;">SEND THE SONG</h1>
-
+    <h1>Send the Song</h1>
+    
+    <!-- FORM INPUT -->
     <div class="card">
-        <h3>Kirim Pesan</h3>
-        <input type="text" id="toName" class="form-control" placeholder="Username IG (@gitaa)">
-        
-        <input type="text" id="songInput" class="form-control" placeholder="Ketik judul lagu (Indo/Barat)..." oninput="showSuggestions()">
-        <div id="suggestions" class="autocomplete-items"></div>
-        <input type="hidden" id="selectedSongId">
-        <input type="hidden" id="selectedSongTitle">
-
-        <textarea id="messageText" class="form-control" placeholder="Pesanmu..."></textarea>
-        <button class="btn-send" onclick="sendSong()">Kirim Sekarang</button>
+        <input type="text" id="username" placeholder="Username IG Tujuan">
+        <div class="mood-box" id="moodSelector">
+            <div class="mood-btn" onclick="selectMood('Joy 💛')">Joy 💛</div>
+            <div class="mood-btn" onclick="selectMood('Sadness 💙')">Sadness 💙</div>
+            <div class="mood-btn" onclick="selectMood('Anger ❤️')">Anger ❤️</div>
+            <div class="mood-btn" onclick="selectMood('Envy 💚')">Envy 💚</div>
+        </div>
+        <input type="text" id="spotifyLink" placeholder="Link Spotify">
+        <textarea id="message" placeholder="Pesan..."></textarea>
+        <button onclick="saveData()">Kirim Lagu</button>
     </div>
 
+    <!-- SEARCH & LIST -->
     <div class="card">
-        <h3>Pesan Terkirim</h3>
-        <input type="text" id="searchName" class="form-control" placeholder="Cari username..." oninput="displayMessages()">
-        <div id="resultsArea"></div>
-    </div>
-
-    <div class="marquee-section">
-        <marquee id="marqueeTrack"></marquee>
+        <input type="text" id="search" placeholder="Cari nama tujuan..." onkeyup="filterSongs()">
+        <div id="songList"></div>
     </div>
 
     <script>
-        const databaseURL = "https://inside-out-sendthesong-default-rtdb.asia-southeast1.firebasedatabase.app/songs.json";
-        
-        // DAFTAR LAGU VIRAL (Bisa kamu tambah sendiri sebanyak mungkin di sini)
-        const songLibrary = [
-            {t: "Bernadya - Untungnya, Hidup Harus Tetap Berjalan", id: "0w7vTHZmsIhXg8wJ"},
-            {t: "Bernadya - Kata Mereka Ini Berlebihan", id: "6vN7wZ8w7vTHZmsIh"},
-            {t: "Mahalini - Sial", id: "5Z27wz0w7vTHZmsIh"},
-            {t: "Joji - Glimpse of Us", id: "6vN7wZ8w7vTHZmsIhX"},
-            {t: "Bruno Mars - Die With A Smile", id: "2plbrEY59I6v9gE9Z7w"},
-            {t: "Nadhif Basalamah - Penjaga Hati", id: "3wV7wZ8w7vTHZmsIhX"},
-            {t: "Taylor Swift - Cruel Summer", id: "1Bv9gE9Z7w36C2plbrE"},
-            {t: "Billie Eilish - BIRDS OF A FEATHER", id: "6dOtXwX8w7vTHZmsIh"},
-            {t: "Pharrell Williams - Happy", id: "60nZ9UnZgcWWIGXUZg9"}
-        ];
+        // 1. SETUP FIREBASE (Ganti dengan config punyamu)
+        const firebaseConfig = {
+            databaseURL: "https://YOUR_PROJECT_ID.firebasedatabase.app/"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database().ref("songs");
 
-        function showSuggestions() {
-            const input = document.getElementById("songInput").value.toLowerCase();
-            const list = document.getElementById("suggestions");
-            list.innerHTML = "";
-            if(!input) return;
-            
-            songLibrary.filter(s => s.t.toLowerCase().includes(input)).forEach(s => {
-                let div = document.createElement("div");
-                div.innerHTML = s.t;
-                div.onclick = () => {
-                    document.getElementById("songInput").value = s.t;
-                    document.getElementById("selectedSongId").value = s.id;
-                    document.getElementById("selectedSongTitle").value = s.t;
-                    list.innerHTML = "";
-                };
-                list.appendChild(div);
-            });
-        }
+        let selectedMood = '';
+        function selectMood(m) { selectedMood = m; alert("Mood: " + m); }
 
-        function sendSong() {
+        // 2. SIMPAN KE DATABASE
+        function saveData() {
             const data = {
-                to: document.getElementById('toName').value,
-                songId: document.getElementById('selectedSongId').value,
-                songTitle: document.getElementById('selectedSongTitle').value,
-                text: document.getElementById('messageText').value
+                to: document.getElementById('username').value,
+                mood: selectedMood,
+                link: document.getElementById('spotifyLink').value,
+                msg: document.getElementById('message').value
             };
-            fetch(databaseURL, {method: "POST", body: JSON.stringify(data)}).then(() => {
-                alert("Berhasil!");
-                fetchOnlineMessages();
-            });
+            db.push(data);
+            alert("Berhasil Terkirim!");
         }
 
-        function fetchOnlineMessages() {
-            fetch(databaseURL + "?timestamp=" + new Date().getTime())
-            .then(res => res.json())
-            .then(data => {
-                let msgs = data ? Object.values(data) : [];
-                let area = document.getElementById('resultsArea');
-                area.innerHTML = "";
-                
-                msgs.reverse().forEach(m => {
-                    area.innerHTML += `<div class="result-box">
-                        <p><strong>${m.to}</strong>: ${m.text}</p>
-                        <iframe src="https://open.spotify.com/embed/track/${m.songId}" width="100%" height="80" frameborder="0"></iframe>
-                    </div>`;
-                });
-                document.getElementById('marqueeTrack').innerHTML = msgs.map(m => ` 🎵 ${m.songTitle} untuk ${m.to} | `).join("");
+        // 3. TAMPILKAN DATA
+        db.on("value", (snapshot) => {
+            const list = document.getElementById('songList');
+            list.innerHTML = "";
+            snapshot.forEach((child) => {
+                const s = child.val();
+                list.innerHTML += `<div class="song-item" data-name="${s.to}">
+                    <strong>${s.to}</strong> (${s.mood})<br>
+                    <small>${s.msg}</small><br>
+                    <a href="${s.link}" target="_blank">Dengarkan Lagu</a>
+                </div>`;
+            });
+        });
+
+        // 4. SEARCH
+        function filterSongs() {
+            const query = document.getElementById('search').value.toLowerCase();
+            document.querySelectorAll('.song-item').forEach(item => {
+                item.style.display = item.getAttribute('data-name').toLowerCase().includes(query) ? 'block' : 'none';
             });
         }
-
-        setInterval(fetchOnlineMessages, 3000);
-        fetchOnlineMessages();
     </script>
 </body>
 </html>
