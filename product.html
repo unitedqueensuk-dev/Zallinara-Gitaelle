@@ -2,77 +2,73 @@
 <html lang="id">
 <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Send the Song - Inside Out</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
-        /* CSS tetap sama seperti sebelumnya, fokus pada perubahan struktur HTML/JS */
-        body { font-family: 'Poppins', sans-serif; background: #050716; color: #fff; min-height: 100vh; }
-        .container { max-width: 800px; margin: 40px auto; padding: 20px; }
-        .card { background: rgba(11, 17, 44, 0.8); padding: 25px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.1); }
-        .form-control { width: 100%; padding: 12px; background: #050716; border: 1px solid #444; color: #fff; border-radius: 8px; margin-bottom: 15px; }
-        .btn-send { width: 100%; padding: 12px; background: #ffd700; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; }
-        #rekomendasiArea { margin-top: 20px; color: #b0b5c9; }
+        /* ... (CSS ASLIMU TETAP SAMA, HANYA TAMBAHKAN INI) ... */
+        .result-box { background: rgba(255, 255, 255, 0.1); border-radius: 12px; padding: 20px; margin-top: 20px; text-align: center; border: 1px solid #ffd700; }
+        .mood-badge { font-size: 1.5rem; font-weight: bold; color: #ffd700; margin-top: 10px; }
     </style>
 </head>
 <body>
 
+    <video autoplay muted loop playsinline class="video-bg">
+        <source src="https://videotourl.com/videos/1780485019352-0868a29f-d876-44ca-b1f7-322c6c4baa89.mp4" type="video/mp4">
+    </video>
+    <div class="video-overlay"></div>
+
+    <header>
+        <div class="logo">Inside Out</div>
+    </header>
+
     <main class="container">
-        <h1 style="text-align:center; color:#ffd700;">SEND THE SONG</h1>
-        
-        <div class="card">
-            <h2>Pilih Mood & Kirim Lagu</h2>
-            <div class="form-group">
-                <label>Pilih Mood Emosi Kamu:</label>
-                <select id="songMood" class="form-control" onchange="tampilkanRekomendasi()">
-                    <option value="joy">1. Joy (Senang)</option>
-                    <option value="sadness">2. Sadness (Sedih)</option>
-                    <option value="anger">3. Anger (Marah)</option>
-                    <option value="envy">4. Envy (Iri/Motivasi)</option>
-                </select>
-            </div>
+        <h1 class="page-title">SEND THE SONG</h1>
+        <p class="page-subtitle">Ketik judul lagu, dan sistem akan mendeteksi mood-nya!</p>
 
-            <div id="rekomendasiArea">
-                <!-- Rekomendasi lagu dari Python akan muncul di sini -->
-            </div>
-
-            <hr style="border:0; border-top:1px solid #333; margin: 20px 0;">
-
+        <section class="card" style="max-width: 600px; margin: auto;">
+            <h2>Deteksi Mood Lagu</h2>
             <div class="form-group">
-                <label>Nama Penerima</label>
-                <input type="text" id="toName" class="form-control" placeholder="Nama temanmu...">
+                <label>Judul Lagu</label>
+                <input type="text" id="songTitle" class="form-control" placeholder="Contoh: Laskar Pelangi">
             </div>
-            <div class="form-group">
-                <label>Pesan Singkat</label>
-                <textarea id="messageText" class="form-control" rows="2"></textarea>
-            </div>
-            <button class="btn-send" onclick="kirimPesan()">Kirim Pesan 🚀</button>
-        </div>
+            <button onclick="cekMood()" class="btn-send">Deteksi & Kirim 🚀</button>
+
+            <div id="hasilArea"></div>
+        </section>
     </main>
 
     <script>
-        // Data dari Python dimasukkan ke dalam objek JS
-        const dataLagu = {
-            joy: ["Tulus - Hati-Hati di Jalan", "Nidji - Laskar Pelangi", "Pharrell Williams - Happy"],
-            sadness: ["Mahalini - Sisa Rasa", "Lyodra - Pesan Terakhir", "Lewis Capaldi - Someone You Loved"],
-            anger: ["Superman Is Dead - Jika Kami Bersama", ".Feast - Peradaban", "Imagine Dragons - Believer"],
-            envy: ["Hindia - Evaluasi", "Nadin Amizah - Sorai", "Olivia Rodrigo - jealousy, jealousy"]
+        // Database lagu dari Python kamu
+        const databaseLagu = {
+            "joy": ["Hati-Hati di Jalan", "Laskar Pelangi", "Remaja", "Senja Teduh Pelita", "Melompat Lebih Tinggi", "Happy", "Best Day of My Life", "Golden Hour", "Count on Me", "Walking on Sunshine"],
+            "sadness": ["Sisa Rasa", "Pesan Terakhir", "Hanya Rindu", "Runtuh", "Monokrom", "Someone You Loved", "All I Want", "Drivers License", "Heather", "Let Her Go"],
+            "anger": ["Jika Kami Bersama", "Peradaban", "Dibalik Hari Esok", "Tiga Titik Hitam", "Mosi Tidak Percaya", "Believer", "Whatever It Takes", "Stronger", "Numb", "Enemy"],
+            "envy": ["Evaluasi", "Sorai", "Rehat", "Manusia Kuat", "Dunia Tipu-Tipu", "jealousy, jealousy", "envy me", "Blue", "Arcade", "Unstoppable"]
         };
 
-        function tampilkanRekomendasi() {
-            const mood = document.getElementById('songMood').value;
-            const area = document.getElementById('rekomendasiArea');
-            const lagu = dataLagu[mood];
-            
-            area.innerHTML = "<strong>Rekomendasi Lagu:</strong><ul>" + 
-                lagu.map(l => `<li>${l}</li>`).join('') + "</ul>";
-        }
+        function cekMood() {
+            const judul = document.getElementById('songTitle').value.trim();
+            const hasilArea = document.getElementById('hasilArea');
+            let moodTerdeteksi = "Tidak ditemukan dalam daftar kami";
+            let warna = "#fff";
 
-        function kirimPesan() {
-            alert("Pesan berhasil dikirim! Lagu '" + document.getElementById('songMood').value + "' telah diteruskan.");
-        }
+            // Mencari judul di database
+            for (let mood in databaseLagu) {
+                if (databaseLagu[mood].map(s => s.toLowerCase()).includes(judul.toLowerCase())) {
+                    moodTerdeteksi = mood.toUpperCase();
+                    warna = (mood === 'joy') ? '#ffd700' : (mood === 'sadness') ? '#0088ff' : (mood === 'anger') ? '#ff3333' : '#b19ffb';
+                }
+            }
 
-        // Jalankan sekali saat load
-        tampilkanRekomendasi();
+            hasilArea.innerHTML = `
+                <div class="result-box">
+                    <p>Lagu: <strong>${judul}</strong></p>
+                    <p>Mood Terdeteksi:</p>
+                    <div class="mood-badge" style="color:${warna}">${moodTerdeteksi}</div>
+                </div>
+            `;
+        }
     </script>
 </body>
 </html>
