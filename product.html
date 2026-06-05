@@ -1,93 +1,65 @@
-<!doctype html>
-<html lang="id">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Send the Song - Inside Out</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
-    
-    <style>
-        /* --- STYLING ASLI KAMU --- */
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: 'Poppins', sans-serif; color: #ffffff; min-height: 100vh; background: #050716; }
-        .video-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2; }
-        .video-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(5, 7, 22, 0.65); z-index: -1; }
-        
-        /* Navbar & Container */
-        header { display: flex; justify-content: space-between; align-items: center; padding: 20px 40px; background: rgba(11, 17, 44, 0.75); backdrop-filter: blur(10px); position: sticky; top: 0; z-index: 100; border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
-        .logo { font-family: 'Cinzel', serif; font-size: 1.4rem; font-weight: 700; color: #ffd700; }
-        .nav-links { display: none; flex-direction: column; position: absolute; top: 70px; right: 20px; background: rgba(11, 17, 44, 0.95); border-radius: 8px; padding: 15px; text-align: right; }
-        .nav-links.active { display: flex; }
-        .menu-toggle { font-size: 1.8rem; cursor: pointer; color: #ffd700; }
-        
-        .container { max-width: 600px; margin: 40px auto; padding: 20px; }
-        .card { background: rgba(11, 17, 44, 0.8); padding: 25px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(10px); }
-        .form-control { width: 100%; padding: 12px; background: rgba(5, 7, 22, 0.6); border: 1px solid #444; color: #fff; border-radius: 8px; margin-bottom: 15px; }
-        .btn-send { width: 100%; padding: 12px; background: linear-gradient(135deg, #ffd700 0%, #ff8c00 100%); border: none; border-radius: 8px; font-weight: 600; cursor: pointer; color: #050716; }
-        #rekomendasiArea { margin: 20px 0; color: #b0b5c9; background: rgba(255,255,255,0.05); padding: 15px; border-radius: 8px; }
-    </style>
-</head>
-<body>
+mood_data = {
+    "1": {
+        "nama": "Joy",
+        "makna": "Joy adalah perasaan bahagia, semangat, optimis, dan penuh energi positif.",
+        "lagu": [
+            "Tulus - Hati-Hati di Jalan",
+            "Nidji - Laskar Pelangi",
+            "Pharrell Williams - Happy"
+        ]
+    },
+    "2": {
+        "nama": "Sadness",
+        "makna": "Sadness adalah perasaan sedih, kecewa, kehilangan, atau terluka.",
+        "lagu": [
+            "Mahalini - Sisa Rasa",
+            "Lyodra - Pesan Terakhir",
+            "Lewis Capaldi - Someone You Loved"
+        ]
+    },
+    "3": {
+        "nama": "Anger",
+        "makna": "Anger adalah perasaan marah, kesal, atau frustrasi saat menghadapi sesuatu yang tidak sesuai harapan.",
+        "lagu": [
+            "Superman Is Dead - Jika Kami Bersama",
+            ".Feast - Peradaban",
+            "Imagine Dragons - Believer"
+        ]
+    },
+    "4": {
+        "nama": "Envy",
+        "makna": "Envy adalah perasaan iri terhadap kelebihan atau pencapaian orang lain dan dapat dijadikan motivasi untuk berkembang.",
+        "lagu": [
+            "Hindia - Evaluasi",
+            "Nadin Amizah - Sorai",
+            "Olivia Rodrigo - jealousy, jealousy"
+        ]
+    }
+}
 
-    <video autoplay muted loop playsinline class="video-bg">
-        <source src="https://videotourl.com/videos/1780485019352-0868a29f-d876-44ca-b1f7-322c6c4baa89.mp4" type="video/mp4">
-    </video>
-    <div class="video-overlay"></div>
+print("=================================")
+print("      INSIDE OUT MUSIC MOOD")
+print("=================================")
+print()
+print("Hai teman-teman!")
+print("Di sini ada beberapa pilihan mood:")
+print("1. Joy")
+print("2. Sadness")
+print("3. Anger")
+print("4. Envy")
+print()
 
-    <header>
-        <div class="logo">Inside Out</div>
-        <ul class="nav-links" id="nav-list">
-            <li><a href="index.html" style="color:white; text-decoration:none;">Home</a></li>
-        </ul>
-        <div class="menu-toggle" onclick="toggleMenu()">⋮</div>
-    </header>
+pilihan = input("Pilih mood (1-4): ")
 
-    <main class="container">
-        <div class="card">
-            <h2 style="color: #ffd700; margin-bottom: 20px;">Pilih Mood & Kirim Lagu</h2>
-            
-            <label>Pilih Mood Emosi Kamu:</label>
-            <select id="songMood" class="form-control" onchange="tampilkanRekomendasi()">
-                <option value="joy">1. Joy (Senang)</option>
-                <option value="sadness">2. Sadness (Sedih)</option>
-                <option value="anger">3. Anger (Marah)</option>
-                <option value="envy">4. Envy (Iri/Motivasi)</option>
-            </select>
+if pilihan in mood_data:
+    data = mood_data[pilihan]
 
-            <div id="rekomendasiArea"></div>
+    print("\nMood:", data["nama"])
+    print("Makna:", data["makna"])
 
-            <label>Nama Penerima</label>
-            <input type="text" id="toName" class="form-control" placeholder="Nama temanmu...">
-            
-            <label>Pesan Singkat</label>
-            <textarea id="messageText" class="form-control" rows="2"></textarea>
-            
-            <button class="btn-send" onclick="kirimPesan()">Kirim Pesan 🚀</button>
-        </div>
-    </main>
+    print("\nRekomendasi Lagu:")
+    for lagu in data["lagu"]:
+        print("-", lagu)
 
-    <script>
-        const dataLagu = {
-            joy: ["Tulus - Hati-Hati di Jalan", "Nidji - Laskar Pelangi", "Pharrell Williams - Happy"],
-            sadness: ["Mahalini - Sisa Rasa", "Lyodra - Pesan Terakhir", "Lewis Capaldi - Someone You Loved"],
-            anger: ["Superman Is Dead - Jika Kami Bersama", ".Feast - Peradaban", "Imagine Dragons - Believer"],
-            envy: ["Hindia - Evaluasi", "Nadin Amizah - Sorai", "Olivia Rodrigo - jealousy, jealousy"]
-        };
-
-        function toggleMenu() { document.getElementById("nav-list").classList.toggle("active"); }
-
-        function tampilkanRekomendasi() {
-            const mood = document.getElementById('songMood').value;
-            const area = document.getElementById('rekomendasiArea');
-            area.innerHTML = "<strong>Rekomendasi Lagu:</strong><ul>" + 
-                dataLagu[mood].map(l => `<li>${l}</li>`).join('') + "</ul>";
-        }
-
-        function kirimPesan() {
-            alert("Pesan berhasil dikirim ke " + document.getElementById('toName').value + "!");
-        }
-
-        tampilkanRekomendasi();
-    </script>
-</body>
-</html>
+else:
+    print("Pilihan tidak tersedia. Silakan pilih angka 1-4.")
