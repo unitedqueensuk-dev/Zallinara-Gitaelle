@@ -1,1 +1,92 @@
-https://colab.research.google.com/drive/1gEAG4PbUWGVRU_Q35PkrDaXV-eBsNuEV?usp=sharing
+print("=================================")
+print("      INSIDE OUT MUSIC MOOD")
+print("=================================")
+print()
+print("Hai teman-teman! 👋")
+print("Di sini ada beberapa pilihan mood:")
+print("1. Joy 😊")
+print("2. Sadness 😢")
+print("3. Anger 😡")
+print("4. Envy 💚")
+print()
+
+pilihan = input("Pilih mood (1-4): ")
+
+if pilihan == "1":
+    print("\n😊 JOY")
+    print("Makna:")
+    print("Joy adalah perasaan bahagia, semangat, optimis, dan penuh energi positif.")
+    
+    print("\nRekomendasi Lagu Indonesia:")
+    print("1. Tulus - Hati-Hati di Jalan")
+    print("2. Nidji - Laskar Pelangi")
+    print("3. HIVI! - Remaja")
+    print("4. MALIQ & D'Essentials - Senja Teduh Pelita")
+    print("5. Sheila On 7 - Melompat Lebih Tinggi")
+    
+    print("\nRekomendasi Lagu Barat:")
+    print("6. Happy - Pharrell Williams")
+    print("7. Best Day of My Life - American Authors")
+    print("8. Golden Hour - JVKE")
+    print("9. Count on Me - Bruno Mars")
+    print("10. Walking on Sunshine - Katrina & The Waves")
+
+elif pilihan == "2":
+    print("\n😢 SADNESS")
+    print("Makna:")
+    print("Sadness adalah perasaan sedih, kecewa, kehilangan, atau terluka.")
+    
+    print("\nRekomendasi Lagu Indonesia:")
+    print("1. Mahalini - Sisa Rasa")
+    print("2. Lyodra - Pesan Terakhir")
+    print("3. Andmesh - Hanya Rindu")
+    print("4. Feby Putri ft. Fiersa Besari - Runtuh")
+    print("5. Tulus - Monokrom")
+    
+    print("\nRekomendasi Lagu Barat:")
+    print("6. Someone You Loved - Lewis Capaldi")
+    print("7. All I Want - Olivia Rodrigo")
+    print("8. Drivers License - Olivia Rodrigo")
+    print("9. Heather - Conan Gray")
+    print("10. Let Her Go - Passenger")
+
+elif pilihan == "3":
+    print("\n😡 ANGER")
+    print("Makna:")
+    print("Anger adalah perasaan marah, kesal, atau frustrasi yang muncul saat menghadapi sesuatu yang tidak sesuai harapan.")
+    
+    print("\nRekomendasi Lagu Indonesia:")
+    print("1. Superman Is Dead - Jika Kami Bersama")
+    print("2. .Feast - Peradaban")
+    print("3. Pee Wee Gaskins - Dibalik Hari Esok")
+    print("4. Burgerkill - Tiga Titik Hitam")
+    print("5. Efek Rumah Kaca - Mosi Tidak Percaya")
+    
+    print("\nRekomendasi Lagu Barat:")
+    print("6. Believer - Imagine Dragons")
+    print("7. Whatever It Takes - Imagine Dragons")
+    print("8. Stronger - Kelly Clarkson")
+    print("9. Numb - Linkin Park")
+    print("10. Enemy - Imagine Dragons")
+
+elif pilihan == "4":
+    print("\n💚 ENVY")
+    print("Makna:")
+    print("Envy adalah perasaan iri terhadap kelebihan atau pencapaian orang lain. Perasaan ini dapat dijadikan motivasi untuk berkembang.")
+    
+    print("\nRekomendasi Lagu Indonesia:")
+    print("1. Hindia - Evaluasi")
+    print("2. Nadin Amizah - Sorai")
+    print("3. Kunto Aji - Rehat")
+    print("4. Tulus - Manusia Kuat")
+    print("5. Yura Yunita - Dunia Tipu-Tipu")
+    
+    print("\nRekomendasi Lagu Barat:")
+    print("6. jealousy, jealousy - Olivia Rodrigo")
+    print("7. envy me - Calboy")
+    print("8. Blue - Yung Kai")
+    print("9. Arcade - Duncan Laurence")
+    print("10. Unstoppable - Sia")
+
+else:
+    print("Pilihan tidak tersedia. Silakan pilih angka 1-4.")
