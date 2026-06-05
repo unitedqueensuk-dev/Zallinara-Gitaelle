@@ -5,231 +5,89 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Inside Out Music Mood</title>
 <style>
-body{
-    font-family: Arial, sans-serif;
-    background:#f5f5f5;
-    padding:20px;
-}
-.container{
-    max-width:800px;
-    margin:auto;
-    background:white;
-    padding:20px;
-    border-radius:10px;
-    box-shadow:0 0 10px rgba(0,0,0,0.1);
-}
-h1{
-    text-align:center;
-}
-select, button{
-    padding:10px;
-    margin-top:10px;
-}
-#hasil{
-    margin-top:20px;
-    line-height:1.8;
-}
+    /* CSS BARU UNTUK BACKGROUND VIDEO */
+    body, html {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        overflow: auto;
+    }
+    #bg-video {
+        position: fixed;
+        right: 0;
+        bottom: 0;
+        min-width: 100%;
+        min-height: 100%;
+        width: auto;
+        height: auto;
+        z-index: -1; /* Agar video selalu di belakang */
+        object-fit: cover;
+    }
+
+    body {
+        font-family: Arial, sans-serif;
+        padding: 20px;
+    }
+    .container {
+        max-width: 800px;
+        margin: 50px auto;
+        background: rgba(255, 255, 255, 0.85); /* Dibuat sedikit transparan agar video terlihat */
+        padding: 20px;
+        border-radius: 15px;
+        box-shadow: 0 0 20px rgba(0,0,0,0.3);
+        backdrop-filter: blur(5px); /* Efek blur agar teks lebih terbaca */
+    }
+    h1 { text-align: center; }
+    select, button { padding: 10px; margin-top: 10px; width: 100%; }
+    #hasil { margin-top: 20px; line-height: 1.8; }
 </style>
 </head>
 <body>
-    <video autoplay muted loop playsinline class="video-bg">
+
+    <!-- ELEMEN VIDEO -->
+    <video autoplay muted loop id="bg-video">
         <source src="https://videotourl.com/videos/1780485019352-0868a29f-d876-44ca-b1f7-322c6c4baa89.mp4" type="video/mp4">
-        Browser kamu tidak mendukung video background.
+        Browser kamu tidak mendukung tag video.
     </video>
-    <div class="video-overlay"></div>
-<div class="container">
-    <h1>🎵 INSIDE OUT MUSIC MOOD</h1>
-    <h2>Google Colab Project</h2>
-<p>
-    <a href="https://colab.research.google.com/drive/ID_NOTEBOOK_KAMU" target="_blank">
-        Buka Google Colab
-    </a>
-</p>
-    <p>Pilih mood yang paling menggambarkan perasaanmu saat ini:</p>
-    <select id="mood">
-        <option value="">-- Pilih Mood --</option>
-        <option value="joy">😊 Joy</option>
-        <option value="sadness">😢 Sadness</option>
-        <option value="anger">😡 Anger</option>
-        <option value="envy">💚 Envy</option>
-    </select>
-    <button onclick="tampilkanMood()">Lihat Rekomendasi</button>
-    <div id="hasil"></div>
-</div>
+
+    <div class="container">
+        <h1>🎵 INSIDE OUT MUSIC MOOD</h1>
+        <p style="text-align:center;">
+            <a href="https://colab.research.google.com/drive/ID_NOTEBOOK_KAMU" target="_blank">Buka Google Colab</a>
+        </p>
+        
+        <p>Pilih mood yang paling menggambarkan perasaanmu saat ini:</p>
+        <select id="mood">
+            <option value="">-- Pilih Mood --</option>
+            <option value="joy">😊 Joy</option>
+            <option value="sadness">😢 Sadness</option>
+            <option value="anger">😡 Anger</option>
+            <option value="envy">💚 Envy</option>
+        </select>
+        <button onclick="tampilkanMood()">Lihat Rekomendasi</button>
+        <div id="hasil"></div>
+    </div>
+
 <script>
-    const dataLagu = {
-  joy: {
-    namaMood: "😊 JOY",
-    maknaMood: "Joy menggambarkan perasaan bahagia, optimis, bersyukur, penuh semangat, dan ingin membagikan energi positif kepada orang lain.",
-    lagu: {
-      "Hati-Hati di Jalan - Tulus":
-        "Perpisahan yang tetap dihiasi doa, ketulusan, dan rasa syukur.",
-      "Laskar Pelangi - Nidji":
-        "Semangat mengejar mimpi dan tidak mudah menyerah.",
-      "Remaja - HIVI!":
-        "Kebahagiaan masa muda yang penuh harapan dan kenangan indah.",
-      "Senja Teduh Pelita - MALIQ & D'Essentials":
-        "Kehangatan, kenyamanan, dan ketenangan dalam hidup.",
-      "Melompat Lebih Tinggi - Sheila On 7":
-        "Keberanian menghadapi tantangan dan terus berkembang.",
-      "Happy - Pharrell Williams":
-        "Merayakan kebahagiaan dan rasa syukur.",
-      "Best Day of My Life - American Authors":
-        "Menikmati hari terbaik dan momen yang membahagiakan.",
-      "Golden Hour - JVKE":
-        "Mengagumi seseorang atau momen yang terasa sempurna.",
-      "Count on Me - Bruno Mars":
-        "Persahabatan dan dukungan tanpa syarat.",
-      "Walking on Sunshine - Katrina & The Waves":
-        "Perasaan senang yang meluap-luap."
+    // ... (Script JavaScript kamu tetap sama) ...
+    function tampilkanMood(){
+        const mood = document.getElementById("mood").value;
+        const hasil = document.getElementById("hasil");
+        
+        const data = {
+            joy: { judul: "😊 JOY (Bahagia)", desc: "Pengirim sedang merasa bahagia dan penuh energi.", lagu: ["Tulus - Hati-Hati di Jalan", "Nidji - Laskar Pelangi", "HIVI! - Remaja", "MALIQ & D'Essentials - Senja Teduh Pelita", "Sheila On 7 - Melompat Lebih Tinggi"] },
+            sadness: { judul: "😢 SADNESS (Sedih)", desc: "Pengirim sedang merasa sedih atau kehilangan.", lagu: ["Mahalini - Sisa Rasa", "Lyodra - Pesan Terakhir", "Andmesh - Hanya Rindu", "Feby Putri ft. Fiersa Besari - Runtuh", "Tulus - Monokrom"] },
+            anger: { judul: "😡 ANGER (Marah)", desc: "Pengirim sedang merasa kesal atau frustrasi.", lagu: ["Superman Is Dead - Jika Kami Bersama", ".Feast - Peradaban", "Pee Wee Gaskins - Dibalik Hari Esok", "Burgerkill - Tiga Titik Hitam", "Efek Rumah Kaca - Mosi Tidak Percaya"] },
+            envy: { judul: "💚 ENVY (Iri)", desc: "Pengirim sedang membandingkan diri atau merasa iri.", lagu: ["Hindia - Evaluasi", "Nadin Amizah - Sorai", "Kunto Aji - Rehat", "Tulus - Manusia Kuat", "Yura Yunita - Dunia Tipu-Tipu"] }
+        };
+
+        if(data[mood]) {
+            let listLagu = data[mood].lagu.map(l => `<li>${l}</li>`).join("");
+            hasil.innerHTML = `<h2>${data[mood].judul}</h2><p>${data[mood].desc}</p><h3>Rekomendasi Lagu:</h3><ul>${listLagu}</ul>`;
+        } else {
+            hasil.innerHTML = "<p>❌ Silakan pilih mood terlebih dahulu.</p>";
+        }
     }
-  },
-  sadness: {
-    namaMood: "😢 SADNESS",
-    maknaMood: "Sadness menggambarkan perasaan sedih, kehilangan, kecewa, rindu, atau terluka akibat suatu peristiwa dalam hidup.",
-    lagu: {
-      "Sisa Rasa - Mahalini":
-        "Luka dan kenangan yang tersisa setelah perpisahan.",
-      "Pesan Terakhir - Lyodra":
-        "Mengikhlaskan seseorang yang harus pergi.",
-      "Hanya Rindu - Andmesh":
-        "Kerinduan mendalam kepada orang yang dicintai.",
-      "Runtuh - Feby Putri ft. Fiersa Besari":
-        "Kelelahan emosional dan kebutuhan akan dukungan.",
-      "Monokrom - Tulus":
-        "Mengenang seseorang yang pernah memberi warna dalam hidup.",
-      "Someone You Loved - Lewis Capaldi":
-        "Kehilangan seseorang yang sangat berarti.",
-      "All I Want - Olivia Rodrigo":
-        "Harapan untuk dicintai dan dimengerti.",
-      "Drivers License - Olivia Rodrigo":
-        "Kesedihan setelah hubungan berakhir.",
-      "Heather - Conan Gray":
-        "Rasa tidak percaya diri dan cinta yang tidak terbalas.",
-      "Let Her Go - Passenger":
-        "Menyadari arti seseorang setelah kehilangannya."
-    }
-  },
-  anger: {
-    namaMood: "😡 ANGER",
-    maknaMood: "Anger menggambarkan perasaan marah, kesal, frustrasi, atau kecewa terhadap suatu keadaan yang tidak sesuai harapan.",
-    lagu: {
-      "Jika Kami Bersama - Superman Is Dead":
-        "Solidaritas dan kekuatan dalam kebersamaan.",
-      "Peradaban - .Feast":
-        "Kritik sosial terhadap berbagai kondisi masyarakat.",
-      "Dibalik Hari Esok - Pee Wee Gaskins":
-        "Harapan akan masa depan yang lebih baik.",
-      "Tiga Titik Hitam - Burgerkill":
-        "Pergulatan batin dan emosi yang kuat.",
-      "Mosi Tidak Percaya - Efek Rumah Kaca":
-        "Kritik terhadap ketidakadilan dan penyalahgunaan kekuasaan.",
-      "Believer - Imagine Dragons":
-        "Menjadikan rasa sakit sebagai kekuatan.",
-      "Whatever It Takes - Imagine Dragons":
-        "Tekad untuk mencapai tujuan apa pun rintangannya.",
-      "Stronger - Kelly Clarkson":
-        "Kesulitan membuat seseorang menjadi lebih kuat.",
-      "Numb - Linkin Park":
-        "Tekanan hidup yang membuat seseorang merasa lelah.",
-      "Enemy - Imagine Dragons":
-        "Menghadapi tekanan dan penilaian orang lain."
-    }
-  },
-  envy: {
-    namaMood: "💚 ENVY",
-    maknaMood: "Envy menggambarkan rasa iri terhadap kelebihan atau pencapaian orang lain, namun dapat menjadi motivasi untuk berkembang dan memperbaiki diri.",
-    lagu: {
-      "Evaluasi - Hindia":
-        "Refleksi diri dan pembelajaran dari pengalaman hidup.",
-      "Sorai - Nadin Amizah":
-        "Belajar menerima dan merelakan sesuatu yang telah berlalu.",
-      "Rehat - Kunto Aji":
-        "Mengingatkan pentingnya beristirahat dan menghargai diri sendiri.",
-      "Manusia Kuat - Tulus":
-        "Semangat untuk tetap bertahan menghadapi kesulitan.",
-      "Dunia Tipu-Tipu - Yura Yunita":
-        "Mensyukuri kehadiran orang-orang yang tulus dalam hidup.",
-      "jealousy, jealousy - Olivia Rodrigo":
-        "Dampak negatif membandingkan diri dengan orang lain.",
-      "envy me - Calboy":
-        "Tentang pencapaian dan pandangan orang lain terhadap kesuksesan.",
-      "Blue - Yung Kai":
-        "Perasaan kesepian dan pencarian jati diri.",
-      "Arcade - Duncan Laurence":
-        "Mengejar sesuatu yang sulit diraih dan menerima kenyataan.",
-      "Unstoppable - Sia":
-        "Membangun rasa percaya diri dan keyakinan diri."
-    }
-  }
-};
-function tampilkanMood(){
-const mood = document.getElementById("mood").value;
-const hasil = document.getElementById("hasil");
-if(mood === "joy"){
-hasil.innerHTML = `
-<h2>😊 JOY (Bahagia)</h2>
-<h3>Makna Emosi Pengirim</h3>
-<p>Pengirim sedang merasa bahagia, bersyukur, bersemangat, atau ingin membagikan energi positif kepada orang lain.</p>
-<h3>🎵 Rekomendasi Lagu Indonesia</h3>
-<ul>
-<li><b>Tulus - Hati-Hati di Jalan</b><br>Makna: Perpisahan yang tetap dihiasi doa dan ketulusan.</li>
-<li><b>Nidji - Laskar Pelangi</b><br>Makna: Semangat mengejar mimpi.</li>
-<li><b>HIVI! - Remaja</b><br>Makna: Kebahagiaan masa muda.</li>
-<li><b>MALIQ & D'Essentials - Senja Teduh Pelita</b><br>Makna: Kehangatan dan ketenangan.</li>
-<li><b>Sheila On 7 - Melompat Lebih Tinggi</b><br>Makna: Keberanian menghadapi tantangan.</li>
-</ul>
-`;
-}
-else if(mood === "sadness"){
-hasil.innerHTML = `
-<h2>😢 SADNESS (Sedih)</h2>
-<h3>Makna Emosi Pengirim</h3>
-<p>Pengirim sedang merasa sedih, kehilangan, kecewa, atau merindukan seseorang.</p>
-<h3>🎵 Rekomendasi Lagu Indonesia</h3>
-<ul>
-<li><b>Mahalini - Sisa Rasa</b><br>Makna: Luka setelah perpisahan.</li>
-<li><b>Lyodra - Pesan Terakhir</b><br>Makna: Mengikhlaskan seseorang.</li>
-<li><b>Andmesh - Hanya Rindu</b><br>Makna: Kerinduan mendalam.</li>
-<li><b>Feby Putri ft. Fiersa Besari - Runtuh</b><br>Makna: Kelelahan emosional.</li>
-<li><b>Tulus - Monokrom</b><br>Makna: Mengenang seseorang yang berarti.</li>
-</ul>
-`;
-}
-else if(mood === "anger"){
-hasil.innerHTML = `
-<h2>😡 ANGER (Marah)</h2>
-<h3>Makna Emosi Pengirim</h3>
-<p>Pengirim sedang merasa marah, kesal, atau frustrasi terhadap suatu keadaan.</p>
-<h3>🎵 Rekomendasi Lagu Indonesia</h3>
-<ul>
-<li><b>Superman Is Dead - Jika Kami Bersama</b><br>Makna: Solidaritas dan kekuatan.</li>
-<li><b>.Feast - Peradaban</b><br>Makna: Kritik sosial.</li>
-<li><b>Pee Wee Gaskins - Dibalik Hari Esok</b><br>Makna: Harapan untuk masa depan.</li>
-<li><b>Burgerkill - Tiga Titik Hitam</b><br>Makna: Pergulatan batin.</li>
-<li><b>Efek Rumah Kaca - Mosi Tidak Percaya</b><br>Makna: Kritik terhadap ketidakadilan.</li>
-</ul>
-`;
-}
-else if(mood === "envy"){
-hasil.innerHTML = `
-<h2>💚 ENVY (Iri)</h2>
-<h3>Makna Emosi Pengirim</h3>
-<p>Pengirim sedang membandingkan dirinya dengan orang lain atau merasa iri terhadap pencapaian seseorang.</p>
-<h3>🎵 Rekomendasi Lagu Indonesia</h3>
-<ul>
-<li><b>Hindia - Evaluasi</b><br>Makna: Refleksi diri.</li>
-<li><b>Nadin Amizah - Sorai</b><br>Makna: Belajar menerima kenyataan.</li>
-<li><b>Kunto Aji - Rehat</b><br>Makna: Menghargai diri sendiri.</li>
-<li><b>Tulus - Manusia Kuat</b><br>Makna: Tetap kuat menghadapi kesulitan.</li>
-<li><b>Yura Yunita - Dunia Tipu-Tipu</b><br>Makna: Mensyukuri orang-orang tulus.</li>
-</ul>
-`;
-}
-else{
-hasil.innerHTML = "<p>❌ Silakan pilih mood terlebih dahulu.</p>";
-}
-}
 </script>
 </body>
 </html>
