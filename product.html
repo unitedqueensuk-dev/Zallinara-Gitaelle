@@ -52,6 +52,112 @@ select, button{
     <div id="hasil"></div>
 </div>
 <script>
+    const dataLagu = {
+  joy: {
+    namaMood: "😊 JOY",
+    maknaMood: "Joy menggambarkan perasaan bahagia, optimis, bersyukur, penuh semangat, dan ingin membagikan energi positif kepada orang lain.",
+    lagu: {
+      "Hati-Hati di Jalan - Tulus":
+        "Perpisahan yang tetap dihiasi doa, ketulusan, dan rasa syukur.",
+      "Laskar Pelangi - Nidji":
+        "Semangat mengejar mimpi dan tidak mudah menyerah.",
+      "Remaja - HIVI!":
+        "Kebahagiaan masa muda yang penuh harapan dan kenangan indah.",
+      "Senja Teduh Pelita - MALIQ & D'Essentials":
+        "Kehangatan, kenyamanan, dan ketenangan dalam hidup.",
+      "Melompat Lebih Tinggi - Sheila On 7":
+        "Keberanian menghadapi tantangan dan terus berkembang.",
+      "Happy - Pharrell Williams":
+        "Merayakan kebahagiaan dan rasa syukur.",
+      "Best Day of My Life - American Authors":
+        "Menikmati hari terbaik dan momen yang membahagiakan.",
+      "Golden Hour - JVKE":
+        "Mengagumi seseorang atau momen yang terasa sempurna.",
+      "Count on Me - Bruno Mars":
+        "Persahabatan dan dukungan tanpa syarat.",
+      "Walking on Sunshine - Katrina & The Waves":
+        "Perasaan senang yang meluap-luap."
+    }
+  },
+  sadness: {
+    namaMood: "😢 SADNESS",
+    maknaMood: "Sadness menggambarkan perasaan sedih, kehilangan, kecewa, rindu, atau terluka akibat suatu peristiwa dalam hidup.",
+    lagu: {
+      "Sisa Rasa - Mahalini":
+        "Luka dan kenangan yang tersisa setelah perpisahan.",
+      "Pesan Terakhir - Lyodra":
+        "Mengikhlaskan seseorang yang harus pergi.",
+      "Hanya Rindu - Andmesh":
+        "Kerinduan mendalam kepada orang yang dicintai.",
+      "Runtuh - Feby Putri ft. Fiersa Besari":
+        "Kelelahan emosional dan kebutuhan akan dukungan.",
+      "Monokrom - Tulus":
+        "Mengenang seseorang yang pernah memberi warna dalam hidup.",
+      "Someone You Loved - Lewis Capaldi":
+        "Kehilangan seseorang yang sangat berarti.",
+      "All I Want - Olivia Rodrigo":
+        "Harapan untuk dicintai dan dimengerti.",
+      "Drivers License - Olivia Rodrigo":
+        "Kesedihan setelah hubungan berakhir.",
+      "Heather - Conan Gray":
+        "Rasa tidak percaya diri dan cinta yang tidak terbalas.",
+      "Let Her Go - Passenger":
+        "Menyadari arti seseorang setelah kehilangannya."
+    }
+  },
+  anger: {
+    namaMood: "😡 ANGER",
+    maknaMood: "Anger menggambarkan perasaan marah, kesal, frustrasi, atau kecewa terhadap suatu keadaan yang tidak sesuai harapan.",
+    lagu: {
+      "Jika Kami Bersama - Superman Is Dead":
+        "Solidaritas dan kekuatan dalam kebersamaan.",
+      "Peradaban - .Feast":
+        "Kritik sosial terhadap berbagai kondisi masyarakat.",
+      "Dibalik Hari Esok - Pee Wee Gaskins":
+        "Harapan akan masa depan yang lebih baik.",
+      "Tiga Titik Hitam - Burgerkill":
+        "Pergulatan batin dan emosi yang kuat.",
+      "Mosi Tidak Percaya - Efek Rumah Kaca":
+        "Kritik terhadap ketidakadilan dan penyalahgunaan kekuasaan.",
+      "Believer - Imagine Dragons":
+        "Menjadikan rasa sakit sebagai kekuatan.",
+      "Whatever It Takes - Imagine Dragons":
+        "Tekad untuk mencapai tujuan apa pun rintangannya.",
+      "Stronger - Kelly Clarkson":
+        "Kesulitan membuat seseorang menjadi lebih kuat.",
+      "Numb - Linkin Park":
+        "Tekanan hidup yang membuat seseorang merasa lelah.",
+      "Enemy - Imagine Dragons":
+        "Menghadapi tekanan dan penilaian orang lain."
+    }
+  },
+  envy: {
+    namaMood: "💚 ENVY",
+    maknaMood: "Envy menggambarkan rasa iri terhadap kelebihan atau pencapaian orang lain, namun dapat menjadi motivasi untuk berkembang dan memperbaiki diri.",
+    lagu: {
+      "Evaluasi - Hindia":
+        "Refleksi diri dan pembelajaran dari pengalaman hidup.",
+      "Sorai - Nadin Amizah":
+        "Belajar menerima dan merelakan sesuatu yang telah berlalu.",
+      "Rehat - Kunto Aji":
+        "Mengingatkan pentingnya beristirahat dan menghargai diri sendiri.",
+      "Manusia Kuat - Tulus":
+        "Semangat untuk tetap bertahan menghadapi kesulitan.",
+      "Dunia Tipu-Tipu - Yura Yunita":
+        "Mensyukuri kehadiran orang-orang yang tulus dalam hidup.",
+      "jealousy, jealousy - Olivia Rodrigo":
+        "Dampak negatif membandingkan diri dengan orang lain.",
+      "envy me - Calboy":
+        "Tentang pencapaian dan pandangan orang lain terhadap kesuksesan.",
+      "Blue - Yung Kai":
+        "Perasaan kesepian dan pencarian jati diri.",
+      "Arcade - Duncan Laurence":
+        "Mengejar sesuatu yang sulit diraih dan menerima kenyataan.",
+      "Unstoppable - Sia":
+        "Membangun rasa percaya diri dan keyakinan diri."
+    }
+  }
+};
 function tampilkanMood(){
 const mood = document.getElementById("mood").value;
 const hasil = document.getElementById("hasil");
